@@ -23,7 +23,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC, TEMPLATES, SKILLS, DIST = REPO / "src", REPO / "build" / "templates", REPO / "skills", REPO / "dist"
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 BRAND = "lantern"
 sys.path.insert(0, str(SRC / "scripts"))
 from new_theme import NAMES as GENERIC  # noqa: E402
@@ -386,7 +386,60 @@ def write_skill(color, themes, ref, master_desc, single_desc):
         .replace("none on titles of labels or on buttons", "none on titles, labels or buttons"),
     )
     write(sk / "references" / "themes.md", (TEMPLATES / "themes.md").read_text(encoding="utf-8"))
+    plugin_files(sk, color, v)
     return sk, v["description"]
+
+
+SITE_URL = "https://amircode2050.github.io/lantern-design-system/"
+REPO_URL = "https://github.com/Amircode2050/lantern-design-system"
+
+
+def plugin_files(sk, color, v):
+    """What makes a skill folder a self-contained plugin and directory listing: manifest, README and licence."""
+    name = slug(color)
+    manifest = {
+        "name": name,
+        "displayName": "Lantern" if color is None else f"Lantern {COLORS[color]['N']}",
+        "version": VERSION,
+        "description": v["description"].split(". Use when")[0] + ".",
+        "author": {"name": "Lantern contributors", "url": REPO_URL},
+        "homepage": SITE_URL,
+        "repository": REPO_URL,
+        "license": "Apache-2.0",
+        "keywords": keywords(name),
+        "skills": "./",
+    }
+    (sk / ".claude-plugin").mkdir(exist_ok=True)
+    write(sk / ".claude-plugin" / "plugin.json", json.dumps(manifest, indent=2) + "\n")
+    what = (
+        "every colour (" + v["installed"] + "), with a picker that asks which colour, variant and type set you want"
+        if color is None
+        else f"the {COLORS[color]['N']} colour: {COLORS[color]['built']}"
+    )
+    readme = f"""# {manifest["displayName"]}
+
+{manifest["displayName"]} is part of [Lantern]({REPO_URL}), a design system that draws explanations: cut-away buildings full of small figures at work, one warm light, and glowing lines where energy and information flow. This skill covers {what}.
+
+Ask for a slide, an annotated figure, a title or break slide, a social post, a seamless GIF or MP4 loop, an editable PowerPoint template, design tokens for a website, or a theme built from your brand colour, logo or website. Twenty-four ready scenes cover common explainers such as a supply chain, a data pipeline and the cloud.
+
+Try every colour in the [playground]({SITE_URL}). Installation for Claude Code, claude.ai and other coding agents is in the [main README]({REPO_URL}#quick-start).
+
+## Requirements
+
+Python 3.11 or newer with `pip install pillow numpy playwright python-pptx` and `python -m playwright install chromium`. `ffmpeg` is needed only for GIF and MP4 output. Run `python scripts/kit.py` to check a setup.
+
+## What it runs and connects to
+
+- Drawings are rendered locally by a headless Chromium with every network request blocked.
+- `ffmpeg` is called with an argument list, never through a shell, to encode animations.
+- Files are written only to the paths you give.
+- `scripts/brand.py`, when you give it a web address, downloads that one page and up to five of its stylesheets from public addresses to read their colours. Nothing else uses the network, nothing is sent except those requests, and there is no telemetry.
+
+See [SECURITY.md]({REPO_URL}/blob/main/SECURITY.md) for details. Code is licensed under the Apache License 2.0 (`LICENSE`, `NOTICE`); the bundled fonts keep their SIL Open Font Licence (`assets/fonts/LICENSES.txt`).
+"""
+    write(sk / "README.md", readme)
+    for f in ("LICENSE", "NOTICE"):
+        shutil.copy(REPO / f, sk / f)
 
 
 def keywords(name):
@@ -396,8 +449,9 @@ def keywords(name):
 
 
 def marketplace(names, descs):
-    """Each skill folder is also a plugin: an entry whose source is the folder itself, which holds SKILL.md at its
-    root and no plugin.json, so the entry is its manifest and an install copies only that one skill."""
+    """Each skill folder is also a plugin: an entry whose source is the folder itself, so an install copies only that
+    one skill. The folder's own .claude-plugin/plugin.json carries the metadata; the entry repeats what the
+    /plugin listing shows before install."""
     m = {
         "name": "lantern-design-system",
         "owner": {"name": "Lantern contributors"},
@@ -411,9 +465,6 @@ def marketplace(names, descs):
                 "source": f"./skills/{n}",
                 "description": descs[n].split(". Use when")[0] + ".",
                 "version": VERSION,
-                "author": {"name": "Lantern contributors"},
-                "license": "Apache-2.0",
-                "keywords": keywords(n),
             }
             for n in names
         ],

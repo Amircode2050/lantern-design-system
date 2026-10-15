@@ -112,6 +112,25 @@ def deck_preview(tmp):
     sheet.save(IMG / "deck.jpg", quality=86)
 
 
+def playground_shots():
+    """The playground page (docs/index.html, built by build/site.py) in Blue dark and Gold light, as on GitHub Pages."""
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        pg = b.new_page(viewport={"width": 1280, "height": 1500})
+        pg.goto((REPO / "docs" / "index.html").resolve().as_uri())
+        pg.wait_for_load_state("networkidle")
+        for color, variant, name in (("blue", "dark", "playground-dark"), ("gold", "light", "playground-light")):
+            pg.click(f"button.sw[data-c='{color}']")
+            pg.click(f"#variant button[data-v='{variant}']")
+            pg.wait_for_timeout(900)
+            pg.screenshot(path=str(IMG / f"{name}.png"))
+            jpg(IMG / f"{name}.png", IMG / f"{name}.jpg", width=1000)
+            (IMG / f"{name}.png").unlink()
+        b.close()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-gif", action="store_true")
@@ -162,6 +181,9 @@ def main():
 
     deck_preview(tmp)
     print("slide template preview")
+
+    playground_shots()
+    print("playground screenshots")
 
     if not a.no_gif:
         set_theme("dark", "gold", None)

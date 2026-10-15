@@ -1,0 +1,17 @@
+Lantern design system
+Copyright 2026 Lantern contributors
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product bundles the following fonts in src/assets/fonts/ (and in every generated
+skill under assets/fonts/). They are NOT covered by the Apache License: each is licensed
+under the SIL Open Font License, Version 1.1 (see src/assets/fonts/LICENSES.txt).
+
+  PT Serif          Copyright 2010 ParaType Ltd.
+  Inter             Copyright 2016 The Inter Project Authors
+  JetBrains Mono    Copyright 2020 The JetBrains Mono Project Authors
+  Space Grotesk     Copyright 2020 The Space Grotesk Project Authors
+  Fraunces          Copyright 2020 The Fraunces Project Authors
+  Source Sans 3     Copyright 2010-2020 Adobe, with Reserved Font Name "Source"
+
+The woff2 files are the Latin subsets published by the Fontsource project.

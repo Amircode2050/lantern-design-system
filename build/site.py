@@ -88,7 +88,7 @@ def images():
         for v in ("dark", "light"):
             set_theme(v, c)
             for s in FEATURED:
-                save(scenes.build(s, 3.0), SITE / "img" / f"{c}_{s}_{v}.jpg", 1600)
+                save(scenes.build(s, 3.0), SITE / "img" / f"{c}_{s}_{v}.jpg", 1280)
         print(c, flush=True)
     for i, s in enumerate(scenes.SCENES):
         c = ORDER[i % len(ORDER)]
