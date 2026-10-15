@@ -216,6 +216,16 @@ def api_md(path, skip=()):
     return "| Function | What it does |\n|---|---|\n" + "\n".join(rows)
 
 
+def scene_md():
+    import scenes
+
+    rows = [f"| `{n}` | {' '.join(sc['title'])} | {sc['answer']} |" for n, sc in scenes.SCENES.items()]
+    return (
+        "`build(name, t, annotate=True, words=None)` returns the finished slide; `art(name, t)` the drawing alone. "
+        "Each scene is a seamless loop.\n\n| Scene | Question | Answer line |\n|---|---|---|\n" + "\n".join(rows)
+    )
+
+
 def keep_mode(md, keep):
     """Drop the [[master]] or [[single]] blocks that do not belong to this skill."""
     drop = "single" if keep == "master" else "master"
@@ -356,6 +366,8 @@ def write_skill(color, themes, ref, master_desc, single_desc):
         + api_md(sk / "scripts" / "components.py")
         + "\n\n## kit.py\n\n"
         + api_md(sk / "scripts" / "kit.py", skip=("f2", "lerp", "frac", "poly_len", "point_at"))
+        + "\n\n## scenes.py: the scene library\n\n"
+        + scene_md()
         + "\n",
     )
     write(

@@ -389,6 +389,198 @@ def bars(x, y, w, h, values, labels=None, highlight=None, unit=""):
 
 
 # =====================================================================================================
+# town, land and utilities (scene library)
+# =====================================================================================================
+def house(x, y, w=96, h=64, lit=True):
+    """Small home standing on y with its left wall at x: pitched roof, door, and a window that glows when lit."""
+    wx, wy, ww, wh = x + w * 0.52, y - h * 0.74, w * 0.3, h * 0.4
+    s = path(
+        P([(x - 8, y - h), (x + w / 2, y - h - w * 0.4), (x + w + 8, y - h)]),
+        T.V500,
+        f'stroke="{T.IN900}" stroke-width="2.2" stroke-linejoin="round"',
+    )
+    s += rrect(x, y - h, w, h, 2, "url(#metalh)", f'stroke="{T.IN900}" stroke-width="2"')
+    s += rrect(x + w * 0.14, y - h * 0.62, w * 0.2, h * 0.62, 2, T.IN800, f'stroke="{T.IN900}" stroke-width="1.2"')
+    if lit:
+        s += glow(wx + ww / 2, wy + wh / 2, ww * 1.7, wh * 1.7, op=0.6)
+    s += rrect(wx, wy, ww, wh, 2, "url(#warmwin)" if lit else T.IN700, f'stroke="{T.IN900}" stroke-width="1.4"')
+    return (
+        s
+        + line((wx + ww / 2, wy), (wx + ww / 2, wy + wh), T.IN900, 1.1)
+        + line((wx, wy + wh / 2), (wx + ww, wy + wh / 2), T.IN900, 1.1)
+    )
+
+
+def road(x, y, w, h=14):
+    """Road surface whose top is at y, with a dashed centre line."""
+    s = rrect(x, y, w, h, 3, T.IN800, f'stroke="{T.IN900}" stroke-width="1.5"')
+    return s + line((x + 10, y + h / 2), (x + w - 10, y + h / 2), T.L300, 1.6, 'stroke-dasharray="12 10" opacity="0.6"')
+
+
+def truck(x, y, s=1.0, facing=1):
+    """Delivery van; wheels rest on y, x is the middle. facing=-1 drives left."""
+    g = rrect(-72, -60, 94, 48, 4, "url(#metalh)", f'stroke="{T.IN900}" stroke-width="2"')
+    g += rrect(-64, -52, 78, 3, 1.5, T.L300, 'opacity="0.6"')
+    g += rrect(-30, -42, 16, 14, 2, T.W200, f'stroke="{T.IN900}"')
+    g += path(
+        "M22,-12 L22,-48 L46,-48 Q56,-46 60,-32 L70,-26 L70,-12 Z",
+        "url(#metalh)",
+        f'stroke="{T.IN900}" stroke-width="2" stroke-linejoin="round"',
+    )
+    g += path("M28,-43 L45,-43 Q51,-41 54,-31 L28,-31 Z", T.MIST, 'opacity="0.35"')
+    g += circ(68, -20, 3, T.W100, 'filter="url(#dotglow)"')
+    for wx in (-48, 44):
+        g += circ(wx, -10, 10, T.INK) + circ(wx, -10, 3.6, T.V300)
+    return f'<g transform="translate({f2(x)},{f2(y)}) scale({f2(s * facing)},{f2(s)})">{g}</g>'
+
+
+def pylon(x, y, h=200):
+    """Lattice power pylon standing on y. Its cables hang from (x - 0.3h, y - 0.86h) and (x + 0.3h, y - 0.86h)."""
+    top, w0, w1 = y - h, h * 0.17, h * 0.04
+    L = [(x - w0, y), (x - w1, top)]
+    R = [(x + w0, y), (x + w1, top)]
+    zig = []
+    for i in range(7):
+        t = i / 6
+        zig.append((lerp(L[0][0], L[1][0], t) if i % 2 == 0 else lerp(R[0][0], R[1][0], t), lerp(y, top, t)))
+    s = ""
+    for col, w in ((T.IN900, 4.2), (T.V300, 2)):
+        s += path(P(L, False), "none", f'stroke="{col}" stroke-width="{w}" stroke-linecap="round"')
+        s += path(P(R, False), "none", f'stroke="{col}" stroke-width="{w}" stroke-linecap="round"')
+        s += path(P(zig, False), "none", f'stroke="{col}" stroke-width="{w * 0.55:.1f}" stroke-linejoin="round"')
+        for yy, ww in ((y - h * 0.86, h * 0.3), (y - h * 0.66, h * 0.22)):
+            s += line((x - ww, yy), (x + ww, yy), col, w * 0.8, 'stroke-linecap="round"')
+    for sx in (-1, 1):
+        s += circ(x + sx * h * 0.3, y - h * 0.86 + 3, 2.4, T.L200)
+    return s
+
+
+def turbine(x, y, h=220, p=0.0, turns=1):
+    """Wind turbine standing on y; the rotor makes `turns` whole turns per loop."""
+    hx, hy, r = x, y - h, h * 0.42
+    s = path(
+        P([(x - 5, y), (x - 2.4, hy), (x + 2.4, hy), (x + 5, y)]),
+        "url(#metalv)",
+        f'stroke="{T.IN900}" stroke-width="1.6"',
+    )
+    s += rrect(hx - 6, hy - 8, 22, 12, 5, T.V400, f'stroke="{T.IN900}" stroke-width="1.4"')
+    a0 = TAU * turns * p
+    for k in range(3):
+        a = a0 + k * TAU / 3
+        c, sn = math.cos(a), math.sin(a)
+        side = (-sn * 7, c * 7)
+        blade = [
+            (hx + side[0], hy + side[1]),
+            (hx + 0.3 * r * c + side[0] * 1.2, hy + 0.3 * r * sn + side[1] * 1.2),
+            (hx + r * c, hy + r * sn),
+            (hx, hy),
+        ]
+        s += path(
+            P(blade),
+            T.L300 if not T.light else T.V300,
+            f'stroke="{T.IN900}" stroke-width="1.2" stroke-linejoin="round"',
+        )
+    return (
+        s
+        + circ(hx, hy, 5, T.V300, f'stroke="{T.IN900}" stroke-width="1.4"')
+        + circ(hx, hy - 9, 1.8, T.W300, 'filter="url(#dotglow)"')
+    )
+
+
+def solar_panel(x, y, w=90):
+    """Tilted solar panel on a post standing on y; x is the left edge."""
+    h = w * 0.42
+    top = y - w * 0.55
+    s = line((x + w * 0.5, y), (x + w * 0.5, top + h * 0.6), T.L200, 2.4)
+    quad = [(x, top + h), (x + w * 0.16, top), (x + w, top), (x + w * 0.84, top + h)]
+    s += path(P(quad), T.IN800, f'stroke="{T.IN900}" stroke-width="1.8" stroke-linejoin="round"')
+    for i in range(1, 4):
+        t = i / 4
+        s += line(
+            (lerp(quad[0][0], quad[3][0], t), top + h),
+            (lerp(quad[1][0], quad[2][0], t), top),
+            T.L200,
+            0.8,
+            'opacity="0.5"',
+        )
+    s += line((x + w * 0.08, top + h / 2), (x + w * 0.92, top + h / 2), T.L200, 0.8, 'opacity="0.5"')
+    return s + line((x + w * 0.2, top + 3), (x + w * 0.5, top + 3), T.MIST, 1.6, 'opacity="0.6"')
+
+
+def tank(x, y, w=80, h=90, level=0.7):
+    """Upright storage tank standing on y, x the left edge, with a sight glass whose water level is `level`."""
+    rx, ry = w / 2, w * 0.13
+    s = rrect(x, y - h, w, h, 3, "url(#metalv)", f'stroke="{T.IN900}" stroke-width="2"')
+    s += ell(x + rx, y - h, rx, ry, T.V300, f'stroke="{T.IN900}" stroke-width="2"')
+    gx, gy, gh = x + w * 0.72, y - h + 14, h - 26
+    s += rrect(gx, gy, 9, gh, 4, T.IN900)
+    s += rrect(gx + 2, gy + gh * (1 - level), 5, gh * level, 2.5, T.B200, 'opacity="0.9"')
+    for i in range(1, 3):
+        s += line((x + 2, y - h * i / 3), (x + w * 0.66, y - h * i / 3), T.IN800, 1.2, 'opacity="0.6"')
+    return s
+
+
+def tree(x, y, s=1.0, seed=1):
+    """Rounded tree standing on y."""
+    rnd = random.Random(seed)
+    g = rrect(-3, -40, 6, 40, 2, T.IN700, f'stroke="{T.IN900}" stroke-width="1"')
+    for dx, dy, r in ((-14, -50, 18), (12, -54, 19), (0, -70, 22)):
+        g += circ(
+            dx + rnd.uniform(-2, 2),
+            dy,
+            r,
+            hexmix(T.V500, T.V400, rnd.random() * 0.5),
+            f'stroke="{T.IN900}" stroke-width="1.2"',
+        )
+    g += circ(-6, -78, 6, T.L300, 'opacity="0.35"')
+    return f'<g transform="translate({f2(x)},{f2(y)}) scale({s})">{g}</g>'
+
+
+def shelf(x, y, w=80, h=96, rows=4, kind="boxes", seed=1, lit=0.15):
+    """Open shelving standing on y, x the left edge. kind 'boxes' (stock, archives) or 'books'; a share `lit` glows."""
+    rnd = random.Random(seed)
+    s = rrect(x, y - h, w, h, 2, T.IN800, f'stroke="{T.IN900}" stroke-width="1.8"')
+    rh = h / rows
+    for r in range(rows):
+        base = y - r * rh - 4
+        xx = x + 5
+        while True:
+            iw = rnd.uniform(4, 7) if kind == "books" else rnd.uniform(12, 20)
+            ih = rh * (rnd.uniform(0.6, 0.85) if kind == "books" else rnd.uniform(0.45, 0.7))
+            if xx + iw > x + w - 5:
+                break
+            col = T.W200 if rnd.random() < lit else hexmix(T.V400, T.V300, rnd.random())
+            s += rrect(xx, base - ih, iw, ih, 1, col, f'stroke="{T.IN900}" stroke-width="0.8"')
+            xx += iw + (1 if kind == "books" else 3)
+        s += rrect(x, base, w, 4, 0, T.IN600) + rrect(x, base, w, 1.2, 0, T.L300, 'opacity="0.6"')
+    return s
+
+
+def bed(x, y, w=74, occupied=True):
+    """Bed standing on y, x the left edge; a resting figure when occupied."""
+    s = rrect(x, y - 22, w, 8, 2, T.V400, f'stroke="{T.IN900}" stroke-width="1.4"')
+    s += line((x + 3, y - 14), (x + 3, y), T.L200, 2) + line((x + w - 3, y - 14), (x + w - 3, y), T.L200, 2)
+    s += rrect(x - 2, y - 40, 5, 40, 2, T.L200)
+    s += rrect(x + 4, y - 30, w - 8, 9, 4, T.MIST, 'opacity="0.85"') + rrect(x + 6, y - 35, 16, 7, 3, T.MIST)
+    if occupied:
+        s += circ(x + 14, y - 38, 6.4, T.INK) + rrect(x + 22, y - 39, w - 30, 10, 5, T.INK)
+    return s
+
+
+def dish(x, y, s=1.0, facing=1):
+    """Radio dish on a stand standing on y, aimed up and forward. Its feed sits at (x + 44*s*facing, y - 108*s)."""
+    g = path("M-10,0 L-4,-60 L4,-60 L10,0 Z", "url(#metalv)", f'stroke="{T.IN900}" stroke-width="1.6"')
+    g += circ(0, -64, 7, T.V400, f'stroke="{T.IN900}" stroke-width="1.4"')
+    g += path(
+        "M-30,-118 Q-6,-30 66,-46 Q22,-70 -30,-118 Z",
+        T.V300,
+        f'stroke="{T.IN900}" stroke-width="2" stroke-linejoin="round"',
+    )
+    g += line((16, -70), (44, -108), T.L200, 1.6) + circ(44, -108, 4, T.W200, 'filter="url(#dotglow)"')
+    return f'<g transform="translate({f2(x)},{f2(y)}) scale({f2(s * facing)},{f2(s)})">{g}</g>'
+
+
+# =====================================================================================================
 # large architecture
 # =====================================================================================================
 def dome(cx, cy, rx, ry, rows=5, cols=16, oculus=True, shaft=0):

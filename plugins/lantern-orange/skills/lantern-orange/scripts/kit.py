@@ -524,7 +524,7 @@ def text(x, y, s, size=None, fill=None, family=None, extra=""):
 
 
 def title_block(title_lines, subtitle=None, answer=None, x=72, y=100):
-    """Question in display serif (<=2 lines), original-language phrase in italic, one answer line in the accent."""
+    """Question in display serif (<=2 lines), an optional subtitle in italic, one answer line in the accent."""
     s = "".join(text(x, y + i * 50, t, ts("title-lg"), T.T1, F.DISPLAY) for i, t in enumerate(title_lines))
     yy = y + (len(title_lines) - 1) * 50
     if subtitle:
@@ -538,7 +538,7 @@ def title_block(title_lines, subtitle=None, answer=None, x=72, y=100):
 
 def callout(x, y, title, lines, anchor, side="left", tag=None):
     """Label + leader. side='left' = label in the left column (leader leaves from its right edge, measured from the text).
-    tag = (prefix, body) or None; e.g. ("Role", "the final monitor")."""
+    tag = (prefix, body) or None; e.g. ("Step", "final check")."""
     s = [text(x, y, title, ts("label-title"), T.T1, F.DISPLAY)]
     s += [text(x, y + 32 + i * 24, ln, ts("body"), T.T2) for i, ln in enumerate(lines)]
     wid = max([text_width(title, ts("label-title"), F.DISPLAY)] + [text_width(ln, ts("body")) for ln in lines])
@@ -924,6 +924,8 @@ def doctor():
             need.append("python -m playwright install chromium")
     if not shutil.which("ffmpeg"):
         need.append("install ffmpeg (only needed for GIF/MP4)")
+    if importlib.util.find_spec("pptx") is None:
+        need.append("pip install python-pptx (only needed for slide templates)")
     missing_fonts = [
         fn
         for fam in _FONT_FILES.values()

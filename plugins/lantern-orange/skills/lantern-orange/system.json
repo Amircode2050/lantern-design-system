@@ -172,7 +172,7 @@
    "line": 30,
    "family": "display",
    "weight": 400,
-   "use": "original-language phrase under a title"
+   "use": "optional second line under a title"
   },
   "answer": {
    "size": 30,

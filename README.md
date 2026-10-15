@@ -22,6 +22,8 @@ Most slide decks explain with bullet points. Lantern explains with pictures: cut
 
 It comes in twelve colours, each with a dark and a light version, three type sets and a full shade ramp. The same colours drive a small web interface kit, so a deck, a report and a dashboard can look like one family.
 
+<p align="center"><b><a href="https://amircode2050.github.io/lantern-design-system/">Try it live in the playground</a></b>: pick a colour and watch every scene, shade and button change with it.</p>
+
 <p align="center">
   <img src="docs/images/teasers/spectrum.jpg" alt="Twelve lanterns, one in each colour theme" width="100%">
 </p>
@@ -30,6 +32,7 @@ It comes in twelve colours, each with a dark and a light version, three type set
 
 - [What you get](#what-you-get)
 - [Gallery](#gallery)
+- [The scene library](#the-scene-library)
 - [Quick start](#quick-start)
 - [Choosing a look](#choosing-a-look)
 - [The colours](#the-colours)
@@ -37,6 +40,9 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - [Illustration modes and components](#illustration-modes-and-components)
 - [Animation](#animation)
 - [Interface kit and design tokens](#interface-kit-and-design-tokens)
+- [Your brand in one step](#your-brand-in-one-step)
+- [Social posts](#social-posts)
+- [Slide templates](#slide-templates)
 - [Make your own colour](#make-your-own-colour)
 - [Words on the slide](#words-on-the-slide)
 - [Accessibility](#accessibility)
@@ -55,6 +61,11 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - **An interface kit**: CSS variables, a Tailwind theme and eight components, in any colour.
 - **A theme generator** that turns one brand colour into a complete theme and checks every text colour for contrast.
 - **A voice guide**, so the words on a slide are as considered as the picture.
+- **A library of 24 ready scenes** for the ideas people explain most often, from supply chains to the cloud, each with its question, answer and labels.
+- **Your brand in one step**: point it at a logo, a website or a hex value and get a full theme with previews.
+- **Social posts** in square, 4:5 and 9:16, as stills or seamless MP4 loops.
+- **Slide templates** for PowerPoint, Keynote and Google Slides in every colour, every word and the chart editable.
+- **A playground** on the web, where the whole page changes colour as you choose.
 
 ## Gallery
 
@@ -78,6 +89,29 @@ It comes in twelve colours, each with a dark and a light version, three type set
 <p align="center">
   <img src="docs/images/teasers/portrait.jpg" alt="A person in profile holds up a lantern whose beam reaches a robot" width="80%">
 </p>
+
+## The scene library
+
+24 cut-aways, ready to drop into a deck. Each comes in every colour and both variants, carries its own words (a question, an answer line and three labels), and moves as a seamless loop. Shown here across the twelve colours.
+
+<table>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/supply_chain.jpg" alt="Cut-away of a factory and a warehouse, with a van carrying a lit parcel along a road to a house." width="100%"><br><b>How does a parcel reach your door?</b><br><code>supply_chain</code></td><td width="33%" valign="top"><img src="docs/site/lib/data_pipeline.jpg" alt="Homes and a shop send glowing records along pipes into a hall of servers, then a store, then a big screen." width="100%"><br><b>Where does a dashboard's number come from?</b><br><code>data_pipeline</code></td><td width="33%" valign="top"><img src="docs/site/lib/data_centre.jpg" alt="Cut-away data centre with rows of server racks, coolant pipes looping to chillers on the roof and a lit control room." width="100%"><br><b>How does a data centre stay cool?</b><br><code>data_centre</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/power_grid.jpg" alt="Wind turbines and solar panels feed glowing power lines over pylons to a substation and a street of lit homes." width="100%"><br><b>How does power reach a home?</b><br><code>power_grid</code></td><td width="33%" valign="top"><img src="docs/site/lib/internet.jpg" alt="A person at a lit desk at home, cables through an exchange building to a server hall, with information flowing both ways." width="100%"><br><b>What happens when you open a web page?</b><br><code>internet</code></td><td width="33%" valign="top"><img src="docs/site/lib/org_team.jpg" alt="A three-storey cut-away office: leads at a board on top, makers at benches in the middle, support staff below." width="100%"><br><b>Who does what on a team?</b><br><code>org_team</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/sales_funnel.jpg" alt="A building of four floors that narrows downward like a funnel: crowds on top, one buyer carrying a lit parcel at the bottom." width="100%"><br><b>Why do most visitors never buy?</b><br><code>sales_funnel</code></td><td width="33%" valign="top"><img src="docs/site/lib/research_lab.jpg" alt="A domed laboratory in cut-away: an orrery under the dome, benches and machines below, and a library on the ground floor." width="100%"><br><b>How does a lab turn questions into results?</b><br><code>research_lab</code></td><td width="33%" valign="top"><img src="docs/site/lib/model_training.jpg" alt="Shelves of examples ride a conveyor into a hall of servers around a glowing core, with a falling error line on a screen." width="100%"><br><b>How does a model learn from examples?</b><br><code>model_training</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/water_supply.jpg" alt="Rain falls on a reservoir; water flows through a treatment plant, up a water tower and down to houses." width="100%"><br><b>How does clean water reach a tap?</b><br><code>water_supply</code></td><td width="33%" valign="top"><img src="docs/site/lib/hospital.jpg" alt="A three-storey hospital in cut-away: a ward of beds on top, a lab in the middle, an ambulance bay and front desk below." width="100%"><br><b>What keeps a hospital running at night?</b><br><code>hospital</code></td><td width="33%" valign="top"><img src="docs/site/lib/school.jpg" alt="A school in cut-away: a classroom of pupils facing a teacher, a library upstairs, and a yard with trees outside." width="100%"><br><b>What makes a school work?</b><br><code>school</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/bank.jpg" alt="A cut-away bank: money flows in from a saver's house, out to a home and a workshop, and a small reserve in the vault." width="100%"><br><b>Where does your deposit go?</b><br><code>bank</code></td><td width="33%" valign="top"><img src="docs/site/lib/support_desk.jpg" alt="An office in cut-away: tickets ride a conveyor to agents at desks, and a few climb to engineers at server racks upstairs." width="100%"><br><b>How does a support ticket get solved?</b><br><code>support_desk</code></td><td width="33%" valign="top"><img src="docs/site/lib/newsroom.jpg" alt="A newspaper building in cut-away: a dish brings stories to editors upstairs, a press prints below, and a van drives off." width="100%"><br><b>How does a story reach print?</b><br><code>newsroom</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/retail_store.jpg" alt="A shop in cut-away: customers at shelves in front, a stock room behind, an office upstairs and a van at the loading dock." width="100%"><br><b>What sits behind a shop shelf?</b><br><code>retail_store</code></td><td width="33%" valign="top"><img src="docs/site/lib/farm_to_table.jpg" alt="An orchard, a packing barn, a van on the road and a lit restaurant kitchen with diners at a table." width="100%"><br><b>How does food get from field to plate?</b><br><code>farm_to_table</code></td><td width="33%" valign="top"><img src="docs/site/lib/knowledge_base.jpg" alt="A domed reading room in cut-away: shelves on curved galleries, a shaft of light from the oculus onto a reader's desk." width="100%"><br><b>How does a knowledge base answer a question?</b><br><code>knowledge_base</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/network_defence.jpg" alt="A walled compound at night: a lit watchtower with sight lines over a server building, a guarded gate and a storm outside." width="100%"><br><b>How is a network defended?</b><br><code>network_defence</code></td><td width="33%" valign="top"><img src="docs/site/lib/cloud_computing.jpg" alt="A big soft cloud with a beam of light dropping from it into a cut-away building full of server racks, linked to homes and offices." width="100%"><br><b>What is the cloud, really?</b><br><code>cloud_computing</code></td><td width="33%" valign="top"><img src="docs/site/lib/remote_team.jpg" alt="Four small lit homes, each with a person at a desk, linked by flowing lines to a central hub on a hill." width="100%"><br><b>How does a team stay in step from home?</b><br><code>remote_team</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/recycling.jpg" alt="A loop of glowing dots: a house, a van, a sorting plant, a factory and a shop, then back to the house." width="100%"><br><b>Where does a bottle go after the bin?</b><br><code>recycling</code></td><td width="33%" valign="top"><img src="docs/site/lib/startup_growth.jpg" alt="A garage with two people, a small office and a four-storey building in a row, growing left to right under a bar chart." width="100%"><br><b>How does a small team become a company?</b><br><code>startup_growth</code></td><td width="33%" valign="top"><img src="docs/site/lib/mission_control.jpg" alt="A mission control room of consoles facing a big screen, a dish outside, and a dotted signal arcing up to a ship." width="100%"><br><b>How does mission control talk to a ship?</b><br><code>mission_control</code></td></tr>
+</table>
+
+```bash
+python scripts/scenes.py                                  # list them
+python scripts/scenes.py power_grid teal light modern     # one scene, any colour, variant and type set
+python scripts/scenes.py power_grid clean                 # the picture without words
+```
+
+Change the words without touching the drawing: `build("bank", words={"title": ["Where does the money go?"], "answer": "Mostly back out as loans."})`.
 
 ## Quick start
 
@@ -121,7 +155,7 @@ pip install pillow numpy playwright
 python -m playwright install chromium
 ```
 
-plus [ffmpeg](https://ffmpeg.org) if you want GIF or MP4 output, and Python 3.11 or newer. To check a setup, run `python scripts/kit.py` inside any skill folder: it prints what is missing and the command that fixes it.
+plus [ffmpeg](https://ffmpeg.org) if you want GIF or MP4 output, `pip install python-pptx` for slide templates, and Python 3.11 or newer. To check a setup, run `python scripts/kit.py` inside any skill folder: it prints what is missing and the command that fixes it.
 
 ### 3. Ask for something
 
@@ -131,6 +165,9 @@ plus [ffmpeg](https://ffmpeg.org) if you want GIF or MP4 output, and Python 3.11
 - "A 25-second loop of the saucer for the start of my keynote."
 - "Export the rose theme as CSS variables and a Tailwind theme."
 - "Here is our logo. Make a Lantern colour from it."
+- "Our website is example.com. Make our slides match it."
+- "Turn the supply chain scene into an Instagram story, Lantern orange."
+- "Give me a PowerPoint template in Lantern teal, light."
 
 ## Choosing a look
 
@@ -502,7 +539,8 @@ The building blocks:
 |---|---|
 | Structure | `shell`, `room`, `slab`, `wall`, `truss`, `plinth`, `sawtooth_roof`, `gable`, `arched_window`, `arcade` |
 | Light | `lantern`, `pendant_lamp`, `string_lights`, `orb`, `glow`, `light_cone`, `headlamp` |
-| Weather and nature | `cloud` (with rain and a lightning bolt) |
+| Weather and nature | `cloud` (with rain and a lightning bolt), `tree` |
+| Town and utilities | `house`, `road`, `truck`, `pylon`, `turbine`, `solar_panel`, `tank`, `shelf`, `bed`, `dish` |
 | Machines and props | `battery`, `conveyor`, `crate`, `car`, `machine`, `server_rack`, `clock`, `desk`, `cabinet`, `screen`, `ladder`, `gear`, `pipe`, `cable` |
 | Large architecture | `dome`, `gallery_ring`, `lantern_tower`, `saucer`, `tractor_beam` |
 | Science | `orrery`, `thinking_core` |
@@ -550,6 +588,45 @@ python scripts/export.py teal out/teal --type modern --default dark
 
 The accent keeps its meaning in an interface: it marks the one thing to look at. Actions use the core colour, and a core too pale to carry white text falls back to ink.
 
+## Your brand in one step
+
+```bash
+python scripts/brand.py acme https://example.com     # the colours a website declares
+python scripts/brand.py acme logo.png                # a logo or a few screenshots
+python scripts/brand.py acme "#E4002B"               # a colour you already know
+```
+
+Lantern finds the brand's most characteristic colour (chromatic, used often, not too pale), borrows the recipe of the nearest of the twelve colours (a yellow gets Gold's near-black ground, a grey gets the monochrome recipe), and writes a complete theme. It then renders a cover slide, a scene and the component sheet in dark and light, plus the CSS and Tailwind tokens, into `brand-acme/`. If it picked the wrong colour, it prints the runners-up and the command to use one of them.
+
+The website mode is the only part of Lantern that uses the network: it downloads that one page and up to five of its stylesheets, nothing else.
+
+## Social posts
+
+<p align="center">
+  <img src="docs/images/social/square.jpg" alt="A square post: what is the cloud, really?" width="32%">
+  <img src="docs/images/social/portrait.jpg" alt="A 4:5 post: how does a parcel reach your door?" width="32%">
+  <img src="docs/images/social/story.jpg" alt="A 9:16 story: how does a knowledge base answer a question?" width="27%">
+</p>
+
+```bash
+python scripts/social.py cloud_computing square blue          # 1080x1080 for LinkedIn, X and Instagram
+python scripts/social.py supply_chain portrait teal           # 1080x1350 feed post
+python scripts/social.py knowledge_base story gold --loop 8   # 1080x1920 still plus a seamless 8 s MP4
+python scripts/social.py all square rose --handle "@you"      # every scene, with your handle at the foot
+```
+
+## Slide templates
+
+<p align="center"><img src="docs/images/deck.jpg" alt="The ten slides of the template in Lantern Blue" width="100%"></p>
+
+Every colour has a ten-slide template in dark and light, attached to each [release](../../releases/latest): title, agenda, section break, three illustrated explainers, a text slide, two columns, a native chart and a closing slide. The pictures are images; every title, label and number is editable, and the file's own theme colours and fonts are set, so a new shape or chart matches without effort. It opens in PowerPoint, Keynote and Google Slides (File, Import slides).
+
+```bash
+python scripts/deck.py teal light modern --out teal.pptx
+```
+
+The fonts are free from Google Fonts. Google Slides already has them; for PowerPoint and Keynote install the two families of your type set (for Classic, PT Serif and Inter).
+
 ## Make your own colour
 
 ```bash
@@ -573,7 +650,7 @@ Starting from a picture instead? `python scripts/intake.py logo.png` reports the
 
 ## Words on the slide
 
-Lantern has a voice as well as a look. A title is a real question; the answer line replies in one sentence; labels name the actor ("The supplier") and say what it does in a few short lines. Sentence case, British spelling, no exclamation marks, and a credit line that says what is stylised. The full guide, with limits for every slot and a list of words to avoid, is in each skill's `references/voice.md`.
+Lantern has a voice as well as a look. A title is a real question; the answer line replies in one sentence; labels name the thing ("The workshop") and say what it does in a few short lines. Sentence case, British spelling, no exclamation marks, and a credit line that says what is stylised. The full guide, with limits for every slot and a list of words to avoid, is in each skill's `references/voice.md`.
 
 ## Accessibility
 
@@ -627,6 +704,7 @@ src/            the engine (scripts, interface kit, fonts, system.json) and the 
 build/          build.py, themes.py (colour recipes), check.py, release.py, teasers.py, templates/
 plugins/        the generated skills, one plugin each, listed in .claude-plugin/marketplace.json
 docs/images/    everything on this page
+docs/index.html the playground, served by GitHub Pages
 ```
 
 ```bash
@@ -636,6 +714,8 @@ python build/build.py                 # renders reference images and writes ever
 python build/build.py --skip-render   # code and docs only
 python build/check.py                 # contrast, names, interface contrast, engine copies
 python build/readme_images.py         # the images on this page
+python build/site.py                  # the playground in docs/ (GitHub Pages, deploy from /docs)
+python src/scripts/deck.py all --out dist   # slide templates for a release
 ```
 
 ## Contributing, security and licence

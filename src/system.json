@@ -18,7 +18,7 @@
   "title-xl": {"size": 132, "line": 132, "family": "display", "weight": 400, "use": "one-word slides (Break)"},
   "title-lg": {"size": 44, "line": 50, "family": "display", "weight": 400, "use": "figure and slide titles, two lines at most"},
   "label-title": {"size": 30, "line": 34, "family": "display", "weight": 400, "use": "callout titles"},
-  "subtitle": {"size": 23, "line": 30, "family": "display", "weight": 400, "use": "original-language phrase under a title"},
+  "subtitle": {"size": 23, "line": 30, "family": "display", "weight": 400, "use": "optional second line under a title"},
   "answer": {"size": 30, "line": 36, "family": "sans", "weight": 500, "use": "the one answer line on a slide"},
   "answer-sm": {"size": 19, "line": 26, "family": "sans", "weight": 500, "use": "answer line under title-lg"},
   "lead": {"size": 21, "line": 30, "family": "sans", "weight": 400, "use": "asides, intros"},

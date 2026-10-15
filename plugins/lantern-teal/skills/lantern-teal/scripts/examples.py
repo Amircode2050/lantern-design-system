@@ -16,7 +16,7 @@ from components import *
 
 
 def factory(t=0.0, annotate=True):
-    """Cut-away mode. Scene sentence: a big firm and a small supplier under the same storm; the light is the lit workshop."""
+    """Cut-away mode. Scene sentence: a factory, its workshop and its supplier work through the night; the light is the lit assembly hall."""
     set_canvas("16:9")
     p = (t % C.LOOP) / C.LOOP
     body = [background(960, 560, p=p, avoid=[(60, 40, 720, 240), (1500, 250, 1900, 460)])]
@@ -95,17 +95,20 @@ def factory(t=0.0, annotate=True):
     body.append(finish())
     if annotate:
         body.append(
-            title_block(["Build it or buy it?"], "Ex officina", "Big firms build in-house; small firms buy in.")
+            title_block(
+                ["How does a factory run?"],
+                "A night shift, room by room",
+                "Every room feeds the next; batteries cover the gaps.",
+            )
         )
         body.append(
             callout(
                 72,
                 448,
                 "The factory",
-                wrap("One part is small beside the whole firm, so a single storm barely slows it.", 38),
+                wrap("Five halls under one roof, each lit by its own skylight.", 38),
                 (480, 584),
                 "left",
-                ("Role", "maker"),
             )
         )
         body.append(
@@ -113,10 +116,9 @@ def factory(t=0.0, annotate=True):
                 72,
                 728,
                 "The assembly hall",
-                wrap("Built in-house by salaried staff and checked at every station.", 36),
+                wrap("Cars move down the line and are checked at every station.", 36),
                 (640, 690),
                 "left",
-                ("Role", "in-house work"),
             )
         )
         body.append(
@@ -124,10 +126,9 @@ def factory(t=0.0, annotate=True):
                 1548,
                 300,
                 "The workshop",
-                wrap("Thin reserves: one bad month and the lights go out.", 38),
+                wrap("A small team repairs parts and sends them back the same day.", 38),
                 (1126, 890),
                 "right",
-                ("Role", "small buyer"),
             )
         )
         body.append(
@@ -135,17 +136,16 @@ def factory(t=0.0, annotate=True):
                 1612,
                 800,
                 "The supplier",
-                wrap("Paid per part delivered, it carries the risk of the storm.", 34),
+                wrap("Packs parts into crates and ships them to the line.", 34),
                 (1496, 762),
                 "right",
-                ("Role", "outside work"),
             )
         )
-        body.append(credit("Illustrative scene. Firms, storms and reserves stylised."))
+        body.append(credit("Illustrative scene. Buildings and machines stylised."))
     return svg_doc(
         std_defs(960, 560, lit=(670, 700), lit_r=420),
         "".join(body),
-        alt="Cut-away of a large car factory beside a small workshop and its supplier, each under a storm cloud, with batteries showing their reserves.",
+        alt="Cut-away of a large car factory beside a small workshop and a supplier at night, with batteries storing power and rain clouds overhead.",
     )
 
 

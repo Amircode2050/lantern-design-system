@@ -6,7 +6,7 @@
 Tags: v<VERSION> for the repo, and <plugin>--v<VERSION> for each plugin (the form plugin managers look for).
 Afterwards push and publish yourself:
     git push origin main --tags
-    gh release create v<VERSION> dist/*.zip --title "Lantern <VERSION>" --notes-file <notes>
+    gh release create v<VERSION> dist/*.zip dist/*.pptx --title "Lantern <VERSION>" --notes-file <notes>
 """
 
 import argparse
@@ -42,6 +42,7 @@ def main():
     if run("git", "status", "--porcelain"):
         sys.exit("the build changed tracked files; commit the result and run again")
 
+    subprocess.run([sys.executable, "src/scripts/deck.py", "all", "--out", "dist"], cwd=REPO, check=True)
     plugins = sorted(p.name for p in (REPO / "plugins").iterdir() if p.is_dir())
     tags = [f"v{version}"] + [f"{p}--v{version}" for p in plugins]
     if a.dry_run:
@@ -49,8 +50,8 @@ def main():
         return
     for t in tags:
         run("git", "tag", "-a", t, "-m", f"Lantern {version}" if t.startswith("v") else f"{t.split('--')[0]} {version}")
-    print(f"tagged {len(tags)}: {tags[0]} and one per plugin; zips are in dist/")
-    print("next: git push origin main --tags, then attach dist/*.zip to the GitHub release")
+    print(f"tagged {len(tags)}: {tags[0]} and one per plugin; zips and slide templates are in dist/")
+    print("next: git push origin main --tags, then attach dist/*.zip and dist/*.pptx to the GitHub release")
 
 
 if __name__ == "__main__":

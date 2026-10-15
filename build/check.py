@@ -7,6 +7,7 @@
 - every SKILL.md has a description of at most 1024 characters
 - every generated skill carries the same engine as src/
 - the exported UI tokens keep buttons, text and links readable in every theme and variant
+- every library scene draws, and its labels point at anchors it defines
 """
 
 import filecmp
@@ -60,8 +61,20 @@ def ui_contrast():
     return out
 
 
+def scene_check():
+    import scenes
+
+    out = []
+    for name, sc in scenes.SCENES.items():
+        _, anchors = sc["draw"](0.0)
+        out += [f"scene {name}: label anchor {k!r} missing" for _, k, _, _ in sc["labels"] if k not in anchors]
+        if len(sc["labels"]) > 4 or len(sc["title"]) > 2:
+            out.append(f"scene {name}: at most two title lines and four labels")
+    return out
+
+
 def main():
-    problems = list(check_tokens()) + ui_contrast()
+    problems = list(check_tokens()) + ui_contrast() + scene_check()
 
     market = json.loads((REPO / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8"))
     listed = {p["name"]: p for p in market["plugins"]}

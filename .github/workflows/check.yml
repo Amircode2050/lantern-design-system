@@ -40,6 +40,10 @@ jobs:
         run: |
           python build/readme.py
           git diff --exit-code -- README.md
+      - name: Playground page matches the source
+        run: |
+          python build/site.py --skip-render
+          git diff --exit-code -- docs/index.html docs/site/lantern.css docs/site/tokens
 
   render:
     runs-on: ubuntu-latest
@@ -60,3 +64,9 @@ jobs:
       - name: Seamless loop
         working-directory: ${{ runner.temp }}
         run: python "$GITHUB_WORKSPACE/src/scripts/examples.py" loop
+      - name: Scene library, a social card and a slide template
+        working-directory: ${{ runner.temp }}
+        run: |
+          python "$GITHUB_WORKSPACE/src/scripts/scenes.py" all teal light
+          python "$GITHUB_WORKSPACE/src/scripts/social.py" power_grid story orange
+          python "$GITHUB_WORKSPACE/src/scripts/deck.py" green --out green.pptx

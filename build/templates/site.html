@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-color="blue" data-type="classic">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lantern playground</title>
+<meta name="description" content="Try every Lantern colour live: illustrated scenes, shade ramps, interface components, slide templates and tokens.">
+<meta property="og:title" content="Lantern: one light, twelve colours">
+<meta property="og:description" content="An illustration and interface design system. Pick a colour and watch everything change.">
+<meta property="og:image" content="images/teasers/hero.jpg">
+<link rel="icon" href="site/icon.svg">
+<link rel="stylesheet" href="site/fonts.css">
+<link rel="stylesheet" href="site/lantern.css">
+<link rel="stylesheet" href="site/ui.css">
+<style>
+  html { scroll-behavior: smooth; }
+  body { transition: background-color .35s ease, color .35s ease; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+  header.top { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 10px; font: 400 26px/1 var(--font-display); color: var(--text); text-decoration: none; }
+  .brand svg { width: 26px; height: 26px; }
+  .hero { padding: 40px 0 24px; display: grid; gap: 14px; }
+  .hero h1 { font: 400 clamp(40px, 7vw, 84px)/1.02 var(--font-display); margin: 0; }
+  .hero p.lead { font-size: 19px; line-height: 1.55; color: var(--text-2); max-width: 720px; margin: 0; }
+  .eyebrow { font: 500 13px/1.4 var(--font-mono); color: var(--accent-fg); letter-spacing: .02em; }
+  section { padding: 34px 0; }
+  h2.sec { font: 400 34px/1.15 var(--font-display); margin: 0 0 6px; }
+  p.sub { color: var(--text-2); margin: 0 0 20px; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; }
+  .sw { border: 1px solid var(--border); border-radius: var(--radius-3); padding: 8px; background: var(--surface); cursor: pointer; color: var(--text-2);
+        font: 400 13px/1.3 var(--font-sans); text-align: left; display: grid; gap: 6px; transition: transform .15s ease, border-color .15s ease; }
+  .sw:hover { transform: translateY(-2px); }
+  .sw[aria-pressed="true"] { border-color: var(--accent-fg); box-shadow: 0 0 0 1px var(--accent-fg); color: var(--text); }
+  .sw i { display: block; height: 38px; border-radius: 8px; border: 1px solid rgba(127,127,127,.25); }
+  .controls { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; margin-top: 16px; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: var(--radius-2); overflow: hidden; }
+  .seg button { background: transparent; border: 0; color: var(--text-2); font: 500 14px/1 var(--font-sans); padding: 10px 14px; min-height: 40px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--surface-2); color: var(--text); }
+  .seg-label { font: 400 13px/1 var(--font-mono); color: var(--text-3); margin-right: 8px; }
+  .stage { border-radius: var(--radius-3); overflow: hidden; border: 1px solid var(--border); background: var(--surface); aspect-ratio: 16/9; }
+  .stage img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .25s ease; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .tabs button { font: 400 13px/1 var(--font-mono); min-height: 34px; padding: 0 12px; }
+  .tabs button[aria-pressed="true"] { border-color: var(--accent-fg); color: var(--text); }
+  .meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 12px; color: var(--text-2); }
+  .ramp { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 6px; }
+  .chip { min-width: 0; overflow: hidden; border-radius: 10px; min-height: 92px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;
+          font: 500 12px/1.2 var(--font-mono); border: 0; text-align: left; }
+  .chip.core { outline: 2px solid var(--text); outline-offset: 2px; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+  .dl { display: grid; gap: 12px; }
+  .dl .card { display: grid; gap: 10px; }
+  code, pre { font-family: var(--font-mono); font-size: 13.5px; }
+  pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-2); padding: 12px 14px; overflow-x: auto; margin: 0; color: var(--text); }
+  .own { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: start; }
+  .own input[type="color"] { width: 88px; height: 88px; border: 1px solid var(--border); border-radius: var(--radius-3); background: var(--surface); padding: 4px; cursor: pointer; }
+  .lib { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .lib figure { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-3); overflow: hidden; }
+  .lib img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+  .lib figcaption { padding: 10px 12px; font-size: 14px; color: var(--text-2); }
+  .lib figcaption b { display: block; font: 400 17px/1.3 var(--font-display); color: var(--text); margin-bottom: 2px; }
+  footer { padding: 40px 0 60px; color: var(--text-3); font-size: 14px; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+           padding: 10px 16px; border-radius: var(--radius-2); font: 400 14px/1 var(--font-sans); opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.on { opacity: 1; }
+  @media (max-width: 760px) {
+    .two, .own { grid-template-columns: minmax(0, 1fr); }
+    .chip { font-size: 10.5px; padding: 6px; }
+    .ramp { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .chip { min-height: 64px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="3.5" r="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M7 9l2-3h6l2 3z" fill="currentColor"/><rect x="7.5" y="9" width="9" height="9" rx="1" fill="var(--accent-fg)"/><path d="M8 18h8l-1.5 3h-5z" fill="currentColor"/></svg>Lantern</a>
+    <nav class="row">
+      <a class="btn btn-ghost" href="#library">Scene library</a>
+      <a class="btn btn-ghost" href="#own">Your colour</a>
+      <a class="btn" href="{{repo}}">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <span class="eyebrow">Design system · version {{version}} · free and open source</span>
+    <h1>One light.<br>Twelve colours.</h1>
+    <p class="lead">Lantern draws explanations: cut-away buildings full of small figures at work, one warm light, and glowing lines where energy and information flow. Pick a colour and this whole page changes with it.</p>
+  </div>
+
+  <section id="pick" aria-labelledby="pick-h">
+    <h2 class="sec" id="pick-h">Pick a colour</h2>
+    <p class="sub" id="pick-sub"></p>
+    <div class="swatches" id="swatches"></div>
+    <div class="controls">
+      <span><span class="seg-label">variant</span><span class="seg" id="variant"><button type="button" data-v="dark">Dark</button><button type="button" data-v="light">Light</button></span></span>
+      <span><span class="seg-label">type set</span><span class="seg" id="typeset"><button type="button" data-t="classic">Classic</button><button type="button" data-t="modern">Modern</button><button type="button" data-t="editorial">Editorial</button></span></span>
+    </div>
+  </section>
+
+  <section aria-labelledby="stage-h">
+    <h2 class="sec" id="stage-h">Six scenes, any colour</h2>
+    <p class="sub">Each one is a slide, a social post and a seamless loop. All words on them are editable.</p>
+    <div class="stage"><img id="stage" alt="" width="1600" height="900"></div>
+    <div class="tabs" id="tabs"></div>
+  </section>
+
+  <section aria-labelledby="ramp-h">
+    <h2 class="sec" id="ramp-h">The shade ramp</h2>
+    <p class="sub">Eleven steps from 50 to 950, built around the core colour (outlined). Select a chip to copy its hex value.</p>
+    <div class="ramp" id="ramp"></div>
+  </section>
+
+  <section aria-labelledby="ui-h">
+    <h2 class="sec" id="ui-h">The interface kit</h2>
+    <p class="sub">The same tokens drive buttons, cards, forms and tables, so a dashboard can match the deck.</p>
+    <div class="two">
+      <div class="card stack">
+        <h3 class="t-label-title">The assembly hall</h3>
+        <p class="t-body">Cars move down the line and are checked at every station.</p>
+        <div class="row"><span class="tag">line 2</span><span class="tag tag-accent">running</span><span class="tag tag-ok">on plan</span></div>
+        <div class="row"><button class="btn btn-primary" type="button">Open the hall</button><button class="btn" type="button">Compare</button><button class="btn btn-ghost" type="button">Read the note</button></div>
+      </div>
+      <div class="stack">
+        <div class="stat"><div class="label">Cars finished this week</div><div class="value">1 240</div><div class="delta">up 4% on last week</div></div>
+        <label class="field">Station name<input class="input" placeholder="Paint shop"><span class="hint">As it appears on the floor plan.</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="get-h">
+    <h2 class="sec" id="get-h">Take it with you</h2>
+    <p class="sub" id="get-sub"></p>
+    <div class="two">
+      <div class="dl">
+        <div class="card"><h3 class="t-label-title">Claude Code</h3><p class="t-body">Add the marketplace once, then install the colours you want.</p>
+          <pre id="cmd"></pre><div class="row"><button class="btn" type="button" data-copy="cmd">Copy commands</button></div></div>
+        <div class="card"><h3 class="t-label-title">claude.ai</h3><p class="t-body">Download the skill and upload it under Settings, Capabilities, Skills.</p>
+          <div class="row"><a class="btn btn-primary" id="zip">Download the skill</a></div></div>
+      </div>
+      <div class="dl">
+        <div class="card"><h3 class="t-label-title">Slide template</h3><p class="t-body">Ten editable slides for PowerPoint, Keynote and Google Slides, with a live chart.</p>
+          <div class="row"><a class="btn btn-primary" id="deck-dark">Dark template</a><a class="btn" id="deck-light">Light template</a></div></div>
+        <div class="card"><h3 class="t-label-title">Design tokens</h3><p class="t-body">CSS variables for both variants; set <code>data-theme</code> on <code>&lt;html&gt;</code> to switch.</p>
+          <div class="row"><a class="btn" id="tokens" download>tokens.css</a><a class="btn btn-ghost" href="site/ui.css" download>ui.css</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="own" aria-labelledby="own-h">
+    <h2 class="sec" id="own-h">Your colour</h2>
+    <p class="sub">Choose any brand colour to see its ramp and the Lantern colour it sits closest to. One command turns it, a logo or a website into a full theme.</p>
+    <div class="own">
+      <input type="color" id="pickhex" value="#e4002b" aria-label="Brand colour">
+      <div class="stack">
+        <div class="ramp" id="ownramp"></div>
+        <p class="t-body" id="ownnear"></p>
+        <pre id="owncmd"></pre>
+        <div class="row"><button class="btn" type="button" data-copy="owncmd">Copy command</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="library" aria-labelledby="lib-h">
+    <h2 class="sec" id="lib-h">The scene library</h2>
+    <p class="sub">{{scene_count}} ready cut-aways for the ideas people explain most often, shown here across the colours. Every one comes in every colour and both variants.</p>
+    <div class="lib" id="lib"></div>
+  </section>
+
+  <footer>
+    Lantern is free and open source: code under Apache 2.0, fonts under the SIL Open Font Licence. <a href="{{repo}}">Source, issues and releases on GitHub</a>.
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = {{data}};
+const REPO = "{{repo}}";
+const $ = (s) => document.querySelector(s);
+const root = document.documentElement;
+let state = { color: "blue", variant: "dark", type: "classic", scene: DATA.featured[0] };
+try { Object.assign(state, JSON.parse(localStorage.getItem("lantern-play") || "{}")); } catch (e) {}
+if (!DATA.colors[state.color]) state.color = "blue";
+
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); setTimeout(() => t.classList.remove("on"), 1400); }
+function copy(text) { navigator.clipboard && navigator.clipboard.writeText(text).then(() => toast("Copied"), () => toast("Copy failed")); }
+function ink(hex) { return lum(hex) > 0.36 ? "#111111" : "#ffffff"; }
+function lum(h) { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+
+function chips(el, ramp, core) {
+  el.innerHTML = "";
+  DATA.steps.forEach((s, i) => {
+    const b = document.createElement("button");
+    const hex = ramp[i];
+    b.className = "chip" + (hex === core ? " core" : "");
+    b.style.background = hex; b.style.color = ink(hex);
+    b.innerHTML = `<span>${s}</span><span>${hex.toUpperCase()}</span>`;
+    b.title = "Copy " + hex.toUpperCase();
+    b.onclick = () => copy(hex.toUpperCase());
+    el.appendChild(b);
+  });
+}
+
+function render() {
+  const c = DATA.colors[state.color];
+  root.dataset.color = state.color; root.dataset.theme = state.variant; root.dataset.type = state.type;
+  document.querySelectorAll(".sw").forEach(b => b.setAttribute("aria-pressed", b.dataset.c === state.color));
+  document.querySelectorAll("#variant button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === state.variant));
+  document.querySelectorAll("#typeset button").forEach(b => b.setAttribute("aria-pressed", b.dataset.t === state.type));
+  document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.s === state.scene));
+  $("#pick-sub").textContent = `${c.name}: ${c.built}. Best for ${c.best}.`;
+  const img = $("#stage");
+  img.src = `site/img/${state.color}_${state.scene}_${state.variant}.jpg`;
+  img.alt = DATA.scenes[state.scene].alt;
+  chips($("#ramp"), c.ramp, c.core);
+  const slug = "lantern-" + state.color;
+  $("#get-sub").textContent = `Everything below is the ${c.name} colour. Pick another above and the links follow.`;
+  $("#cmd").textContent = `/plugin marketplace add ${DATA.owner}/lantern-design-system\n/plugin install ${slug}@lantern-design-system`;
+  $("#zip").href = `${REPO}/releases/latest/download/${slug}.zip`;
+  $("#deck-dark").href = `${REPO}/releases/latest/download/${slug}-dark.pptx`;
+  $("#deck-light").href = `${REPO}/releases/latest/download/${slug}-light.pptx`;
+  $("#tokens").href = `site/tokens/${state.color}.css`;
+  $("#tokens").setAttribute("download", `${state.color}-tokens.css`);
+  try { localStorage.setItem("lantern-play", JSON.stringify(state)); } catch (e) {}
+}
+
+// OKLCH, the same maths as scripts/kit.py, for the "your colour" ramp
+function toOklch(h) {
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b), m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b), s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  const A = 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s, B = 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s;
+  return [0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s, Math.hypot(A, B), (Math.atan2(B, A) * 180 / Math.PI + 360) % 360];
+}
+function fromOklch(L, C, H) {
+  const lin = (c) => { const a = c * Math.cos(H * Math.PI / 180), b = c * Math.sin(H * Math.PI / 180);
+    const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3, m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3, s = (L - 0.0894841775 * a - 1.2914855480 * b) ** 3;
+    return [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s, -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s]; };
+  L = Math.max(0, Math.min(1, L));
+  while (C > 0 && lin(C).some(v => v < -1e-4 || v > 1 + 1e-4)) C -= 0.002;
+  const enc = v => Math.round(255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055));
+  return "#" + lin(Math.max(C, 0)).map(v => enc(Math.max(0, Math.min(1, v))).toString(16).padStart(2, "0")).join("");
+}
+function ownRamp(core) {
+  const Ls = [0.97, 0.93, 0.87, 0.79, 0.68, 0.57, 0.47, 0.39, 0.31, 0.24, 0.17], Cp = [0.08, 0.19, 0.34, 0.55, 0.81, 1, 0.92, 0.77, 0.6, 0.45, 0.32];
+  const [L, C, H] = toOklch(core);
+  const out = Ls.map((l, i) => fromOklch(l, C * Cp[i], H));
+  let k = 0; Ls.forEach((l, i) => { if (Math.abs(l - L) < Math.abs(Ls[k] - L)) k = i; });
+  out[k] = core.toLowerCase();
+  return out;
+}
+function own() {
+  const hex = $("#pickhex").value.toLowerCase();
+  chips($("#ownramp"), ownRamp(hex), hex);
+  const [L, C, H] = toOklch(hex);
+  let near, gap = 0;
+  if (C < 0.045) near = L < 0.6 ? "black" : "white";
+  else {
+    const cands = Object.entries(DATA.colors).filter(([, c]) => toOklch(c.core)[1] >= 0.045);
+    [near, gap] = cands.map(([k, c]) => { const d = Math.abs(toOklch(c.core)[2] - H); return [k, Math.min(d, 360 - d)]; }).sort((a, b) => a[1] - b[1])[0];
+  }
+  const n = DATA.colors[near].name;
+  $("#ownnear").innerHTML = gap > 30 ? `Nothing installed is close (nearest is ${n}, ${Math.round(gap)}° of hue away), so this would be a new colour.`
+    : `Closest Lantern colour: <b>${n}</b>. The new theme borrows its recipe.`;
+  $("#owncmd").textContent = `python scripts/brand.py mybrand "${hex.toUpperCase()}"\n# or from a logo:    python scripts/brand.py mybrand logo.png\n# or from a website: python scripts/brand.py mybrand https://example.com`;
+}
+
+// build the static parts once
+Object.entries(DATA.colors).forEach(([k, c]) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "sw"; b.dataset.c = k;
+  b.innerHTML = `<i style="background:${c.core}"></i>${c.name}`;
+  b.onclick = () => { state.color = k; state.variant = c.variant; state.type = c.type; render(); };
+  $("#swatches").appendChild(b);
+});
+DATA.featured.forEach(s => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "btn"; b.dataset.s = s; b.textContent = DATA.scenes[s].short;
+  b.onclick = () => { state.scene = s; render(); };
+  $("#tabs").appendChild(b);
+});
+DATA.library.forEach(([s, file]) => {
+  const f = document.createElement("figure");
+  f.innerHTML = `<img loading="lazy" src="site/lib/${file}" alt="${DATA.scenes[s].alt}"><figcaption><b>${DATA.scenes[s].title}</b>${DATA.scenes[s].answer}<br><code>${s}</code></figcaption>`;
+  $("#lib").appendChild(f);
+});
+document.querySelectorAll("#variant button").forEach(b => b.onclick = () => { state.variant = b.dataset.v; render(); });
+document.querySelectorAll("#typeset button").forEach(b => b.onclick = () => { state.type = b.dataset.t; render(); });
+document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copy($("#" + b.dataset.copy).textContent));
+$("#pickhex").addEventListener("input", own);
+render(); own();
+</script>
+</body>
+</html>

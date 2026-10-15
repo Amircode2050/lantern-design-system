@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-color="blue" data-type="classic">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lantern playground</title>
+<meta name="description" content="Try every Lantern colour live: illustrated scenes, shade ramps, interface components, slide templates and tokens.">
+<meta property="og:title" content="Lantern: one light, twelve colours">
+<meta property="og:description" content="An illustration and interface design system. Pick a colour and watch everything change.">
+<meta property="og:image" content="images/teasers/hero.jpg">
+<link rel="icon" href="site/icon.svg">
+<link rel="stylesheet" href="site/fonts.css">
+<link rel="stylesheet" href="site/lantern.css">
+<link rel="stylesheet" href="site/ui.css">
+<style>
+  html { scroll-behavior: smooth; }
+  body { transition: background-color .35s ease, color .35s ease; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+  header.top { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 10px; font: 400 26px/1 var(--font-display); color: var(--text); text-decoration: none; }
+  .brand svg { width: 26px; height: 26px; }
+  .hero { padding: 40px 0 24px; display: grid; gap: 14px; }
+  .hero h1 { font: 400 clamp(40px, 7vw, 84px)/1.02 var(--font-display); margin: 0; }
+  .hero p.lead { font-size: 19px; line-height: 1.55; color: var(--text-2); max-width: 720px; margin: 0; }
+  .eyebrow { font: 500 13px/1.4 var(--font-mono); color: var(--accent-fg); letter-spacing: .02em; }
+  section { padding: 34px 0; }
+  h2.sec { font: 400 34px/1.15 var(--font-display); margin: 0 0 6px; }
+  p.sub { color: var(--text-2); margin: 0 0 20px; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; }
+  .sw { border: 1px solid var(--border); border-radius: var(--radius-3); padding: 8px; background: var(--surface); cursor: pointer; color: var(--text-2);
+        font: 400 13px/1.3 var(--font-sans); text-align: left; display: grid; gap: 6px; transition: transform .15s ease, border-color .15s ease; }
+  .sw:hover { transform: translateY(-2px); }
+  .sw[aria-pressed="true"] { border-color: var(--accent-fg); box-shadow: 0 0 0 1px var(--accent-fg); color: var(--text); }
+  .sw i { display: block; height: 38px; border-radius: 8px; border: 1px solid rgba(127,127,127,.25); }
+  .controls { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; margin-top: 16px; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: var(--radius-2); overflow: hidden; }
+  .seg button { background: transparent; border: 0; color: var(--text-2); font: 500 14px/1 var(--font-sans); padding: 10px 14px; min-height: 40px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--surface-2); color: var(--text); }
+  .seg-label { font: 400 13px/1 var(--font-mono); color: var(--text-3); margin-right: 8px; }
+  .stage { border-radius: var(--radius-3); overflow: hidden; border: 1px solid var(--border); background: var(--surface); aspect-ratio: 16/9; }
+  .stage img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .25s ease; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .tabs button { font: 400 13px/1 var(--font-mono); min-height: 34px; padding: 0 12px; }
+  .tabs button[aria-pressed="true"] { border-color: var(--accent-fg); color: var(--text); }
+  .meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 12px; color: var(--text-2); }
+  .ramp { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 6px; }
+  .chip { min-width: 0; overflow: hidden; border-radius: 10px; min-height: 92px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;
+          font: 500 12px/1.2 var(--font-mono); border: 0; text-align: left; }
+  .chip.core { outline: 2px solid var(--text); outline-offset: 2px; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+  .dl { display: grid; gap: 12px; }
+  .dl .card { display: grid; gap: 10px; }
+  code, pre { font-family: var(--font-mono); font-size: 13.5px; }
+  pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-2); padding: 12px 14px; overflow-x: auto; margin: 0; color: var(--text); }
+  .own { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: start; }
+  .own input[type="color"] { width: 88px; height: 88px; border: 1px solid var(--border); border-radius: var(--radius-3); background: var(--surface); padding: 4px; cursor: pointer; }
+  .lib { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .lib figure { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-3); overflow: hidden; }
+  .lib img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+  .lib figcaption { padding: 10px 12px; font-size: 14px; color: var(--text-2); }
+  .lib figcaption b { display: block; font: 400 17px/1.3 var(--font-display); color: var(--text); margin-bottom: 2px; }
+  footer { padding: 40px 0 60px; color: var(--text-3); font-size: 14px; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+           padding: 10px 16px; border-radius: var(--radius-2); font: 400 14px/1 var(--font-sans); opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.on { opacity: 1; }
+  @media (max-width: 760px) {
+    .two, .own { grid-template-columns: minmax(0, 1fr); }
+    .chip { font-size: 10.5px; padding: 6px; }
+    .ramp { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .chip { min-height: 64px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="3.5" r="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M7 9l2-3h6l2 3z" fill="currentColor"/><rect x="7.5" y="9" width="9" height="9" rx="1" fill="var(--accent-fg)"/><path d="M8 18h8l-1.5 3h-5z" fill="currentColor"/></svg>Lantern</a>
+    <nav class="row">
+      <a class="btn btn-ghost" href="#library">Scene library</a>
+      <a class="btn btn-ghost" href="#own">Your colour</a>
+      <a class="btn" href="https://github.com/Amircode2050/lantern-design-system">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <span class="eyebrow">Design system · version 1.0.0 · free and open source</span>
+    <h1>One light.<br>Twelve colours.</h1>
+    <p class="lead">Lantern draws explanations: cut-away buildings full of small figures at work, one warm light, and glowing lines where energy and information flow. Pick a colour and this whole page changes with it.</p>
+  </div>
+
+  <section id="pick" aria-labelledby="pick-h">
+    <h2 class="sec" id="pick-h">Pick a colour</h2>
+    <p class="sub" id="pick-sub"></p>
+    <div class="swatches" id="swatches"></div>
+    <div class="controls">
+      <span><span class="seg-label">variant</span><span class="seg" id="variant"><button type="button" data-v="dark">Dark</button><button type="button" data-v="light">Light</button></span></span>
+      <span><span class="seg-label">type set</span><span class="seg" id="typeset"><button type="button" data-t="classic">Classic</button><button type="button" data-t="modern">Modern</button><button type="button" data-t="editorial">Editorial</button></span></span>
+    </div>
+  </section>
+
+  <section aria-labelledby="stage-h">
+    <h2 class="sec" id="stage-h">Six scenes, any colour</h2>
+    <p class="sub">Each one is a slide, a social post and a seamless loop. All words on them are editable.</p>
+    <div class="stage"><img id="stage" alt="" width="1600" height="900"></div>
+    <div class="tabs" id="tabs"></div>
+  </section>
+
+  <section aria-labelledby="ramp-h">
+    <h2 class="sec" id="ramp-h">The shade ramp</h2>
+    <p class="sub">Eleven steps from 50 to 950, built around the core colour (outlined). Select a chip to copy its hex value.</p>
+    <div class="ramp" id="ramp"></div>
+  </section>
+
+  <section aria-labelledby="ui-h">
+    <h2 class="sec" id="ui-h">The interface kit</h2>
+    <p class="sub">The same tokens drive buttons, cards, forms and tables, so a dashboard can match the deck.</p>
+    <div class="two">
+      <div class="card stack">
+        <h3 class="t-label-title">The assembly hall</h3>
+        <p class="t-body">Cars move down the line and are checked at every station.</p>
+        <div class="row"><span class="tag">line 2</span><span class="tag tag-accent">running</span><span class="tag tag-ok">on plan</span></div>
+        <div class="row"><button class="btn btn-primary" type="button">Open the hall</button><button class="btn" type="button">Compare</button><button class="btn btn-ghost" type="button">Read the note</button></div>
+      </div>
+      <div class="stack">
+        <div class="stat"><div class="label">Cars finished this week</div><div class="value">1 240</div><div class="delta">up 4% on last week</div></div>
+        <label class="field">Station name<input class="input" placeholder="Paint shop"><span class="hint">As it appears on the floor plan.</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="get-h">
+    <h2 class="sec" id="get-h">Take it with you</h2>
+    <p class="sub" id="get-sub"></p>
+    <div class="two">
+      <div class="dl">
+        <div class="card"><h3 class="t-label-title">Claude Code</h3><p class="t-body">Add the marketplace once, then install the colours you want.</p>
+          <pre id="cmd"></pre><div class="row"><button class="btn" type="button" data-copy="cmd">Copy commands</button></div></div>
+        <div class="card"><h3 class="t-label-title">claude.ai</h3><p class="t-body">Download the skill and upload it under Settings, Capabilities, Skills.</p>
+          <div class="row"><a class="btn btn-primary" id="zip">Download the skill</a></div></div>
+      </div>
+      <div class="dl">
+        <div class="card"><h3 class="t-label-title">Slide template</h3><p class="t-body">Ten editable slides for PowerPoint, Keynote and Google Slides, with a live chart.</p>
+          <div class="row"><a class="btn btn-primary" id="deck-dark">Dark template</a><a class="btn" id="deck-light">Light template</a></div></div>
+        <div class="card"><h3 class="t-label-title">Design tokens</h3><p class="t-body">CSS variables for both variants; set <code>data-theme</code> on <code>&lt;html&gt;</code> to switch.</p>
+          <div class="row"><a class="btn" id="tokens" download>tokens.css</a><a class="btn btn-ghost" href="site/ui.css" download>ui.css</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="own" aria-labelledby="own-h">
+    <h2 class="sec" id="own-h">Your colour</h2>
+    <p class="sub">Choose any brand colour to see its ramp and the Lantern colour it sits closest to. One command turns it, a logo or a website into a full theme.</p>
+    <div class="own">
+      <input type="color" id="pickhex" value="#e4002b" aria-label="Brand colour">
+      <div class="stack">
+        <div class="ramp" id="ownramp"></div>
+        <p class="t-body" id="ownnear"></p>
+        <pre id="owncmd"></pre>
+        <div class="row"><button class="btn" type="button" data-copy="owncmd">Copy command</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="library" aria-labelledby="lib-h">
+    <h2 class="sec" id="lib-h">The scene library</h2>
+    <p class="sub">24 ready cut-aways for the ideas people explain most often, shown here across the colours. Every one comes in every colour and both variants.</p>
+    <div class="lib" id="lib"></div>
+  </section>
+
+  <footer>
+    Lantern is free and open source: code under Apache 2.0, fonts under the SIL Open Font Licence. <a href="https://github.com/Amircode2050/lantern-design-system">Source, issues and releases on GitHub</a>.
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = {"owner":"Amircode2050","steps":[50,100,200,300,400,500,600,700,800,900,950],"featured":["supply_chain","cloud_computing","data_centre","power_grid","knowledge_base","sales_funnel"],"library":[["supply_chain","supply_chain.jpg"],["data_pipeline","data_pipeline.jpg"],["data_centre","data_centre.jpg"],["power_grid","power_grid.jpg"],["internet","internet.jpg"],["org_team","org_team.jpg"],["sales_funnel","sales_funnel.jpg"],["research_lab","research_lab.jpg"],["model_training","model_training.jpg"],["water_supply","water_supply.jpg"],["hospital","hospital.jpg"],["school","school.jpg"],["bank","bank.jpg"],["support_desk","support_desk.jpg"],["newsroom","newsroom.jpg"],["retail_store","retail_store.jpg"],["farm_to_table","farm_to_table.jpg"],["knowledge_base","knowledge_base.jpg"],["network_defence","network_defence.jpg"],["cloud_computing","cloud_computing.jpg"],["remote_team","remote_team.jpg"],["recycling","recycling.jpg"],["startup_growth","startup_growth.jpg"],["mission_control","mission_control.jpg"]],"colors":{"black":{"name":"Black","core":"#1c1c1e","ramp":["#f5f5f5","#e8e8e8","#d4d4d5","#bababc","#98989a","#77777a","#5a5a5d","#454546","#303031","#1c1c1e","#0f0f10"],"built":"a jet near-black ground (#1C1C1E) in neutral greys, with one metallic-gold light","best":"keynotes, launches and premium reports","variant":"dark","type":"classic"},"white":{"name":"White","core":"#faf8f2","ramp":["#faf8f2","#e8e8e7","#d5d4d2","#bbbab7","#9a9894","#797772","#5c5b56","#464541","#31302e","#201f1d","#100f0e"],"built":"ivory paper (#FAF8F2) in strict monochrome: ink on paper, the light is plain white","best":"print, documents and bright rooms","variant":"light","type":"editorial"},"blue":{"name":"Blue","core":"#3366ff","ramp":["#f1f5fe","#dde8fe","#c1d4fe","#9ab9fe","#6592ff","#3366ff","#1e47d1","#1535a3","#0d2576","#071850","#020b2f"],"built":"a deep navy ground built from shades of the core colour #3366FF, with one amber light and a teal support family","best":"technology, science and finance","variant":"dark","type":"classic"},"purple":{"name":"Purple","core":"#6a57b8","ramp":["#f5f4fd","#e7e5fa","#d3cff4","#b9b2ec","#978bdd","#6a57b8","#5b49a1","#45377d","#302659","#1f183c","#0f0b22"],"built":"a deep violet ground, with one warm peach light and a blue support family","best":"ideas, research and storytelling","variant":"dark","type":"classic"},"green":{"name":"Green","core":"#1b4d3e","ramp":["#f2f6f4","#e1eae7","#c8d9d2","#a7c2b7","#7ba294","#528372","#396556","#1b4d3e","#1c362e","#11231d","#07120e"],"built":"a deep forest-green ground (#1B4D3E), with one amber light","best":"sustainability, health and growth","variant":"dark","type":"classic"},"red":{"name":"Red","core":"#7a1f2b","ramp":["#fcf3f2","#f7e2e2","#efcaca","#e3a9aa","#cf7e81","#b5555b","#903b42","#7a1f2b","#501e22","#351215","#1e0709"],"built":"a deep maroon ground (#7A1F2B), with one champagne-gold light","best":"strategy, culture and history","variant":"dark","type":"editorial"},"gray":{"name":"Gray","core":"#36454f","ramp":["#f4f5f6","#e5e8eb","#cfd5d9","#b3bcc3","#8d9ba4","#6a7a85","#4f5d67","#36454f","#293237","#1a2024","#0c1013"],"built":"a charcoal ground (#36454F), with one amber light","best":"engineering, operations and data","variant":"dark","type":"modern"},"teal":{"name":"Teal","core":"#0f766e","ramp":["#f0f7f6","#dcece9","#c0dbd7","#99c5bf","#63a79f","#2b887f","#0f766e","#05504b","#053934","#032522","#011311"],"built":"a deep teal ground (#0F766E), with one amber light","best":"healthcare, water and calm explainers","variant":"dark","type":"modern"},"gold":{"name":"Gold","core":"#d4af37","ramp":["#f8f5ed","#eee8d5","#e0d4b2","#d4af37","#b2953c","#917407","#6f5801","#554302","#3c2f00","#281e00","#150f00"],"built":"a warm near-black ground with metallic gold (#D4AF37) as the light","best":"awards, finance and luxury brands","variant":"dark","type":"classic"},"orange":{"name":"Orange","core":"#cc5500","ramp":["#fdf3ee","#fbe2d7","#f6c9b5","#eda888","#dc7a4b","#cc5500","#943c00","#722d01","#521e01","#381200","#1f0700"],"built":"a warm near-black ground with burnt orange (#CC5500) as the brand colour and tangerine as the light","best":"energy, product launches and bold talks","variant":"dark","type":"modern"},"cyan":{"name":"Cyan","core":"#1cabe2","ramp":["#eef7fb","#d8ebf6","#b7daee","#89c4e2","#1cabe2","#0882ae","#016386","#014c67","#02354a","#012331","#00121b"],"built":"a vivid deep-cyan ground built from bright cyan (#1CABE2), with one amber light","best":"digital products, cloud and fresh decks","variant":"dark","type":"modern"},"rose":{"name":"Rose","core":"#c2185b","ramp":["#fef1f4","#ffdee4","#fdc2ce","#f79cb0","#e86789","#c2185b","#a7074b","#820239","#5d0327","#3f0319","#24010b"],"built":"a deep rose ground (#C2185B), with one champagne-gold light","best":"culture, wellbeing and consumer brands","variant":"dark","type":"editorial"}},"scenes":{"supply_chain":{"title":"How does a parcel reach your door?","answer":"Made, stored, then driven: every hand-off is a lit link.","alt":"Cut-away of a factory and a warehouse, with a van carrying a lit parcel along a road to a house.","short":"Supply chain"},"data_pipeline":{"title":"Where does a dashboard's number come from?","answer":"Records flow in, get cleaned, stored and counted, then shown.","alt":"Homes and a shop send glowing records along pipes into a hall of servers, then a store, then a big screen.","short":"Data pipeline"},"data_centre":{"title":"How does a data centre stay cool?","answer":"Cold water carries the servers' heat up and out through the roof.","alt":"Cut-away data centre with rows of server racks, coolant pipes looping to chillers on the roof and a lit control room.","short":"Data centre"},"power_grid":{"title":"How does power reach a home?","answer":"Made far away, stepped down, then shared street by street.","alt":"Wind turbines and solar panels feed glowing power lines over pylons to a substation and a street of lit homes.","short":"Power grid"},"internet":{"title":"What happens when you open a web page?","answer":"Your request crosses the network to a server, and the page comes back.","alt":"A person at a lit desk at home, cables through an exchange building to a server hall, with information flowing both ways.","short":"Internet"},"org_team":{"title":"Who does what on a team?","answer":"Leads set direction, makers build, and support keeps it running.","alt":"A three-storey cut-away office: leads at a board on top, makers at benches in the middle, support staff below.","short":"Org team"},"sales_funnel":{"title":"Why do most visitors never buy?","answer":"Each step asks a little more, and only a few go all the way.","alt":"A building of four floors that narrows downward like a funnel: crowds on top, one buyer carrying a lit parcel at the bottom.","short":"Sales funnel"},"research_lab":{"title":"How does a lab turn questions into results?","answer":"Observe, test and write it down, then check it all again.","alt":"A domed laboratory in cut-away: an orrery under the dome, benches and machines below, and a library on the ground floor.","short":"Research lab"},"model_training":{"title":"How does a model learn from examples?","answer":"It guesses, measures the miss and adjusts, millions of times.","alt":"Shelves of examples ride a conveyor into a hall of servers around a glowing core, with a falling error line on a screen.","short":"Model training"},"water_supply":{"title":"How does clean water reach a tap?","answer":"Rain fills the reservoir; it is cleaned, stored high, then piped home.","alt":"Rain falls on a reservoir; water flows through a treatment plant, up a water tower and down to houses.","short":"Water supply"},"hospital":{"title":"What keeps a hospital running at night?","answer":"Wards rest while the lab, the desk and the ambulance bay stay awake.","alt":"A three-storey hospital in cut-away: a ward of beds on top, a lab in the middle, an ambulance bay and front desk below.","short":"Hospital"},"school":{"title":"What makes a school work?","answer":"Teachers, books and time together, every single day.","alt":"A school in cut-away: a classroom of pupils facing a teacher, a library upstairs, and a yard with trees outside.","short":"School"},"bank":{"title":"Where does your deposit go?","answer":"Most is lent to homes and firms; a little stays in the vault.","alt":"A cut-away bank: money flows in from a saver's house, out to a home and a workshop, and a small reserve in the vault.","short":"Bank"},"support_desk":{"title":"How does a support ticket get solved?","answer":"Logged at the front, answered by an agent, escalated only when needed.","alt":"An office in cut-away: tickets ride a conveyor to agents at desks, and a few climb to engineers at server racks upstairs.","short":"Support desk"},"newsroom":{"title":"How does a story reach print?","answer":"Reported, edited, printed and delivered before breakfast.","alt":"A newspaper building in cut-away: a dish brings stories to editors upstairs, a press prints below, and a van drives off.","short":"Newsroom"},"retail_store":{"title":"What sits behind a shop shelf?","answer":"A stock room, a loading dock and a count at closing time.","alt":"A shop in cut-away: customers at shelves in front, a stock room behind, an office upstairs and a van at the loading dock.","short":"Retail store"},"farm_to_table":{"title":"How does food get from field to plate?","answer":"Grown, packed, driven and cooked, often within a week.","alt":"An orchard, a packing barn, a van on the road and a lit restaurant kitchen with diners at a table.","short":"Farm to table"},"knowledge_base":{"title":"How does a knowledge base answer a question?","answer":"Everything is filed once, so anyone can find it fast.","alt":"A domed reading room in cut-away: shelves on curved galleries, a shaft of light from the oculus onto a reader's desk.","short":"Knowledge base"},"network_defence":{"title":"How is a network defended?","answer":"Watch every gate, check every visitor, and keep the vault apart.","alt":"A walled compound at night: a lit watchtower with sight lines over a server building, a guarded gate and a storm outside.","short":"Network defence"},"cloud_computing":{"title":"What is the cloud, really?","answer":"Someone else's computers, rented by the minute.","alt":"A big soft cloud with a beam of light dropping from it into a cut-away building full of server racks, linked to homes and offices.","short":"The cloud"},"remote_team":{"title":"How does a team stay in step from home?","answer":"Shared tools carry the work, and a short daily call carries the rest.","alt":"Four small lit homes, each with a person at a desk, linked by flowing lines to a central hub on a hill.","short":"Remote team"},"recycling":{"title":"Where does a bottle go after the bin?","answer":"Collected, sorted, melted and made again: a loop, not a line.","alt":"A loop of glowing dots: a house, a van, a sorting plant, a factory and a shop, then back to the house.","short":"Recycling"},"startup_growth":{"title":"How does a small team become a company?","answer":"One room, then one floor, then a building, each lit by the last.","alt":"A garage with two people, a small office and a four-storey building in a row, growing left to right under a bar chart.","short":"Startup growth"},"mission_control":{"title":"How does mission control talk to a ship?","answer":"A dish sends the signal; the ship answers minutes later.","alt":"A mission control room of consoles facing a big screen, a dish outside, and a dotted signal arcing up to a ship.","short":"Mission control"}}};
+const REPO = "https://github.com/Amircode2050/lantern-design-system";
+const $ = (s) => document.querySelector(s);
+const root = document.documentElement;
+let state = { color: "blue", variant: "dark", type: "classic", scene: DATA.featured[0] };
+try { Object.assign(state, JSON.parse(localStorage.getItem("lantern-play") || "{}")); } catch (e) {}
+if (!DATA.colors[state.color]) state.color = "blue";
+
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); setTimeout(() => t.classList.remove("on"), 1400); }
+function copy(text) { navigator.clipboard && navigator.clipboard.writeText(text).then(() => toast("Copied"), () => toast("Copy failed")); }
+function ink(hex) { return lum(hex) > 0.36 ? "#111111" : "#ffffff"; }
+function lum(h) { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+
+function chips(el, ramp, core) {
+  el.innerHTML = "";
+  DATA.steps.forEach((s, i) => {
+    const b = document.createElement("button");
+    const hex = ramp[i];
+    b.className = "chip" + (hex === core ? " core" : "");
+    b.style.background = hex; b.style.color = ink(hex);
+    b.innerHTML = `<span>${s}</span><span>${hex.toUpperCase()}</span>`;
+    b.title = "Copy " + hex.toUpperCase();
+    b.onclick = () => copy(hex.toUpperCase());
+    el.appendChild(b);
+  });
+}
+
+function render() {
+  const c = DATA.colors[state.color];
+  root.dataset.color = state.color; root.dataset.theme = state.variant; root.dataset.type = state.type;
+  document.querySelectorAll(".sw").forEach(b => b.setAttribute("aria-pressed", b.dataset.c === state.color));
+  document.querySelectorAll("#variant button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === state.variant));
+  document.querySelectorAll("#typeset button").forEach(b => b.setAttribute("aria-pressed", b.dataset.t === state.type));
+  document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.s === state.scene));
+  $("#pick-sub").textContent = `${c.name}: ${c.built}. Best for ${c.best}.`;
+  const img = $("#stage");
+  img.src = `site/img/${state.color}_${state.scene}_${state.variant}.jpg`;
+  img.alt = DATA.scenes[state.scene].alt;
+  chips($("#ramp"), c.ramp, c.core);
+  const slug = "lantern-" + state.color;
+  $("#get-sub").textContent = `Everything below is the ${c.name} colour. Pick another above and the links follow.`;
+  $("#cmd").textContent = `/plugin marketplace add ${DATA.owner}/lantern-design-system\n/plugin install ${slug}@lantern-design-system`;
+  $("#zip").href = `${REPO}/releases/latest/download/${slug}.zip`;
+  $("#deck-dark").href = `${REPO}/releases/latest/download/${slug}-dark.pptx`;
+  $("#deck-light").href = `${REPO}/releases/latest/download/${slug}-light.pptx`;
+  $("#tokens").href = `site/tokens/${state.color}.css`;
+  $("#tokens").setAttribute("download", `${state.color}-tokens.css`);
+  try { localStorage.setItem("lantern-play", JSON.stringify(state)); } catch (e) {}
+}
+
+// OKLCH, the same maths as scripts/kit.py, for the "your colour" ramp
+function toOklch(h) {
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b), m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b), s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  const A = 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s, B = 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s;
+  return [0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s, Math.hypot(A, B), (Math.atan2(B, A) * 180 / Math.PI + 360) % 360];
+}
+function fromOklch(L, C, H) {
+  const lin = (c) => { const a = c * Math.cos(H * Math.PI / 180), b = c * Math.sin(H * Math.PI / 180);
+    const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3, m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3, s = (L - 0.0894841775 * a - 1.2914855480 * b) ** 3;
+    return [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s, -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s]; };
+  L = Math.max(0, Math.min(1, L));
+  while (C > 0 && lin(C).some(v => v < -1e-4 || v > 1 + 1e-4)) C -= 0.002;
+  const enc = v => Math.round(255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055));
+  return "#" + lin(Math.max(C, 0)).map(v => enc(Math.max(0, Math.min(1, v))).toString(16).padStart(2, "0")).join("");
+}
+function ownRamp(core) {
+  const Ls = [0.97, 0.93, 0.87, 0.79, 0.68, 0.57, 0.47, 0.39, 0.31, 0.24, 0.17], Cp = [0.08, 0.19, 0.34, 0.55, 0.81, 1, 0.92, 0.77, 0.6, 0.45, 0.32];
+  const [L, C, H] = toOklch(core);
+  const out = Ls.map((l, i) => fromOklch(l, C * Cp[i], H));
+  let k = 0; Ls.forEach((l, i) => { if (Math.abs(l - L) < Math.abs(Ls[k] - L)) k = i; });
+  out[k] = core.toLowerCase();
+  return out;
+}
+function own() {
+  const hex = $("#pickhex").value.toLowerCase();
+  chips($("#ownramp"), ownRamp(hex), hex);
+  const [L, C, H] = toOklch(hex);
+  let near, gap = 0;
+  if (C < 0.045) near = L < 0.6 ? "black" : "white";
+  else {
+    const cands = Object.entries(DATA.colors).filter(([, c]) => toOklch(c.core)[1] >= 0.045);
+    [near, gap] = cands.map(([k, c]) => { const d = Math.abs(toOklch(c.core)[2] - H); return [k, Math.min(d, 360 - d)]; }).sort((a, b) => a[1] - b[1])[0];
+  }
+  const n = DATA.colors[near].name;
+  $("#ownnear").innerHTML = gap > 30 ? `Nothing installed is close (nearest is ${n}, ${Math.round(gap)}° of hue away), so this would be a new colour.`
+    : `Closest Lantern colour: <b>${n}</b>. The new theme borrows its recipe.`;
+  $("#owncmd").textContent = `python scripts/brand.py mybrand "${hex.toUpperCase()}"\n# or from a logo:    python scripts/brand.py mybrand logo.png\n# or from a website: python scripts/brand.py mybrand https://example.com`;
+}
+
+// build the static parts once
+Object.entries(DATA.colors).forEach(([k, c]) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "sw"; b.dataset.c = k;
+  b.innerHTML = `<i style="background:${c.core}"></i>${c.name}`;
+  b.onclick = () => { state.color = k; state.variant = c.variant; state.type = c.type; render(); };
+  $("#swatches").appendChild(b);
+});
+DATA.featured.forEach(s => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "btn"; b.dataset.s = s; b.textContent = DATA.scenes[s].short;
+  b.onclick = () => { state.scene = s; render(); };
+  $("#tabs").appendChild(b);
+});
+DATA.library.forEach(([s, file]) => {
+  const f = document.createElement("figure");
+  f.innerHTML = `<img loading="lazy" src="site/lib/${file}" alt="${DATA.scenes[s].alt}"><figcaption><b>${DATA.scenes[s].title}</b>${DATA.scenes[s].answer}<br><code>${s}</code></figcaption>`;
+  $("#lib").appendChild(f);
+});
+document.querySelectorAll("#variant button").forEach(b => b.onclick = () => { state.variant = b.dataset.v; render(); });
+document.querySelectorAll("#typeset button").forEach(b => b.onclick = () => { state.type = b.dataset.t; render(); });
+document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copy($("#" + b.dataset.copy).textContent));
+$("#pickhex").addEventListener("input", own);
+render(); own();
+</script>
+</body>
+</html>

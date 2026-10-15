@@ -23,6 +23,10 @@ themes/<colour>.json     every colour value for one theme, both variants
 scripts/kit.py           drawing, text, rendering, animation, checks
 scripts/components.py    element library
 scripts/examples.py      reference scenes, also the self-check
+scripts/scenes.py        library of 24 ready cut-aways with their words
+scripts/social.py        scenes as square, 4:5 and 9:16 posts and loops
+scripts/deck.py          editable PowerPoint template in any colour
+scripts/brand.py         a new colour from a website, a logo or a hex value
 scripts/new_theme.py     build a theme from one brand colour
 scripts/picker.py        render the two-step chooser
 scripts/export.py        CSS variables, fonts, Tailwind theme, UI demo
@@ -49,6 +53,7 @@ Ask both as multiple-choice questions when the environment supports them.
 
 - **A colour that is not installed** (a name such as "lilac", or a hex value): offer to add it. Follow `references/themes.md`: run `new_theme.py` with `--preview`, show both previews, and use the theme only after the user approves it.
 - **Reference images dropped with "like this"**: run `intake.py` on them, then either use the nearest installed colour or propose a new theme.
+- **"Make it in our brand colours"** with a logo, a website address or a hex value: run `python scripts/brand.py <name> <logo.png | https://site | "#hex">`. It picks the brand colour, builds the theme with the recipe of the nearest colour, and renders a cover, a scene and the component sheet in dark and light. Show those and use the theme once approved. The website mode downloads that one page and its stylesheets; say so before running it.
 - **Unnamed design task** (slide, deck, figure, explainer illustration, poster, title or break slide, looping animation, or a small interface) with no style chosen: this skill applies; start with step 1.
 - **Not a fit**: logos and brand marks (no logo slot is defined yet). Say so.
 [[/master]]
@@ -56,6 +61,7 @@ Ask both as multiple-choice questions when the environment supports them.
 - **Named**: the user says "{N}", "{nl} design system", "{nl} style", "the {nl} one", or one of the family's shade names ({aliases}). Use it.
 - **Ask only for what is missing**, in **one** question with `assets/picker/{nl}.jpg` shown (the colour in dark and light, the three type sets, and the family's shade options with their 50-950 ramps): dark or light (recommend {default_variant}, or light for print and bright rooms), type set (recommend {default_type}) and shade (recommend {shade}). Ask it as a multiple-choice question when the environment supports one, and reuse the answer for the rest of the conversation.
 - **Another shade of the family**: build it with the same recipe, `python scripts/new_theme.py {nl}_<shade> "<hex>" --from {nl} --preview out`, show the two previews, and use it once approved.
+- **"Make it in our brand colours"** with a logo, a website or a hex value: run `python scripts/brand.py <name> <source>` and show its previews (the website mode downloads that one page and its stylesheets; say so first).
 - **A different colour, or a choice of colours**: that belongs to the lantern skill; hand over to it if it is installed.
 - **Not a fit**: logos and brand marks (no logo slot is defined yet). Say so.
 [[/single]]
@@ -63,12 +69,15 @@ Ask both as multiple-choice questions when the environment supports them.
 ## Decide the output first
 | Ask | Deliver |
 |---|---|
+| A common explainer (supply chain, data pipeline, data centre, power grid, the web, the cloud, a team, a funnel, a lab, model training, water, hospital, school, bank, support desk, newsroom, shop, farm to table, knowledge base, security, remote team, recycling, growth, mission control) | Start from the matching scene in `scripts/scenes.py` (`python scripts/scenes.py` lists them); change its words with `build(name, words=...)` or copy its draw function and adapt it |
 | A figure that explains a mechanism | 3840x2160 PNG, clean **and** annotated versions |
 | A portrait or concept image | 3:2 PNG at 2x, no text in the image |
 | Break, section or title slide | 16:9 slide PNG, the illustration alone, and a transparent cutout PNG |
 | Animation | GIF (1280 wide, 10 fps, loops forever, under 15 MB), MP4 (1080p, 24 fps), and a static PNG of the same frame for anyone who prefers no motion |
 | Editable slide text | An editable canvas or slide tool: illustration or GIF as the background image, text kept live on top in the bundled fonts |
 | A deck | Any slide tool, or HTML slides using `.slide` from the UI layer; illustrations go in as images |
+| An editable template for PowerPoint, Keynote or Google Slides | `python scripts/deck.py <colour> [dark\|light] [type set] --out deck.pptx`: ten slides (title, agenda, section, three illustrated explainers, text, two columns, a live chart, closing) with the theme's colours and fonts set in the file; needs `python-pptx` |
+| A social post | `python scripts/social.py <scene> square\|portrait\|story <colour>`; add `--loop 8` for a seamless MP4 |
 | A web page, dashboard or app screen | `export.py` output (tokens.css, fonts.css, ui.css) plus markup using the UI layer; see `references/themes.md` |
 | Tokens for a codebase | `export.py` output, including `tailwind.theme.js` |
 | Print, a document, a bright room | The **light** variant of any of the above |
@@ -103,7 +112,7 @@ Derived gradients (metal, lit window, glow, light mask, cables, stars) are in th
 | modern | Space Grotesk | Inter | JetBrains Mono | technical, crisp, product-like |
 | editorial | Fraunces | Source Sans 3 | JetBrains Mono | magazine, expressive, warm |
 
-Display is weight 400 for titles and label titles, never bold in running display text, never letter-spaced; the original-language subtitle is italic (upright in modern). Sans 400 for body, 500 for the answer line. Mono for numbers, data labels, tags and code. Scale at a 1920 frame (in `system.json`): title-xl 132/1 · title-lg 44/50 · label-title 30/34 · subtitle 23/30 · answer 30/36, or 19 under title-lg (accent, **one per slide**) · lead 21/30 · body 16.5/24 · tag 15/20 mono · data 14/18 mono · credit 13/18 (text-muted). Nothing smaller than 13. One type set per piece. The fonts are bundled and embedded by the renderer, which stops with an error if one fails to load, so there is no silent fallback.
+Display is weight 400 for titles and label titles, never bold in running display text, never letter-spaced; the subtitle is italic (upright in modern). Sans 400 for body, 500 for the answer line. Mono for numbers, data labels, tags and code. Scale at a 1920 frame (in `system.json`): title-xl 132/1 · title-lg 44/50 · label-title 30/34 · subtitle 23/30 · answer 30/36, or 19 under title-lg (accent, **one per slide**) · lead 21/30 · body 16.5/24 · tag 15/20 mono · data 14/18 mono · credit 13/18 (text-muted). Nothing smaller than 13. One type set per piece. The fonts are bundled and embedded by the renderer, which stops with an error if one fails to load, so there is no silent fallback.
 
 **Spacing:** 6 · 12 · 24 · 32 · 48 · 72 (slide margin). **Radius:** 2 · 6 · 12 · 32 (capsules = half the short side). **Fixed strengths** (in each theme): grain overlay 0.30 + screen 0.06 on dark, 0.22 overlay on light; rim light 0.5; vignette max 0.72 dark, 0.30 light.
 
@@ -116,7 +125,7 @@ Display is weight 400 for titles and label titles, never bold in running display
 
 **Close-up portrait.** Two or three large characters (a person in strict profile, a robot, a lit object between them), soft gradients, one beam of light, no text in the image. Canvas 3:2. Faces are minimal: one brow, a closed eye, a mouth line, never frontal, never a likeness. Reference: `assets/reference/<colour>/portrait_*.jpg`.
 
-Recurring elements, all in `scripts/components.py`: sawtooth factory roofs with lit skylights, arched windows, pendant lamps, storm clouds with rain and a bolt (risk, uncertainty), batteries (reserves), conveyors, parcels and cars (output), string lights, ladders, presses, server racks, clocks (monitoring), coffered domes with an oculus, arcades, balcony rings, a lantern tower (the watcher), a saucer hull with glass dome and tractor beam, an orrery, a thinking core, wall screens, and the hanging glass lantern that gives the system its name. Reuse them before drawing something new; see `references/components.md` and `assets/reference/<colour>/sheet_*.jpg`.
+Recurring elements, all in `scripts/components.py`: sawtooth factory roofs with lit skylights, arched windows, pendant lamps, storm clouds with rain and a bolt (weather, trouble ahead), batteries (stored power), conveyors, parcels and cars (output), string lights, ladders, presses, server racks, clocks (time), coffered domes with an oculus, arcades, balcony rings, a lantern tower (a lookout), a saucer hull with glass dome and tractor beam, an orrery, a thinking core, wall screens, and the hanging glass lantern that gives the system its name. Reuse them before drawing something new; see `references/components.md` and `assets/reference/<colour>/sheet_*.jpg`.
 
 ## Visual rules
 1. **One scene sentence first**: what mechanism the picture explains and where the single light is. Build the image around that light.
@@ -134,7 +143,7 @@ Recurring elements, all in `scripts/components.py`: sawtooth factory roofs with 
 
 ## Voice (summary; full guide in `references/voice.md`)
 - A title is a real question; the answer line replies in one sentence; one of each per slide.
-- Labels name the actor ("The supplier"), then say what it does in two or three short present-tense lines.
+- Labels name the thing ("The workshop"), then say what it does in two or three short present-tense lines.
 - Sentence case, British spelling, no exclamation marks, no dashes as punctuation, "and" not "&".
 - Credits say the source and what is stylised. Buttons start with a verb. Errors say what happened and what to do.
 
@@ -146,8 +155,8 @@ Recurring elements, all in `scripts/components.py`: sawtooth factory roofs with 
 - In the UI layer: visible focus rings, 40 px minimum control height, errors in words under the field.
 
 ## Annotation components (in `kit.py`)
-- **`title_block`**: the question in title-lg (2 lines at most), the original-language phrase, one answer line in the accent. No kicker above it.
-- **`callout`**: label-title naming the actor, two or three body lines (about 38 characters each, use `wrap()`), an optional `tag=(prefix, body)` in mono. There is no default tag; pass one only when the piece has a named lens or category. The leader starts at the measured edge of the text and runs to a ring on the anchor. Four labels at most; leaders never cross.
+- **`title_block`**: the question in title-lg (2 lines at most), an optional subtitle, one answer line in the accent. No kicker above it.
+- **`callout`**: label-title naming the thing, two or three body lines (about 38 characters each, use `wrap()`), an optional `tag=(prefix, body)` in mono. There is no default tag; pass one only when the piece has a named step or category. The leader starts at the measured edge of the text and runs to a ring on the anchor. Four labels at most; leaders never cross.
 - **`break_slide`**: one word in title-xl, the answer line, a two-line aside. Keep the side behind the text clear.
 - **`credit`**: bottom-right, text-muted, says what is stylised.
 - **`bars`**: small labelled bar chart for a number that belongs in the scene.

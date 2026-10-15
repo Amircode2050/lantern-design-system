@@ -33,6 +33,17 @@ Drawing functions return SVG strings in local coordinates and read colours from 
 | `orrery(cx, cy, r=60, p=0.0)` | Model solar system: tilted orbits, a lit sun, planets in whole orbits per loop. |
 | `thinking_core(cx, cy, r=44, p=0.0, seed=4)` | The 'thinking' orb: a lit sphere holding a small network whose nodes pulse in turn. |
 | `bars(x, y, w, h, values, labels=None, highlight=None, unit='')` | Small bar chart on the baseline y. One series in the information colour; `highlight` index takes the accent. Values are printed on the bars and categories under them, so nothing depends on colour alone. |
+| `house(x, y, w=96, h=64, lit=True)` | Small home standing on y with its left wall at x: pitched roof, door, and a window that glows when lit. |
+| `road(x, y, w, h=14)` | Road surface whose top is at y, with a dashed centre line. |
+| `truck(x, y, s=1.0, facing=1)` | Delivery van; wheels rest on y, x is the middle. facing=-1 drives left. |
+| `pylon(x, y, h=200)` | Lattice power pylon standing on y. Its cables hang from (x - 0.3h, y - 0.86h) and (x + 0.3h, y - 0.86h). |
+| `turbine(x, y, h=220, p=0.0, turns=1)` | Wind turbine standing on y; the rotor makes `turns` whole turns per loop. |
+| `solar_panel(x, y, w=90)` | Tilted solar panel on a post standing on y; x is the left edge. |
+| `tank(x, y, w=80, h=90, level=0.7)` | Upright storage tank standing on y, x the left edge, with a sight glass whose water level is `level`. |
+| `tree(x, y, s=1.0, seed=1)` | Rounded tree standing on y. |
+| `shelf(x, y, w=80, h=96, rows=4, kind='boxes', seed=1, lit=0.15)` | Open shelving standing on y, x the left edge. kind 'boxes' (stock, archives) or 'books'; a share `lit` glows. |
+| `bed(x, y, w=74, occupied=True)` | Bed standing on y, x the left edge; a resting figure when occupied. |
+| `dish(x, y, s=1.0, facing=1)` | Radio dish on a stand standing on y, aimed up and forward. Its feed sits at (x + 44*s*facing, y - 108*s). |
 | `dome(cx, cy, rx, ry, rows=5, cols=16, oculus=True, shaft=0)` | Coffered dome seen from inside, springing from the line cy. shaft>0 drops a light shaft that far below the oculus. |
 | `gallery_ring(cx, cy, rx, ry, t=12, posts=26)` | Front half of a circular balcony: slab, lit edge and a railing. Stack several for tiers. |
 | `lantern_tower(cx, base, w=170, tiers=4, tier_h=118, seed=2)` | Central lit tower of stacked glazed drums (the single light of a watchtower scene). Stands on `base`. |
@@ -86,8 +97,8 @@ Drawing functions return SVG strings in local coordinates and read colours from 
 | `svg_doc(defs, body, alt='')` | alt = one-sentence description; it becomes the SVG <title> and should be reused as the image's alt text. |
 | `text_width(s, size, family=None)` |  |
 | `text(x, y, s, size=None, fill=None, family=None, extra='')` |  |
-| `title_block(title_lines, subtitle=None, answer=None, x=72, y=100)` | Question in display serif (<=2 lines), original-language phrase in italic, one answer line in the accent. |
-| `callout(x, y, title, lines, anchor, side='left', tag=None)` | Label + leader. side='left' = label in the left column (leader leaves from its right edge, measured from the text). tag = (prefix, body) or None; e.g. ("Role", "the final monitor"). |
+| `title_block(title_lines, subtitle=None, answer=None, x=72, y=100)` | Question in display serif (<=2 lines), an optional subtitle in italic, one answer line in the accent. |
+| `callout(x, y, title, lines, anchor, side='left', tag=None)` | Label + leader. side='left' = label in the left column (leader leaves from its right edge, measured from the text). tag = (prefix, body) or None; e.g. ("Step", "final check"). |
 | `break_slide(word='Break', answer='Back in 15 minutes', aside=(), x=1300, y=440)` |  |
 | `credit(s, margin=72)` |  |
 | `font_css(families=None)` | @font-face rules with the bundled woff2 files embedded (works in a blank page and in any HTML editor). |
@@ -103,3 +114,34 @@ Drawing functions return SVG strings in local coordinates and read colours from 
 | `contrast(a, b)` |  |
 | `check_tokens(only=None)` | WCAG contrast of every text and flow colour on the grounds it is allowed on, for every installed colour (or just `only`) in both variants. Returns the list of failures. |
 | `doctor()` | Report what the toolchain is missing, with the command that fixes it. Run this first on a new machine. |
+
+## scenes.py: the scene library
+
+`build(name, t, annotate=True, words=None)` returns the finished slide; `art(name, t)` the drawing alone. Each scene is a seamless loop.
+
+| Scene | Question | Answer line |
+|---|---|---|
+| `supply_chain` | How does a parcel reach your door? | Made, stored, then driven: every hand-off is a lit link. |
+| `data_pipeline` | Where does a dashboard's number come from? | Records flow in, get cleaned, stored and counted, then shown. |
+| `data_centre` | How does a data centre stay cool? | Cold water carries the servers' heat up and out through the roof. |
+| `power_grid` | How does power reach a home? | Made far away, stepped down, then shared street by street. |
+| `internet` | What happens when you open a web page? | Your request crosses the network to a server, and the page comes back. |
+| `org_team` | Who does what on a team? | Leads set direction, makers build, and support keeps it running. |
+| `sales_funnel` | Why do most visitors never buy? | Each step asks a little more, and only a few go all the way. |
+| `research_lab` | How does a lab turn questions into results? | Observe, test and write it down, then check it all again. |
+| `model_training` | How does a model learn from examples? | It guesses, measures the miss and adjusts, millions of times. |
+| `water_supply` | How does clean water reach a tap? | Rain fills the reservoir; it is cleaned, stored high, then piped home. |
+| `hospital` | What keeps a hospital running at night? | Wards rest while the lab, the desk and the ambulance bay stay awake. |
+| `school` | What makes a school work? | Teachers, books and time together, every single day. |
+| `bank` | Where does your deposit go? | Most is lent to homes and firms; a little stays in the vault. |
+| `support_desk` | How does a support ticket get solved? | Logged at the front, answered by an agent, escalated only when needed. |
+| `newsroom` | How does a story reach print? | Reported, edited, printed and delivered before breakfast. |
+| `retail_store` | What sits behind a shop shelf? | A stock room, a loading dock and a count at closing time. |
+| `farm_to_table` | How does food get from field to plate? | Grown, packed, driven and cooked, often within a week. |
+| `knowledge_base` | How does a knowledge base answer a question? | Everything is filed once, so anyone can find it fast. |
+| `network_defence` | How is a network defended? | Watch every gate, check every visitor, and keep the vault apart. |
+| `cloud_computing` | What is the cloud, really? | Someone else's computers, rented by the minute. |
+| `remote_team` | How does a team stay in step from home? | Shared tools carry the work, and a short daily call carries the rest. |
+| `recycling` | Where does a bottle go after the bin? | Collected, sorted, melted and made again: a loop, not a line. |
+| `startup_growth` | How does a small team become a company? | One room, then one floor, then a building, each lit by the last. |
+| `mission_control` | How does mission control talk to a ship? | A dish sends the signal; the ship answers minutes later. |

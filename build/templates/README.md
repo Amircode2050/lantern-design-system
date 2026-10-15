@@ -22,6 +22,8 @@ Most slide decks explain with bullet points. Lantern explains with pictures: cut
 
 It comes in twelve colours, each with a dark and a light version, three type sets and a full shade ramp. The same colours drive a small web interface kit, so a deck, a report and a dashboard can look like one family.
 
+<p align="center"><b><a href="https://amircode2050.github.io/lantern-design-system/">Try it live in the playground</a></b>: pick a colour and watch every scene, shade and button change with it.</p>
+
 <p align="center">
   <img src="docs/images/teasers/spectrum.jpg" alt="Twelve lanterns, one in each colour theme" width="100%">
 </p>
@@ -30,6 +32,7 @@ It comes in twelve colours, each with a dark and a light version, three type set
 
 - [What you get](#what-you-get)
 - [Gallery](#gallery)
+- [The scene library](#the-scene-library)
 - [Quick start](#quick-start)
 - [Choosing a look](#choosing-a-look)
 - [The colours](#the-colours)
@@ -37,6 +40,9 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - [Illustration modes and components](#illustration-modes-and-components)
 - [Animation](#animation)
 - [Interface kit and design tokens](#interface-kit-and-design-tokens)
+- [Your brand in one step](#your-brand-in-one-step)
+- [Social posts](#social-posts)
+- [Slide templates](#slide-templates)
 - [Make your own colour](#make-your-own-colour)
 - [Words on the slide](#words-on-the-slide)
 - [Accessibility](#accessibility)
@@ -55,6 +61,11 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - **An interface kit**: CSS variables, a Tailwind theme and eight components, in any colour.
 - **A theme generator** that turns one brand colour into a complete theme and checks every text colour for contrast.
 - **A voice guide**, so the words on a slide are as considered as the picture.
+- **A library of {{scene_count}} ready scenes** for the ideas people explain most often, from supply chains to the cloud, each with its question, answer and labels.
+- **Your brand in one step**: point it at a logo, a website or a hex value and get a full theme with previews.
+- **Social posts** in square, 4:5 and 9:16, as stills or seamless MP4 loops.
+- **Slide templates** for PowerPoint, Keynote and Google Slides in every colour, every word and the chart editable.
+- **A playground** on the web, where the whole page changes colour as you choose.
 
 ## Gallery
 
@@ -78,6 +89,20 @@ It comes in twelve colours, each with a dark and a light version, three type set
 <p align="center">
   <img src="docs/images/teasers/portrait.jpg" alt="A person in profile holds up a lantern whose beam reaches a robot" width="80%">
 </p>
+
+## The scene library
+
+{{scene_count}} cut-aways, ready to drop into a deck. Each comes in every colour and both variants, carries its own words (a question, an answer line and three labels), and moves as a seamless loop. Shown here across the twelve colours.
+
+{{scene_table}}
+
+```bash
+python scripts/scenes.py                                  # list them
+python scripts/scenes.py power_grid teal light modern     # one scene, any colour, variant and type set
+python scripts/scenes.py power_grid clean                 # the picture without words
+```
+
+Change the words without touching the drawing: `build("bank", words={"title": ["Where does the money go?"], "answer": "Mostly back out as loans."})`.
 
 ## Quick start
 
@@ -110,7 +135,7 @@ pip install pillow numpy playwright
 python -m playwright install chromium
 ```
 
-plus [ffmpeg](https://ffmpeg.org) if you want GIF or MP4 output, and Python 3.11 or newer. To check a setup, run `python scripts/kit.py` inside any skill folder: it prints what is missing and the command that fixes it.
+plus [ffmpeg](https://ffmpeg.org) if you want GIF or MP4 output, `pip install python-pptx` for slide templates, and Python 3.11 or newer. To check a setup, run `python scripts/kit.py` inside any skill folder: it prints what is missing and the command that fixes it.
 
 ### 3. Ask for something
 
@@ -120,6 +145,9 @@ plus [ffmpeg](https://ffmpeg.org) if you want GIF or MP4 output, and Python 3.11
 - "A 25-second loop of the saucer for the start of my keynote."
 - "Export the rose theme as CSS variables and a Tailwind theme."
 - "Here is our logo. Make a Lantern colour from it."
+- "Our website is example.com. Make our slides match it."
+- "Turn the supply chain scene into an Instagram story, Lantern orange."
+- "Give me a PowerPoint template in Lantern teal, light."
 
 ## Choosing a look
 
@@ -169,7 +197,8 @@ The building blocks:
 |---|---|
 | Structure | `shell`, `room`, `slab`, `wall`, `truss`, `plinth`, `sawtooth_roof`, `gable`, `arched_window`, `arcade` |
 | Light | `lantern`, `pendant_lamp`, `string_lights`, `orb`, `glow`, `light_cone`, `headlamp` |
-| Weather and nature | `cloud` (with rain and a lightning bolt) |
+| Weather and nature | `cloud` (with rain and a lightning bolt), `tree` |
+| Town and utilities | `house`, `road`, `truck`, `pylon`, `turbine`, `solar_panel`, `tank`, `shelf`, `bed`, `dish` |
 | Machines and props | `battery`, `conveyor`, `crate`, `car`, `machine`, `server_rack`, `clock`, `desk`, `cabinet`, `screen`, `ladder`, `gear`, `pipe`, `cable` |
 | Large architecture | `dome`, `gallery_ring`, `lantern_tower`, `saucer`, `tractor_beam` |
 | Science | `orrery`, `thinking_core` |
@@ -217,6 +246,45 @@ python scripts/export.py teal out/teal --type modern --default dark
 
 The accent keeps its meaning in an interface: it marks the one thing to look at. Actions use the core colour, and a core too pale to carry white text falls back to ink.
 
+## Your brand in one step
+
+```bash
+python scripts/brand.py acme https://example.com     # the colours a website declares
+python scripts/brand.py acme logo.png                # a logo or a few screenshots
+python scripts/brand.py acme "#E4002B"               # a colour you already know
+```
+
+Lantern finds the brand's most characteristic colour (chromatic, used often, not too pale), borrows the recipe of the nearest of the twelve colours (a yellow gets Gold's near-black ground, a grey gets the monochrome recipe), and writes a complete theme. It then renders a cover slide, a scene and the component sheet in dark and light, plus the CSS and Tailwind tokens, into `brand-acme/`. If it picked the wrong colour, it prints the runners-up and the command to use one of them.
+
+The website mode is the only part of Lantern that uses the network: it downloads that one page and up to five of its stylesheets, nothing else.
+
+## Social posts
+
+<p align="center">
+  <img src="docs/images/social/square.jpg" alt="A square post: what is the cloud, really?" width="32%">
+  <img src="docs/images/social/portrait.jpg" alt="A 4:5 post: how does a parcel reach your door?" width="32%">
+  <img src="docs/images/social/story.jpg" alt="A 9:16 story: how does a knowledge base answer a question?" width="27%">
+</p>
+
+```bash
+python scripts/social.py cloud_computing square blue          # 1080x1080 for LinkedIn, X and Instagram
+python scripts/social.py supply_chain portrait teal           # 1080x1350 feed post
+python scripts/social.py knowledge_base story gold --loop 8   # 1080x1920 still plus a seamless 8 s MP4
+python scripts/social.py all square rose --handle "@you"      # every scene, with your handle at the foot
+```
+
+## Slide templates
+
+<p align="center"><img src="docs/images/deck.jpg" alt="The ten slides of the template in Lantern Blue" width="100%"></p>
+
+Every colour has a ten-slide template in dark and light, attached to each [release](../../releases/latest): title, agenda, section break, three illustrated explainers, a text slide, two columns, a native chart and a closing slide. The pictures are images; every title, label and number is editable, and the file's own theme colours and fonts are set, so a new shape or chart matches without effort. It opens in PowerPoint, Keynote and Google Slides (File, Import slides).
+
+```bash
+python scripts/deck.py teal light modern --out teal.pptx
+```
+
+The fonts are free from Google Fonts. Google Slides already has them; for PowerPoint and Keynote install the two families of your type set (for Classic, PT Serif and Inter).
+
 ## Make your own colour
 
 ```bash
@@ -240,7 +308,7 @@ Starting from a picture instead? `python scripts/intake.py logo.png` reports the
 
 ## Words on the slide
 
-Lantern has a voice as well as a look. A title is a real question; the answer line replies in one sentence; labels name the actor ("The supplier") and say what it does in a few short lines. Sentence case, British spelling, no exclamation marks, and a credit line that says what is stylised. The full guide, with limits for every slot and a list of words to avoid, is in each skill's `references/voice.md`.
+Lantern has a voice as well as a look. A title is a real question; the answer line replies in one sentence; labels name the thing ("The workshop") and say what it does in a few short lines. Sentence case, British spelling, no exclamation marks, and a credit line that says what is stylised. The full guide, with limits for every slot and a list of words to avoid, is in each skill's `references/voice.md`.
 
 ## Accessibility
 
@@ -294,6 +362,7 @@ src/            the engine (scripts, interface kit, fonts, system.json) and the 
 build/          build.py, themes.py (colour recipes), check.py, release.py, teasers.py, templates/
 plugins/        the generated skills, one plugin each, listed in .claude-plugin/marketplace.json
 docs/images/    everything on this page
+docs/index.html the playground, served by GitHub Pages
 ```
 
 ```bash
@@ -303,6 +372,8 @@ python build/build.py                 # renders reference images and writes ever
 python build/build.py --skip-render   # code and docs only
 python build/check.py                 # contrast, names, interface contrast, engine copies
 python build/readme_images.py         # the images on this page
+python build/site.py                  # the playground in docs/ (GitHub Pages, deploy from /docs)
+python src/scripts/deck.py all --out dist   # slide templates for a release
 ```
 
 ## Contributing, security and licence

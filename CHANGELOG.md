@@ -14,3 +14,9 @@ First public release.
 - A theme generator, a reference-image reader, token export to CSS and Tailwind, and a UI layer with eight components.
 - A voice guide for words on slides and screens.
 - Contrast checks for every text and flow colour in every theme.
+- A scene library of 24 ready cut-aways (supply chain, data pipeline, data centre, power grid, the web, the cloud, a sales funnel and more), each with its words and each a seamless loop.
+- `brand.py`: a complete theme from a website, a logo or a hex value, with previews and tokens.
+- `social.py`: any scene as a square, 4:5 or 9:16 post, still or as an MP4 loop.
+- `deck.py`: an editable ten-slide template for PowerPoint, Keynote and Google Slides in any colour, with a native chart; templates for every colour are attached to the release.
+- Eleven new components for towns and utilities: house, road, truck, pylon, turbine, solar panel, tank, tree, shelf, bed and dish.
+- A playground page for GitHub Pages where the whole page takes on the chosen colour.

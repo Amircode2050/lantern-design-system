@@ -24,6 +24,8 @@ Everything in `plugins/` is generated. Edit the source, then rebuild:
 | A colour | its recipe in `build/themes.py` (Blue and Purple are hand-tuned in `src/themes/`) |
 | Fonts, type scale, spacing | `src/system.json` and `src/assets/fonts/` |
 | UI components | `src/ui/` |
+| The scene library | `src/scripts/scenes.py` |
+| The playground | `build/templates/site.html`, then `python build/site.py` |
 | What the skills say | `build/templates/` |
 | This README | `build/templates/README.md`, then `python build/readme.py` |
 
@@ -45,6 +47,10 @@ ruff check src/scripts build && ruff format src/scripts build
 ## Adding a component
 
 Put it in `src/scripts/components.py`. Follow the existing ones: return an SVG string, read colours only from `T`, take `p` (loop phase) if anything moves and move in whole cycles, and write a one-line docstring, which becomes the reference entry. Show it on the component sheet in `examples.py`.
+
+## Adding a scene
+
+Add a function to `src/scripts/scenes.py` with the `@scene(...)` decorator: a question of at most two lines, one answer line, three labels and one sentence of alt text, all written to the voice guide. Draw on the ground line `BASE` with `building()` and the components, put one light where the story is (`lit=`), and return the drawing with a dictionary of label anchors. Check it in dark and light and in two or three colours (`python src/scripts/scenes.py <name> teal light`); leader lines must not cross. `python build/check.py` confirms every label has its anchor.
 
 ## Pull requests
 

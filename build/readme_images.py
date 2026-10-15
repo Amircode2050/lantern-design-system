@@ -4,7 +4,8 @@
     python build/readme_images.py --no-gif   skip the animation (the slowest part)
 
 Writes into docs/images/: colors/<colour>.jpg, ramps/<colour>.png, type-sets.jpg, ui-dark.jpg, ui-light.jpg,
-components-dark.jpg, components-light.jpg and loop.gif.
+components-dark.jpg, components-light.jpg, social/<format>.jpg and loop.gif. The scene library thumbnails come
+from build/site.py.
 """
 
 import argparse
@@ -16,6 +17,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "src" / "scripts"))
 import examples  # noqa: E402
+import social  # noqa: E402
 import export  # noqa: E402
 import picker  # noqa: E402
 from components import *  # noqa: E402,F403
@@ -67,6 +69,49 @@ def ui_shots(tmp):
         jpg(tmp / f"ui-{variant}.png", IMG / f"ui-{variant}.jpg", width=1000)
 
 
+def deck_preview(tmp):
+    """Six slides of the Blue template, drawn from the .pptx itself: its background pictures and its text boxes,
+    set in the bundled fonts (a slide tool would substitute fonts that are not installed)."""
+    import base64
+
+    import deck
+    from PIL import Image
+    from pptx import Presentation
+
+    set_theme("dark", "blue", None)
+    path = deck.build_deck(str(tmp / "blue.pptx"))
+    prs = Presentation(path)
+    px = lambda emu: emu / deck.EMU
+    tiles = []
+    for k in (0, 2, 3, 4, 5, 9):
+        sl = prs.slides[k]
+        set_canvas("16:9")
+        b = []
+        for sh in sl.shapes:
+            if sh.shape_type == 13:  # picture
+                data = base64.b64encode(sh.image.blob).decode()
+                b.append(f'<image href="data:image/jpeg;base64,{data}" width="1920" height="1080"/>')
+            elif sh.has_text_frame:
+                y = px(sh.top)
+                for para in sh.text_frame.paragraphs:
+                    if not para.runs:
+                        continue
+                    r = para.runs[0]
+                    size = r.font.size.pt * 2  # 1 pt = 2 px on the 1920 frame
+                    fam = next(f["stack"] for n, f in SYS["fonts"].items() if n == r.font.name)
+                    y += (para.space_before.pt * 2 if para.space_before else 0) + size * 0.95
+                    for ln in wrap(para.text, max(8, int(px(sh.width) / (size * 0.5)))):
+                        weight = 'font-weight="500"' if r.font.bold else ""
+                        b.append(text(px(sh.left), y, ln, size, "#" + str(r.font.color.rgb), fam, weight))
+                        y += size * 1.12
+        png = render(svg_doc("", "".join(b), alt="slide"), str(tmp / f"slide{k}.png"), scale=1, grain=False)
+        tiles.append(Image.open(png).convert("RGB").resize((640, 360), Image.LANCZOS))
+    sheet = Image.new("RGB", (1940, 750), T.G950)
+    for i, im in enumerate(tiles):
+        sheet.paste(im, (10 + (i % 3) * 645, 10 + (i // 3) * 370))
+    sheet.save(IMG / "deck.jpg", quality=86)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-gif", action="store_true")
@@ -104,6 +149,19 @@ def main():
 
     ui_shots(tmp)
     print("interface screenshots")
+
+    (IMG / "social").mkdir(exist_ok=True)
+    for fmt, scene, color in (
+        ("square", "cloud_computing", "blue"),
+        ("portrait", "supply_chain", "teal"),
+        ("story", "knowledge_base", "gold"),
+    ):
+        set_theme("dark", color, None)
+        jpg(render(social.card(scene, fmt, 3.0), str(tmp / f"{fmt}.png"), scale=1), IMG / "social" / f"{fmt}.jpg", 720)
+    print("social cards")
+
+    deck_preview(tmp)
+    print("slide template preview")
 
     if not a.no_gif:
         set_theme("dark", "gold", None)

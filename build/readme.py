@@ -97,6 +97,20 @@ def colour_guide():
     return "\n".join(out)
 
 
+def scene_table():
+    """The library as a three-column grid of thumbnails (rendered by build/site.py)."""
+    sys.path.insert(0, str(REPO / "src" / "scripts"))
+    import scenes
+
+    cells = [
+        f'<td width="33%" valign="top"><img src="docs/site/lib/{n}.jpg" alt="{sc["alt"]}" width="100%"><br>'
+        f"<b>{' '.join(sc['title'])}</b><br><code>{n}</code></td>"
+        for n, sc in scenes.SCENES.items()
+    ]
+    rows = ["<tr>" + "".join(cells[i : i + 3]) + "</tr>" for i in range(0, len(cells), 3)]
+    return "<table>\n" + "\n".join(rows) + "\n</table>", len(cells)
+
+
 def main():
     tpl = (REPO / "build" / "templates" / "README.md").read_text(encoding="utf-8")
     for key, value in (
@@ -104,6 +118,8 @@ def main():
         ("colour_table", colour_table()),
         ("skill_table", skill_table()),
         ("colour_guide", colour_guide()),
+        ("scene_table", scene_table()[0]),
+        ("scene_count", str(scene_table()[1])),
     ):
         tpl = tpl.replace("{{" + key + "}}", value)
     left = re.findall(r"\{\{\w+\}\}", tpl)
