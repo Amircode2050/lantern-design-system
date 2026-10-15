@@ -1,4 +1,4 @@
 pillow>=10
-numpy>=1.24
+numpy>=2.5.4
 playwright>=1.40
 python-pptx>=1.0
