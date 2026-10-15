@@ -21,7 +21,7 @@
 
 Most slide decks explain with bullet points. Lantern explains with pictures: cut-away machines and buildings full of small figures at work, one warm light in the dark, glowing lines that show where energy and information flow. Ask for "a slide that explains how a data centre stays cool" and you get an original illustration, a title that asks the question, one line that answers it, and labels that point to the parts that matter.
 
-It comes in twelve colours, each with a dark and a light version, three type sets and a full shade ramp. The same colours drive a small web interface kit, so a deck, a report and a dashboard can look like one family.
+It comes in twelve colours, each with a dark and a light version, seven type sets, many languages and a full shade ramp. The same colours drive a small web interface kit, so a deck, a report and a dashboard can look like one family.
 
 <p align="center">
   <a href="https://amircode2050.github.io/lantern-design-system/"><b>Open the playground</b></a> ·
@@ -44,6 +44,7 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - [Choosing a look](#choosing-a-look)
 - [The colours](#the-colours)
 - [Type sets](#type-sets)
+- [Languages](#languages)
 - [Illustration modes and components](#illustration-modes-and-components)
 - [Animation](#animation)
 - [Interface kit and design tokens](#interface-kit-and-design-tokens)
@@ -63,7 +64,7 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - **Twelve colour themes**, each in a dark and a light variant, with an 11-step shade ramp (50 to 950) and two alternative shades you can switch to.
 - **Two illustration modes**: cut-away scenes with many small figures, and close-up portraits with large characters and a single beam of light.
 - **About forty drawing components**: factory roofs, storm clouds, batteries, conveyors, server racks, domes, a watchtower, a saucer with a tractor beam, profile busts, robots, light cones and the lantern itself.
-- **Three type sets**, every font bundled, so nothing falls back to Arial on someone else's machine.
+- **Seven type sets** and **many languages** (accented Latin, Vietnamese, Cyrillic, Greek, and right-to-left Persian and Arabic), every font bundled or one command away, so nothing falls back to Arial on someone else's machine.
 - **Seamless looping animation** as GIF and MP4, with an automatic seam check.
 - **An interface kit**: CSS variables, a Tailwind theme and eight components, in any colour.
 - **A theme generator** that turns one brand colour into a complete theme and checks every text colour for contrast.
@@ -85,7 +86,7 @@ The **[Lantern playground](https://amircode2050.github.io/lantern-design-system/
 
 | On the page | What you can do |
 |---|---|
-| Pick a colour | Switch between the twelve colours, dark or light, and the three type sets. |
+| Pick a colour | Switch between the twelve colours, dark or light, and the seven type sets. |
 | Six scenes | See the supply chain, the cloud, a data centre, a power grid, a knowledge base and a sales funnel in the chosen colour. |
 | The shade ramp | Copy any of the eleven shades, 50 to 950, with one click. |
 | The interface kit | See buttons, cards, a form and a stat in that colour. |
@@ -217,7 +218,7 @@ The master skill asks at most two short questions, each with a picture, and reme
 
 <p align="center"><img src="docs/images/picker.jpg" alt="The colour picker" width="100%"></p>
 
-**Step two, the details.** That colour in dark and light, the three type sets, and the family's shade options. Pick a different shade (Burgundy instead of Maroon, say) and the skill builds it on the spot with the same recipe.
+**Step two, the details.** That colour in dark and light, the seven type sets, and the family's shade options. Pick a different shade (Burgundy instead of Maroon, say) and the skill builds it on the spot with the same recipe.
 
 <p align="center"><img src="docs/images/colors/red.jpg" alt="Step two for Red: dark and light, type sets and shade options" width="100%"></p>
 
@@ -235,15 +236,43 @@ Every theme follows the same rules: a deep ground, a structure ramp built from t
 
 ## Type sets
 
-<p align="center"><img src="docs/images/type-sets.jpg" alt="Classic, Modern and Editorial type sets" width="100%"></p>
+<p align="center"><img src="docs/images/type-sets.jpg" alt="The seven type sets: Classic, Modern, Editorial, Technical, Geometric, Garamond and Swiss" width="100%"></p>
 
 | Set | Display | Text | Numbers and code | Mood |
 |---|---|---|---|---|
 | Classic | PT Serif | Inter | JetBrains Mono | bookish, scholarly, calm |
 | Modern | Space Grotesk | Inter | JetBrains Mono | technical, crisp, product-like |
 | Editorial | Fraunces | Source Sans 3 | JetBrains Mono | magazine, expressive, warm |
+| Technical | IBM Plex Serif | IBM Plex Sans | IBM Plex Mono | corporate, precise, engineered |
+| Geometric | DM Serif Display | DM Sans | JetBrains Mono | clean, round, contemporary |
+| Garamond | EB Garamond | Inter | JetBrains Mono | old-style, literary, humane |
+| Swiss | Inter Tight | Inter | JetBrains Mono | neutral, dense, poster-like |
 
 Any type set works with any colour. The scale is fixed so pieces stay consistent: a 132-point word for break slides, 44 for titles, 30 for labels, 16.5 for body text, and nothing smaller than 13.
+
+## Languages
+
+<p align="center"><img src="docs/images/languages.jpg" alt="The same slide in Polish, Vietnamese, Russian, Greek, Persian and Arabic" width="100%"></p>
+
+Write the words in your language and Lantern picks the right letters. Persian, Arabic and Urdu are set right to left: titles move to the top right and every text block aligns to its right edge, while the picture and its labels keep their places.
+
+| Font pack | Covers | Size |
+|---|---|---|
+| `core` | English and other plain-Latin languages, for Classic, Modern and Editorial | 0.35 MB |
+| `sets` | the Technical, Geometric, Garamond and Swiss type sets | 0.40 MB |
+| `europe` | Polish, Czech, Slovak, Hungarian, Romanian, Turkish, the Baltic languages, Vietnamese and more | 0.97 MB |
+| `cyrillic-greek` | Russian, Ukrainian, Bulgarian, Serbian, Kazakh, Greek and more | 0.82 MB |
+| `arabic` | Persian, Arabic, Urdu (Vazirmatn) | 0.06 MB |
+
+The master `lantern` skill includes every pack. A colour skill includes `core`; add the others when you need them:
+
+```bash
+python scripts/fonts.py list              # what is installed
+python scripts/fonts.py add sets europe   # or: add all
+python scripts/fonts.py verify            # check every file against its recorded hash
+```
+
+`fonts.py` downloads only the files pinned in `assets/fonts/manifest.json`, from jsDelivr's mirror of the [Fontsource](https://fontsource.org) packages, and keeps a file only if its SHA-256 hash matches. Chinese, Japanese and Korean are not bundled yet; they render in your system's font if it has one.
 
 ## Illustration modes and components
 

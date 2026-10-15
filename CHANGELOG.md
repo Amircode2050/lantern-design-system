@@ -2,6 +2,15 @@
 
 All notable changes to this project are recorded here. Versions follow [semantic versioning](https://semver.org): a new colour or component is a minor release, a change that breaks existing scenes or token names is a major one.
 
+## 1.1.0
+
+- Four new type sets: **Technical** (IBM Plex), **Geometric** (DM Serif Display and DM Sans), **Garamond** (EB Garamond with Inter) and **Swiss** (Inter Tight with Inter), for seven in all.
+- Many languages: accented Latin for Central and Eastern European languages, Turkish and Vietnamese; Cyrillic and Greek; and Arabic script (Persian, Arabic, Urdu) set right to left, with titles moving to the top right and every text block aligned to its right edge.
+- Font packs: the master skill carries every font; colour skills carry the core fonts and add others with `python scripts/fonts.py add <pack>`, which downloads only pinned files and checks each against its recorded hash. `fonts.py verify` re-checks them, and CI checks every font in every skill.
+- The renderer embeds only the script subsets a piece of text uses, so English slides render as lightly as before.
+- `python scripts/examples.py languages` renders one slide in six languages and type sets.
+- The picker, the playground and the README show all seven type sets; the README has a Languages section.
+
 ## 1.0.2
 
 - Every skill folder is now a complete, self-contained plugin: it carries its own `.claude-plugin/plugin.json`, a README that says what it runs and connects to, and the `LICENSE` and `NOTICE` files, so a copied folder keeps its licence and each skill can be listed in plugin directories.

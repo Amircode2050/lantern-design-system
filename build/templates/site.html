@@ -37,7 +37,7 @@
   .sw[aria-pressed="true"] { border-color: var(--accent-fg); box-shadow: 0 0 0 1px var(--accent-fg); color: var(--text); }
   .sw i { display: block; height: 38px; border-radius: 8px; border: 1px solid rgba(127,127,127,.25); }
   .controls { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; margin-top: 16px; }
-  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: var(--radius-2); overflow: hidden; }
+  .seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); border-radius: var(--radius-2); overflow: hidden; }
   .seg button { background: transparent; border: 0; color: var(--text-2); font: 500 14px/1 var(--font-sans); padding: 10px 14px; min-height: 40px; cursor: pointer; }
   .seg button[aria-pressed="true"] { background: var(--surface-2); color: var(--text); }
   .seg-label { font: 400 13px/1 var(--font-mono); color: var(--text-3); margin-right: 8px; }
@@ -99,7 +99,7 @@
     <div class="swatches" id="swatches"></div>
     <div class="controls">
       <span><span class="seg-label">variant</span><span class="seg" id="variant"><button type="button" data-v="dark">Dark</button><button type="button" data-v="light">Light</button></span></span>
-      <span><span class="seg-label">type set</span><span class="seg" id="typeset"><button type="button" data-t="classic">Classic</button><button type="button" data-t="modern">Modern</button><button type="button" data-t="editorial">Editorial</button></span></span>
+      <span><span class="seg-label">type set</span><span class="seg" id="typeset"></span></span>
     </div>
   </section>
 
@@ -215,7 +215,7 @@ function render() {
   document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.s === state.scene));
   $("#pick-sub").textContent = `${c.name}: ${c.built}. Best for ${c.best}.`;
   const img = $("#stage");
-  img.src = `site/img/${state.color}_${state.scene}_${state.variant}.jpg`;
+  img.src = `site/img/${state.color}_${state.scene}_${state.variant}.webp`;
   img.alt = DATA.scenes[state.scene].alt;
   chips($("#ramp"), c.ramp, c.core);
   const slug = "lantern-" + state.color;
@@ -289,7 +289,12 @@ DATA.library.forEach(([s, file]) => {
   $("#lib").appendChild(f);
 });
 document.querySelectorAll("#variant button").forEach(b => b.onclick = () => { state.variant = b.dataset.v; render(); });
-document.querySelectorAll("#typeset button").forEach(b => b.onclick = () => { state.type = b.dataset.t; render(); });
+DATA.types.forEach(([k, label]) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.dataset.t = k; b.textContent = label;
+  b.onclick = () => { state.type = k; render(); };
+  $("#typeset").appendChild(b);
+});
 document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copy($("#" + b.dataset.copy).textContent));
 $("#pickhex").addEventListener("input", own);
 render(); own();

@@ -7,13 +7,16 @@
 - **Check every input.** Colours must be six-digit hex values; scene, colour, format and type-set names must be ones that exist. Anything else stops with a message before a file is written.
 - **Run one external program.** GIF and MP4 output calls `ffmpeg` with an argument list (no shell).
 - **Need no accounts or keys.** There is no telemetry and there are no credentials or environment variables. The only download is the browser you install yourself with `python -m playwright install chromium`.
-- **Use the network in one place only.** `brand.py`, given a web address, reads that page and up to five of its stylesheets to find the brand's colours. It:
+- **Use the network in two places only, both on your request.** `brand.py`, given a web address, reads that page and up to five of its stylesheets to find the brand's colours. It:
   - accepts `http` and `https` only, and only addresses that resolve to the public internet, so a page cannot point it at your local network or at files on disk;
   - checks every redirect the same way;
   - waits at most 10 seconds and reads at most 2 MB per file, a limit that also applies after unpacking compressed responses;
   - sends nothing but the requests, and never runs what it downloads.
 
-  Every other script works offline. `python scripts/brand.py --selftest` confirms that local, private and non-web addresses are refused.
+  `python scripts/brand.py --selftest` confirms that local, private and non-web addresses are refused.
+- **Download fonts only on request, and only known files.** `scripts/fonts.py add <pack>` fetches font files listed in `assets/fonts/manifest.json`, from `https://cdn.jsdelivr.net` only, and writes a file only if its SHA-256 hash matches the manifest. `fonts.py verify` re-checks every installed font. The master skill ships with every pack, so it never needs this.
+
+Every other script works offline.
 
 ## What the repository does
 
@@ -28,7 +31,7 @@ Static skill scanners may flag:
 |---|---|
 | Referenced file not fully inspected | `SKILL.md` points to bundled images and scripts that a text scanner cannot read. |
 | Subprocess use | The `ffmpeg` calls described above. |
-| Network access | `brand.py` reading a website's colours, as described above. |
+| Network access | `brand.py` reading a website's colours, and `fonts.py` adding a font pack, as described above. |
 | Long expressions | Colour maths in `scripts/kit.py`. |
 | Broad capability ("excessive agency") | The skills write image and slide files where you ask them to. |
 

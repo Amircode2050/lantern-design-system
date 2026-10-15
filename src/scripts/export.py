@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from kit import ROOT, SYS, colors, contrast, font_css, hexmix, load_theme
+from kit import ROOT, SYS, colors, contrast, font_css, hexmix, load_theme, stack_families
 from new_theme import NAMES
 
 
@@ -118,7 +118,8 @@ def export(color, out, type_set=None, default="dark"):
         Path(out, name).write_text(s, encoding="utf-8", newline="\n")
 
     w("tokens.css", tokens_css(color, type_set, default))
-    w("fonts.css", font_css([d["display"], d["sans"], d["mono"]]))
+    fams = [f for r in ("display", "sans", "mono") for f in stack_families(SYS["fonts"][d[r]]["stack"])]
+    w("fonts.css", font_css(list(dict.fromkeys(fams))))  # the set's fonts and their fallbacks for other scripts
     w("tailwind.theme.js", tailwind_js())
     shutil.copy(ROOT / "ui" / "ui.css", os.path.join(out, "ui.css"))
     w(

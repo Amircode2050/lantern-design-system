@@ -20,7 +20,7 @@ sys.path.insert(0, str(REPO / "build"))
 import scenes  # noqa: E402
 from build import COLORS, VERSION  # noqa: E402
 from export import tokens_css, variant_css  # noqa: E402
-from kit import ROOT, SYS, load_theme, render, set_theme  # noqa: E402
+from kit import FONT_MANIFEST, ROOT, SYS, load_theme, render, set_theme  # noqa: E402
 from new_theme import STEPS  # noqa: E402
 from readme import BEST_FOR, ORDER  # noqa: E402
 
@@ -57,16 +57,21 @@ def styles():
 
 
 def fonts():
-    (SITE / "fonts").mkdir(parents=True, exist_ok=True)
+    """The page is in English, so it serves the Latin files of every family (with their unicode ranges)."""
+    out = SITE / "fonts"
+    if out.exists():
+        shutil.rmtree(out)
+    out.mkdir(parents=True)
     rules = []
-    for fam, spec in SYS["fonts"].items():
-        for w, style, fn in spec["files"]:
-            shutil.copy(ROOT / "assets" / "fonts" / f"{fn}.woff2", SITE / "fonts" / f"{fn}.woff2")
-            rules.append(
-                f"@font-face {{ font-family: '{fam}'; font-weight: {w}; font-style: {style}; font-display: swap; "
-                f"src: url(fonts/{fn}.woff2) format('woff2'); }}"
-            )
-    shutil.copy(ROOT / "assets" / "fonts" / "LICENSES.txt", SITE / "fonts" / "LICENSES.txt")
+    for f in FONT_MANIFEST["files"]:
+        if f["subset"] != "latin":
+            continue
+        shutil.copy(ROOT / "assets" / "fonts" / f"{f['file']}.woff2", out / f"{f['file']}.woff2")
+        rules.append(
+            f"@font-face {{ font-family: '{f['family']}'; font-weight: {f['weight']}; font-style: {f['style']}; "
+            f"font-display: swap; unicode-range: {f['range']}; src: url(fonts/{f['file']}.woff2) format('woff2'); }}"
+        )
+    shutil.copy(ROOT / "assets" / "fonts" / "LICENSES.txt", out / "LICENSES.txt")
     (SITE / "fonts.css").write_text("\n".join(rules) + "\n", encoding="utf-8", newline="\n")
 
 
@@ -82,22 +87,22 @@ def images():
         png = render(svg, str(tmp / "frame.png"), scale=1)
         im = Image.open(png).convert("RGB")
         im.thumbnail((width, width))
-        im.save(out, quality=78, optimize=True, progressive=True)
+        im.save(out, "WEBP", quality=80, method=6)
 
     for c in ORDER:
         for v in ("dark", "light"):
             set_theme(v, c)
             for s in FEATURED:
-                save(scenes.build(s, 3.0), SITE / "img" / f"{c}_{s}_{v}.jpg", 1280)
+                save(scenes.build(s, 3.0), SITE / "img" / f"{c}_{s}_{v}.webp", 1280)
         print(c, flush=True)
     for i, s in enumerate(scenes.SCENES):
         c = ORDER[i % len(ORDER)]
         set_theme(load_theme(c).get("default_variant", "dark"), c)
-        save(scenes.build(s, 3.0), SITE / "lib" / f"{s}.jpg", 800)
+        save(scenes.build(s, 3.0), SITE / "lib" / f"{s}.webp", 800)
 
 
 def library():
-    return [[s, f"{s}.jpg"] for s in scenes.SCENES]
+    return [[s, f"{s}.webp"] for s in scenes.SCENES]
 
 
 def page():
@@ -105,6 +110,7 @@ def page():
         "owner": OWNER,
         "steps": STEPS,
         "featured": FEATURED,
+        "types": [[k, v["label"]] for k, v in SYS["type_sets"].items()],
         "library": library(),
         "colors": {},
         "scenes": {

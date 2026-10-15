@@ -4,6 +4,7 @@ python examples.py                        every scene, colour and variant into .
 python examples.py factory light blue     one scene, one variant, one colour
 python examples.py portrait modern        any type set name selects that set
 python examples.py loop                   short animation test (frames, GIF, seam check)
+python examples.py languages              one slide in six languages and type sets (needs every font pack)
 """
 
 import os
@@ -318,11 +319,48 @@ def loop_frame(t):
     return saucer_break(t)
 
 
+LANGUAGES = [  # code, type set, colour, title, answer, label, label text
+    ("pl", "technical", "blue", ["Jak działa fabryka?"], "Każda hala zasila następną; baterie łatają przerwy.",
+     "Hala montażowa", "Samochody jadą linią i są sprawdzane na każdym stanowisku."),
+    ("vi", "geometric", "teal", ["Nhà máy vận hành thế nào?"], "Mỗi phòng nuôi phòng kế tiếp; pin lấp chỗ trống.",
+     "Xưởng lắp ráp", "Xe chạy trên dây chuyền và được kiểm tra ở mọi trạm."),
+    ("ru", "garamond", "red", ["Как работает фабрика?"], "Каждый цех кормит следующий; батареи закрывают паузы.",
+     "Сборочный цех", "Машины идут по линии и проверяются на каждом посту."),
+    ("el", "swiss", "gold", ["Πώς λειτουργεί ένα εργοστάσιο;"], "Κάθε αίθουσα τροφοδοτεί την επόμενη.",
+     "Η αίθουσα συναρμολόγησης", "Τα αυτοκίνητα ελέγχονται σε κάθε σταθμό."),
+    ("fa", "classic", "purple", ["یک کارخانه چطور کار می‌کند؟"], "هر سالن به سالن بعدی نیرو می‌دهد.",
+     "سالن مونتاژ", "خودروها روی خط حرکت می‌کنند و در هر ایستگاه بررسی می‌شوند."),
+    ("ar", "modern", "green", ["كيف يعمل المصنع؟"], "كل قاعة تغذي القاعة التالية.",
+     "قاعة التجميع", "تتحرك السيارات على الخط وتُفحص في كل محطة."),
+]  # fmt: skip
+
+
+def language_slide(code):
+    """A title, a label and the lantern in one language; Arabic-script slides are set right to left."""
+    _, tset, color, title, answer, label, body = next(c for c in LANGUAGES if c[0] == code)
+    set_theme("dark", color, tset)
+    set_canvas("16:9")
+    b = [
+        background(960, 560, stars=False),
+        line((1250, 0), (1250, 200), T.IN800, 3),
+        lantern(1250, 200, 1.4),
+        finish(),
+        title_block(title, None, answer),
+        callout(72, 520, label, wrap(body, 34), (1200, 700), "left"),
+        text(72, 1010, f"{code} · {F.set}", 15, T.T3, F.MONO),
+    ]
+    return svg_doc(std_defs(), "".join(b), alt=f"A lantern slide titled {title[0]}")
+
+
 SCENES = {"factory": factory, "portrait": portrait, "break": saucer_break, "sheet": sheet}
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    if args[:1] == ["loop"]:
+    if args[:1] == ["languages"]:
+        os.makedirs("out/languages", exist_ok=True)
+        for code, *_ in LANGUAGES:
+            print(render(language_slide(code), f"out/languages/{code}.png", scale=1))
+    elif args[:1] == ["loop"]:
         os.makedirs("out", exist_ok=True)
         set_theme("dark")
         set_canvas("16:9", loop=2.0)  # 2 s loop keeps the self-check quick

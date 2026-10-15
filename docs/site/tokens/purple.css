@@ -1,8 +1,8 @@
 /* Purple theme, core #6a57b8. Variant: set data-theme="dark" or "light" on <html>. */
 :root {
-  --font-display: 'PT Serif', Georgia, serif;
-  --font-sans: Inter, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', Consolas, monospace;
+  --font-display: 'PT Serif', Inter, Vazirmatn, Georgia, serif;
+  --font-sans: Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', Inter, Vazirmatn, Consolas, monospace;
   --subtitle-style: italic;
   --fs-title-xl: 132px;
   --lh-title-xl: 132px;

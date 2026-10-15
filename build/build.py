@@ -23,10 +23,12 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC, TEMPLATES, SKILLS, DIST = REPO / "src", REPO / "build" / "templates", REPO / "skills", REPO / "dist"
-VERSION = "1.0.2"
+VERSION = "1.1.0"
 BRAND = "lantern"
 sys.path.insert(0, str(SRC / "scripts"))
 from new_theme import NAMES as GENERIC  # noqa: E402
+
+FONT_MANIFEST = json.loads((SRC / "assets" / "fonts" / "manifest.json").read_text(encoding="utf-8"))
 
 COLORS = {
     "blue": dict(
@@ -242,7 +244,7 @@ def descriptions(themes):
     master = (
         "Lantern, a design system for illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated figures, title and break slides, GIF/MP4 loops "
         f"and a small UI kit with code tokens, in one style across many colour themes ({names}, and any colour added from a brand colour), each with a 50-950 shade ramp, "
-        "dark and light variants and three type sets. Use when the user says 'lantern', 'lantern design system', 'multi-color design system', 'design system', 'my design system', "
+        "dark and light variants, seven type sets and many languages. Use when the user says 'lantern', 'lantern design system', 'multi-color design system', 'design system', 'my design system', "
         "'house style', names a colour with no skill of its own, wants a new theme or palette from a brand colour, drops reference images to match, or wants tokens exported to "
         "CSS or Tailwind. Also use for any design task (slide, deck, figure, illustration, poster, title or break slide, animation, simple interface) with no style chosen: show "
         "the picker and ask which colour, then which variant, type set and shade, before designing."
@@ -252,7 +254,7 @@ def descriptions(themes):
         single[c] = (
             f"Lantern {s['N']}: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless "
             f"GIF/MP4 loops, and a small UI kit with code tokens, in the {s['N']} colour theme ({s['ground']} ground, one {s['accent']} light, grain, silhouette figures, "
-            f"glowing flow lines), in dark or light with three type sets. Use when the user says 'lantern {c}', '{c} design system', '{c} system', '{c} style', 'my {c} style', "
+            f"glowing flow lines), in dark or light with seven type sets. Use when the user says 'lantern {c}', '{c} design system', '{c} system', '{c} style', 'my {c} style', "
             f"'the {c} one', '{c} theme', '{c} deck' or any variation, or a shade name with 'design system', 'style' or 'theme': {', '.join(s['aliases'])}. For a choice "
             "between colours, a new colour, or a design task with no colour named, use the lantern skill instead."
         )
@@ -298,7 +300,14 @@ def write_skill(color, themes, ref, master_desc, single_desc):
     ignore = shutil.ignore_patterns("__pycache__", "*.pyc")
     for d in ("scripts", "ui"):
         shutil.copytree(SRC / d, sk / d, ignore=ignore)
-    shutil.copytree(SRC / "assets" / "fonts", sk / "assets" / "fonts")
+    # the master skill carries every font pack; a colour skill carries `core` and fetches others with scripts/fonts.py
+    packs = None if color is None else {"core"}
+    font_files = {f["file"] + ".woff2" for f in FONT_MANIFEST["files"] if packs is None or f["pack"] in packs}
+    shutil.copytree(
+        SRC / "assets" / "fonts",
+        sk / "assets" / "fonts",
+        ignore=lambda d, names: [n for n in names if n.endswith(".woff2") and n not in font_files],
+    )
     (sk / "themes").mkdir()
     sysj = json.loads((SRC / "system.json").read_text(encoding="utf-8"))
     for c in themes if color is None else [color]:
@@ -433,7 +442,9 @@ Python 3.11 or newer with `pip install pillow numpy playwright python-pptx` and 
 - Drawings are rendered locally by a headless Chromium with every network request blocked.
 - `ffmpeg` is called with an argument list, never through a shell, to encode animations.
 - Files are written only to the paths you give.
-- `scripts/brand.py`, when you give it a web address, downloads that one page and up to five of its stylesheets from public addresses to read their colours. Nothing else uses the network, nothing is sent except those requests, and there is no telemetry.
+- `scripts/brand.py`, when you give it a web address, downloads that one page and up to five of its stylesheets from public addresses to read their colours.
+- `scripts/fonts.py add <pack>` downloads font files listed in `assets/fonts/manifest.json` from `https://cdn.jsdelivr.net` and keeps each only if its SHA-256 hash matches.
+- Nothing else uses the network, nothing is sent except those requests, and there is no telemetry.
 
 See [SECURITY.md]({REPO_URL}/blob/main/SECURITY.md) for details. Code is licensed under the Apache License 2.0 (`LICENSE`, `NOTICE`); the bundled fonts keep their SIL Open Font Licence (`assets/fonts/LICENSES.txt`).
 """

@@ -44,6 +44,16 @@ def ramp_svg():
     return svg_doc("", "".join(b), alt=f"{T.name} shade ramp")
 
 
+def languages_tile():
+    """Companion tile for the type-set grid: the same words in the languages the font packs cover."""
+    b = [background(320, 180, stars=False), finish(), text(32, 54, "Every set, many languages", 15, T.W300, F.MONO)]
+    for i, w in enumerate(["Polski · Čeština · Türkçe", "Tiếng Việt · Ελληνικά", "Русский · Українська"]):
+        b.append(text(32, 112 + i * 44, w, 30, T.T1, F.DISPLAY))
+    b.append(text(32, 282, "فارسی · العربية · اردو", 30, T.T1, F.DISPLAY, right=320))
+    b.append(text(33, 330, "core, sets, europe, cyrillic-greek and arabic font packs", 13, T.T2, F.SANS))
+    return svg_doc(std_defs(320, 180), "".join(b), alt="The same type set in many languages")
+
+
 def jpg(png, out, width=None, quality=85):
     from PIL import Image
 
@@ -148,12 +158,16 @@ def main():
     from PIL import Image
 
     set_canvas(640, 360)
-    sheet = Image.new("RGB", (1920, 360))
-    for i, s in enumerate(["classic", "modern", "editorial"]):
+    sets = list(SYS["type_sets"])
+    sheet = Image.new("RGB", (1920, 270 * ((len(sets) + 3) // 4)), "#0b0f1e")
+    for i, s in enumerate(sets):
         set_theme("dark", "blue", s)
-        sheet.paste(
-            Image.open(render(picker.type_tile(), str(tmp / f"type_{s}.png"), scale=1)).convert("RGB"), (i * 640, 0)
-        )
+        tile = Image.open(render(picker.type_tile(), str(tmp / f"type_{s}.png"), scale=1)).convert("RGB")
+        sheet.paste(tile.resize((480, 270), Image.LANCZOS), ((i % 4) * 480, (i // 4) * 270))
+    if len(sets) % 4:  # the empty slot lists the languages every set can carry
+        set_theme("dark", "blue", "classic")
+        tile = Image.open(render(languages_tile(), str(tmp / "type_languages.png"), scale=1)).convert("RGB")
+        sheet.paste(tile.resize((480, 270), Image.LANCZOS), ((len(sets) % 4) * 480, (len(sets) // 4) * 270))
     sheet.save(IMG / "type-sets.jpg", quality=86)
     print("type sets")
 
@@ -184,6 +198,13 @@ def main():
 
     playground_shots()
     print("playground screenshots")
+
+    sheet = Image.new("RGB", (1920, 720))
+    for i, (code, *_) in enumerate(examples.LANGUAGES):
+        png = render(examples.language_slide(code), str(tmp / f"lang_{code}.png"), scale=1)
+        sheet.paste(Image.open(png).convert("RGB").resize((640, 360), Image.LANCZOS), ((i % 3) * 640, (i // 3) * 360))
+    sheet.save(IMG / "languages.jpg", quality=86)
+    print("languages")
 
     if not a.no_gif:
         set_theme("dark", "gold", None)

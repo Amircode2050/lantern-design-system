@@ -1,11 +1,11 @@
 ---
 name: "lantern-blue"
-description: "Lantern Blue: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Blue colour theme (night-navy ground, one amber light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets. Use when the user says 'lantern blue', 'blue design system', 'blue system', 'blue style', 'my blue style', 'the blue one', 'blue theme', 'blue deck' or any variation, or a shade name with 'design system', 'style' or 'theme': cobalt, royal blue, azure. For a choice between colours, a new colour, or a design task with no colour named, use the lantern skill instead."
+description: "Lantern Blue: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Blue colour theme (night-navy ground, one amber light, grain, silhouette figures, glowing flow lines), in dark or light with seven type sets. Use when the user says 'lantern blue', 'blue design system', 'blue system', 'blue style', 'my blue style', 'the blue one', 'blue theme', 'blue deck' or any variation, or a shade name with 'design system', 'style' or 'theme': cobalt, royal blue, azure. For a choice between colours, a new colour, or a design task with no colour named, use the lantern skill instead."
 ---
 
 # Lantern Blue
 
-Blue is one colour of a shared illustration and interface style, on a deep navy ground built from shades of the core colour #3366FF, with one amber light and a teal support family. It has a **dark** variant (night, the default) and a **light** variant (paper, for print, documents and bright rooms), and works with three **type sets**.
+Blue is one colour of a shared illustration and interface style, on a deep navy ground built from shades of the core colour #3366FF, with one amber light and a teal support family. It has a **dark** variant (night, the default) and a **light** variant (paper, for print, documents and bright rooms), and works with seven **type sets** and many languages.
 
 The style: original **cut-away machines and buildings** and **close-up portrait scenes** drawn as flat vector, populated by **silhouette figures** who are *doing something*, lit by **one accent light**, with energy and information shown as **glowing flow lines**, on a deep ground under fine grain. The same tokens also drive a small **UI layer** and a written **voice**.
 
@@ -22,12 +22,13 @@ scripts/scenes.py        library of 24 ready cut-aways with their words
 scripts/social.py        scenes as square, 4:5 and 9:16 posts and loops
 scripts/deck.py          editable PowerPoint template in any colour
 scripts/brand.py         a new colour from a website, a logo or a hex value
+scripts/fonts.py         list, add and verify font packs (languages, type sets)
 scripts/new_theme.py     build a theme from one brand colour
 scripts/picker.py        render the two-step chooser
 scripts/export.py        CSS variables, fonts, Tailwind theme, UI demo
 scripts/intake.py        read reference images, suggest a theme
 ui/                      ui.css and demo.html (the UI layer)
-assets/fonts/            six families as woff2 (OFL)
+assets/fonts/            fonts as woff2 (OFL), manifest.json lists every file and pack
 assets/picker/           step 2 of the chooser, one sheet per colour
 assets/reference/        rendered reference images per colour
 references/              components.md, animation.md, voice.md, themes.md
@@ -35,7 +36,7 @@ references/              components.md, animation.md, voice.md, themes.md
 
 ## When to use, and what to ask
 - **Named**: the user says "Blue", "blue design system", "blue style", "the blue one", or one of the family's shade names (cobalt, royal blue, azure). Use it.
-- **Ask only for what is missing**, in **one** question with `assets/picker/blue.jpg` shown (the colour in dark and light, the three type sets, and the family's shade options with their 50-950 ramps): dark or light (recommend dark, or light for print and bright rooms), type set (recommend classic) and shade (recommend Blue). Ask it as a multiple-choice question when the environment supports one, and reuse the answer for the rest of the conversation.
+- **Ask only for what is missing**, in **one** question with `assets/picker/blue.jpg` shown (the colour in dark and light, the seven type sets, and the family's shade options with their 50-950 ramps): dark or light (recommend dark, or light for print and bright rooms), type set (recommend classic) and shade (recommend Blue). Ask it as a multiple-choice question when the environment supports one, and reuse the answer for the rest of the conversation.
 - **Another shade of the family**: build it with the same recipe, `python scripts/new_theme.py blue_<shade> "<hex>" --from blue --preview out`, show the two previews, and use it once approved.
 - **"Make it in our brand colours"** with a logo, a website or a hex value: run `python scripts/brand.py <name> <source>` and show its previews (the website mode downloads that one page and its stylesheets; say so first).
 - **A different colour, or a choice of colours**: that belongs to the lantern skill; hand over to it if it is installed.
@@ -136,15 +137,32 @@ Use tokens through the kit (`T.G800`, `T.W300`); `set_theme("dark" | "light", co
 
 Derived gradients (metal, lit window, glow, light mask, cables, stars) are in the theme file under `fx` and are reached through `std_defs()`. `T.SERIES` is the ordered five-colour list for data series. `T.CORE_50` to `T.CORE_950` are the core colour's 11-step ramp from lightest to darkest (for charts, tints and UI states). `T.CORE_FILL` is the core, or the nearest ramp step that carries white text when the core cannot (burnt orange, for example); fill buttons with it and put `T.ON_CORE` on top.
 
-**Type.** Three type sets, chosen with `set_theme(type_set=...)`; fonts are reached as `F.DISPLAY`, `F.SANS`, `F.MONO` and sizes as `ts("title-lg")`:
+**Type.** Seven type sets, chosen with `set_theme(type_set=...)`; fonts are reached as `F.DISPLAY`, `F.SANS`, `F.MONO` and sizes as `ts("title-lg")`:
 
 | Set | Display | Sans | Mono | Mood |
 |---|---|---|---|---|
 | classic | PT Serif | Inter | JetBrains Mono | bookish, scholarly, calm |
 | modern | Space Grotesk | Inter | JetBrains Mono | technical, crisp, product-like |
 | editorial | Fraunces | Source Sans 3 | JetBrains Mono | magazine, expressive, warm |
+| technical | IBM Plex Serif | IBM Plex Sans | IBM Plex Mono | corporate, precise, engineered |
+| geometric | DM Serif Display | DM Sans | JetBrains Mono | clean, round, contemporary |
+| garamond | EB Garamond | Inter | JetBrains Mono | old-style, literary, humane |
+| swiss | Inter Tight | Inter | JetBrains Mono | neutral, dense, poster-like |
 
-Display is weight 400 for titles and label titles, never bold in running display text, never letter-spaced; the subtitle is italic (upright in modern). Sans 400 for body, 500 for the answer line. Mono for numbers, data labels, tags and code. Scale at a 1920 frame (in `system.json`): title-xl 132/1 · title-lg 44/50 · label-title 30/34 · subtitle 23/30 · answer 30/36, or 19 under title-lg (accent, **one per slide**) · lead 21/30 · body 16.5/24 · tag 15/20 mono · data 14/18 mono · credit 13/18 (text-muted). Nothing smaller than 13. One type set per piece. The fonts are bundled and embedded by the renderer, which stops with an error if one fails to load, so there is no silent fallback.
+Display is weight 400 for titles and label titles, never bold in running display text, never letter-spaced; the subtitle is italic (upright in modern and swiss). Sans 400 for body, 500 for the answer line. Mono for numbers, data labels, tags and code. Scale at a 1920 frame (in `system.json`): title-xl 132/1 · title-lg 44/50 · label-title 30/34 · subtitle 23/30 · answer 30/36, or 19 under title-lg (accent, **one per slide**) · lead 21/30 · body 16.5/24 · tag 15/20 mono · data 14/18 mono · credit 13/18 (text-muted). Nothing smaller than 13. One type set per piece. The fonts are bundled and embedded by the renderer, which stops with an error if one fails to load, so there is no silent fallback.
+
+**Languages.** Write the words on a piece in the user's language; the fonts follow automatically. Font packs (`python scripts/fonts.py list`):
+
+| Pack | Covers |
+|---|---|
+| core | Latin for classic, modern and editorial |
+| sets | Latin for technical, geometric, garamond and swiss |
+| europe | accented Latin (Polish, Czech, Turkish, Romanian and more) and Vietnamese |
+| cyrillic-greek | Russian, Ukrainian, Bulgarian, Serbian, Greek |
+| arabic | Persian, Arabic, Urdu, set right to left |
+
+This skill carries `core`. Before using another type set or a language beyond plain Latin, run `python scripts/fonts.py add <pack>` (it downloads only the pinned files, checks each against its recorded hash, and needs network access once); the renderer names the missing pack if one is needed.
+Where a set's own font lacks a script, its stack falls back to PT Serif or Inter, then Vazirmatn for Arabic script. Arabic-script text is set right to left: `title_block` moves to the top right, and every text block aligns to its right edge, so the slide keeps its columns and leader lines. Write right-to-left labels in the left or right column as usual. Text widths are estimates (Greek and Cyrillic about 12% wider), so check leader starts after changing language. Chinese, Japanese and Korean are not bundled; they render in the system font if one is installed.
 
 **Spacing:** 6 · 12 · 24 · 32 · 48 · 72 (slide margin). **Radius:** 2 · 6 · 12 · 32 (capsules = half the short side). **Fixed strengths** (in each theme): grain overlay 0.30 + screen 0.06 on dark, 0.22 overlay on light; rim light 0.5; vignette max 0.72 dark, 0.30 light.
 

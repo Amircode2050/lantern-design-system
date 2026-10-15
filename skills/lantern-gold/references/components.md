@@ -95,13 +95,17 @@ Drawing functions return SVG strings in local coordinates and read colours from 
 | `background(cx=None, cy=None, seed=3, p=0.0, avoid=(), stars=True)` | Ground radial + stars (dust on light) + halo. avoid = [(x0,y0,x1,y1)] boxes kept free of twinkles (text areas). |
 | `finish()` | Vignette. Grain is NOT drawn in SVG: render()/make_gif()/make_mp4() add the same static grain to stills and frames. |
 | `svg_doc(defs, body, alt='')` | alt = one-sentence description; it becomes the SVG <title> and should be reused as the image's alt text. |
+| `is_rtl(s)` |  |
 | `text_width(s, size, family=None)` |  |
-| `text(x, y, s, size=None, fill=None, family=None, extra='')` |  |
-| `title_block(title_lines, subtitle=None, answer=None, x=72, y=100)` | Question in display serif (<=2 lines), an optional subtitle in italic, one answer line in the accent. |
+| `text(x, y, s, size=None, fill=None, family=None, extra='', right=None)` | One line of text with its left edge at x. Right-to-left text (Arabic script) is set right to left and aligned to `right` (the right edge of its block), or to its own measured width when no block edge is given. |
+| `title_block(title_lines, subtitle=None, answer=None, x=72, y=100)` | Question in display serif (<=2 lines), an optional subtitle in italic, one answer line in the accent. A right-to-left title (Arabic script) mirrors to the top right and aligns right. |
 | `callout(x, y, title, lines, anchor, side='left', tag=None)` | Label + leader. side='left' = label in the left column (leader leaves from its right edge, measured from the text). tag = (prefix, body) or None; e.g. ("Step", "final check"). |
 | `break_slide(word='Break', answer='Back in 15 minutes', aside=(), x=1300, y=440)` |  |
 | `credit(s, margin=72)` |  |
-| `font_css(families=None)` | @font-face rules with the bundled woff2 files embedded (works in a blank page and in any HTML editor). |
+| `font_installed(entry)` |  |
+| `font_packs()` | {pack: (files present, files in the pack)}. Missing packs are added with scripts/fonts.py. |
+| `stack_families(stack)` | The bundled families named in a CSS font stack, in order. |
+| `font_css(families=None, text=None)` | @font-face rules with the font files embedded (works in a blank page and in any HTML editor). Each rule carries its unicode-range, so browsers use a subset only where its characters appear. With `text`, subsets whose characters do not appear in it are left out entirely, which keeps renders light. |
 | `render(svg, out, scale=2, transparent=False, grain=True)` | SVG string -> PNG via Playwright's Chromium, fonts verified, then the theme's static grain. |
 | `cutout(png, out=None, pad=24)` | Crop a transparent render to its content + padding; fails if the art touches the canvas edge. |
 | `render_frames(build, fps, out_dir, workers=2, fresh=False)` | build(t) -> SVG string (grain is added later, static). Parallel; raises if any frame is missing. Resumable: frames already in out_dir are kept, so pass fresh=True after changing the scene. `build` must be a module-level function and the script must run under `if __name__ == "__main__":`. |
