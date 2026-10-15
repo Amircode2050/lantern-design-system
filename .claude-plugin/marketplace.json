@@ -5,266 +5,86 @@
   },
   "metadata": {
     "description": "Lantern: one illustration and interface style in many colours, as installable skills.",
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "plugins": [
     {
       "name": "lantern",
       "source": "./skills/lantern",
       "description": "Lantern, a design system for illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated figures, title and break slides, GIF/MP4 loops and a small UI kit with code tokens, in one style across many colour themes (Black, Blue, Cyan, Gold, Gray, Green, Orange, Purple, Red, Rose, Teal, White, and any colour added from a brand colour), each with a 50-950 shade ramp, dark and light variants and three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "multi-color"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-blue",
       "source": "./skills/lantern-blue",
       "description": "Lantern Blue: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Blue colour theme (night-navy ground, one amber light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "blue",
-        "cobalt",
-        "royal blue"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-purple",
       "source": "./skills/lantern-purple",
       "description": "Lantern Purple: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Purple colour theme (night-violet ground, one warm peach light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "purple",
-        "violet",
-        "indigo"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-black",
       "source": "./skills/lantern-black",
       "description": "Lantern Black: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Black colour theme (jet near-black ground, one metallic-gold light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "black",
-        "jet",
-        "onyx"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-white",
       "source": "./skills/lantern-white",
       "description": "Lantern White: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the White colour theme (ivory paper ground, one white (ink only) light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "white",
-        "ivory",
-        "porcelain"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-green",
       "source": "./skills/lantern-green",
       "description": "Lantern Green: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Green colour theme (deep forest-green ground, one amber light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "green",
-        "forest",
-        "emerald"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-red",
       "source": "./skills/lantern-red",
       "description": "Lantern Red: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Red colour theme (deep maroon ground, one champagne light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "red",
-        "maroon",
-        "burgundy"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-gray",
       "source": "./skills/lantern-gray",
       "description": "Lantern Gray: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Gray colour theme (charcoal ground, one amber light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "gray",
-        "grey",
-        "silver"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-teal",
       "source": "./skills/lantern-teal",
       "description": "Lantern Teal: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Teal colour theme (deep teal ground, one amber light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "teal",
-        "deep teal",
-        "petrol"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-gold",
       "source": "./skills/lantern-gold",
       "description": "Lantern Gold: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Gold colour theme (warm near-black ground, one metallic-gold light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "gold",
-        "yellow",
-        "mustard"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-orange",
       "source": "./skills/lantern-orange",
       "description": "Lantern Orange: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Orange colour theme (warm near-black ground, one tangerine light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "orange",
-        "burnt orange",
-        "tangerine"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-cyan",
       "source": "./skills/lantern-cyan",
       "description": "Lantern Cyan: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Cyan colour theme (vivid deep-cyan ground, one amber light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "cyan",
-        "aqua",
-        "turquoise"
-      ]
+      "version": "1.0.2"
     },
     {
       "name": "lantern-rose",
       "source": "./skills/lantern-rose",
       "description": "Lantern Rose: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Rose colour theme (deep rose ground, one champagne light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Lantern contributors"
-      },
-      "license": "Apache-2.0",
-      "keywords": [
-        "design-system",
-        "slides",
-        "illustration",
-        "svg",
-        "theme",
-        "rose",
-        "pink",
-        "raspberry"
-      ]
+      "version": "1.0.2"
     }
   ]
 }

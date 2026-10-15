@@ -87,6 +87,12 @@ def main():
         entry = listed.get(name, {})
         if entry.get("source") != f"./skills/{name}":
             problems.append(f"{name}: marketplace source is {entry.get('source')!r}")
+        manifest = json.loads((skill / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        if manifest.get("name") != name or manifest.get("version") != entry.get("version"):
+            problems.append(f"{name}: plugin.json name or version disagrees with the marketplace")
+        for f in ("README.md", "LICENSE", "NOTICE"):
+            if not (skill / f).is_file():
+                problems.append(f"{name}: {f} missing from the skill folder")
         fm = frontmatter((skill / "SKILL.md").read_text(encoding="utf-8"))
         if fm.get("name") != name:
             problems.append(f"{name}: SKILL.md name is {fm.get('name')!r}")

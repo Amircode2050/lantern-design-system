@@ -2,8 +2,11 @@
 
 All notable changes to this project are recorded here. Versions follow [semantic versioning](https://semver.org): a new colour or component is a minor release, a change that breaks existing scenes or token names is a major one.
 
-## Unreleased
+## 1.0.2
 
+- Every skill folder is now a complete, self-contained plugin: it carries its own `.claude-plugin/plugin.json`, a README that says what it runs and connects to, and the `LICENSE` and `NOTICE` files, so a copied folder keeps its licence and each skill can be listed in plugin directories.
+- The README opens with the playground: screenshots, what each part of the page does, and a link row under the title. The repository has a social preview image, which the playground also uses when its link is shared.
+- Playground images are smaller (1280 pixels wide), which keeps the repository well under directory size limits.
 - The minimum Pillow version is now 12.3.0, which carries recent security fixes.
 - CI uses the current `actions/checkout` and `actions/setup-python`, still pinned to exact commits. Dependabot now raises a minimum version only when it has to.
 
