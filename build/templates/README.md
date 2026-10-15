@@ -23,7 +23,12 @@ Most slide decks explain with bullet points. Lantern explains with pictures: cut
 
 It comes in twelve colours, each with a dark and a light version, three type sets and a full shade ramp. The same colours drive a small web interface kit, so a deck, a report and a dashboard can look like one family.
 
-<p align="center"><b><a href="https://amircode2050.github.io/lantern-design-system/">Try it live in the playground</a></b>: pick a colour and watch every scene, shade and button change with it.</p>
+<p align="center">
+  <a href="https://amircode2050.github.io/lantern-design-system/"><b>Open the playground</b></a> ·
+  <a href="#quick-start">Install</a> ·
+  <a href="#the-scene-library">Scene library</a> ·
+  <a href="../../releases/latest">Downloads</a>
+</p>
 
 <p align="center">
   <img src="docs/images/teasers/spectrum.jpg" alt="Twelve lanterns, one in each colour theme" width="100%">
@@ -32,6 +37,7 @@ It comes in twelve colours, each with a dark and a light version, three type set
 ## Contents
 
 - [What you get](#what-you-get)
+- [Try it in your browser](#try-it-in-your-browser)
 - [Gallery](#gallery)
 - [The scene library](#the-scene-library)
 - [Quick start](#quick-start)
@@ -67,6 +73,27 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - **Social posts** in square, 4:5 and 9:16, as stills or seamless MP4 loops.
 - **Slide templates** for PowerPoint, Keynote and Google Slides in every colour, every word and the chart editable.
 - **A playground** on the web, where the whole page changes colour as you choose.
+
+## Try it in your browser
+
+The **[Lantern playground](https://amircode2050.github.io/lantern-design-system/)** shows the whole system without installing anything. Pick a colour and the entire page, its scenes, its shade ramp and its buttons take it on.
+
+<p align="center">
+  <a href="https://amircode2050.github.io/lantern-design-system/"><img src="docs/images/playground-dark.jpg" alt="The playground in Blue, dark" width="49%"></a>
+  <a href="https://amircode2050.github.io/lantern-design-system/"><img src="docs/images/playground-light.jpg" alt="The playground in Gold, light" width="49%"></a>
+</p>
+
+| On the page | What you can do |
+|---|---|
+| Pick a colour | Switch between the twelve colours, dark or light, and the three type sets. |
+| Six scenes | See the supply chain, the cloud, a data centre, a power grid, a knowledge base and a sales funnel in the chosen colour. |
+| The shade ramp | Copy any of the eleven shades, 50 to 950, with one click. |
+| The interface kit | See buttons, cards, a form and a stat in that colour. |
+| Take it with you | Copy the install commands, or download the skill, the slide templates in dark and light, and `tokens.css`. |
+| Your colour | Pick any brand colour to see its ramp, the nearest Lantern colour and the command that builds a theme from it. |
+| The scene library | Browse all {{scene_count}} scenes with their questions and names. |
+
+The page remembers your last choice in your own browser and sends nothing anywhere.
 
 ## Gallery
 

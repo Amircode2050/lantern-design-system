@@ -2,7 +2,8 @@
 
     python build/teasers.py [out_dir]     default: docs/images/teasers
 
-Writes hero.jpg (16:9), spectrum.jpg (16:9, all twelve colours), portrait.jpg (3:2), square.jpg (1:1) and story.jpg (9:16).
+Writes hero.jpg (16:9), spectrum.jpg (16:9, all twelve colours), portrait.jpg (3:2), square.jpg (1:1), story.jpg (9:16)
+and social-preview.jpg (1280x640, the repository's link preview).
 """
 
 import sys
@@ -122,6 +123,26 @@ def story():
     return svg_doc(std_defs(540, 760), "".join(b), alt="A gold lantern above the word Lantern.")
 
 
+def preview():
+    """1280x640 social preview for the repository (Settings, General, Social preview) and the playground's og:image."""
+    set_theme("dark", "black")
+    set_canvas(1280, 640)
+    b = [
+        background(330, 300, seed=21, avoid=[(560, 120, 1260, 560)]),
+        line((330, 0), (330, 120), T.IN800, 3),
+        lantern(330, 120, 1.75, glow_r=3.4),
+        finish(),
+        text(600, 290, "Lantern", 104, T.T1, F.DISPLAY),
+        text(604, 346, "One light. Twelve colours.", 30, T.W300, F.SANS, 'font-weight="500"'),
+        text(604, 396, "Illustrated slides, scenes and templates,", 21, T.T2),
+        text(604, 426, "as skills for Claude Code and other agents.", 21, T.T2),
+        dots(612, 490, gap=32, r=10),
+    ]
+    return svg_doc(
+        std_defs(330, 300), "".join(b), alt="A glowing lantern beside the word Lantern and twelve colour dots."
+    )
+
+
 def main(out):
     from PIL import Image
 
@@ -138,6 +159,7 @@ def main(out):
     save(portrait(), "portrait")
     save(square(), "square")
     save(story(), "story")
+    save(preview(), "social-preview")
     sheet = Image.new("RGB", (1920, 1080))
     for i, name in enumerate(ORDER):
         png = render(spectrum_tile(name), str(tmp / f"tile_{name}.png"), scale=1)
