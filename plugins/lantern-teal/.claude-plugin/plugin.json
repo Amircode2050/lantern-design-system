@@ -1,0 +1,19 @@
+{
+  "name": "lantern-teal",
+  "version": "1.0.0",
+  "description": "Lantern Teal: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Teal colour theme (deep teal ground, one amber light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Lantern contributors"
+  },
+  "keywords": [
+    "design-system",
+    "slides",
+    "illustration",
+    "svg",
+    "theme",
+    "teal",
+    "deep teal",
+    "petrol"
+  ]
+}

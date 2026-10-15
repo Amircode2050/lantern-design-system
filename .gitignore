@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Build output and scratch renders
+dist/
+out/
+build/*.log
+src/assets/picker.jpg
+src/assets/picker/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local settings
+.env
+.env.*
+*.local.json
+
+# Tool caches
+.ruff_cache/

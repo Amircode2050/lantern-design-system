@@ -1,0 +1,72 @@
+/* UI layer. Every value is a token from tokens.css, so this file is the same for every colour and variant. */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); -webkit-font-smoothing: antialiased; }
+a { color: var(--link); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+/* type */
+.t-title-xl, .t-title-lg, .t-label-title, .t-subtitle { font-family: var(--font-display); font-weight: 400; color: var(--text); margin: 0; }
+.t-title-xl { font-size: var(--fs-title-xl); line-height: 1; }
+.t-title-lg { font-size: var(--fs-title-lg); line-height: var(--lh-title-lg); }
+.t-label-title { font-size: var(--fs-label-title); line-height: var(--lh-label-title); }
+.t-subtitle { font-size: var(--fs-subtitle); line-height: var(--lh-subtitle); font-style: var(--subtitle-style); color: var(--text-2); }
+.t-answer { font: 500 var(--fs-answer-sm)/var(--lh-answer-sm) var(--font-sans); color: var(--accent-fg); margin: 0; }
+.t-lead { font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--text-2); margin: 0; }
+.t-body { color: var(--text-2); margin: 0; }
+.t-credit { font-size: var(--fs-credit); line-height: var(--lh-credit); color: var(--text-3); }
+.t-data { font: 500 var(--fs-data)/var(--lh-data) var(--font-mono); }
+
+/* layout helpers */
+.stack { display: flex; flex-direction: column; gap: var(--space-3); }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); }
+
+/* button: one primary per view; the accent is never a button colour */
+.btn { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 18px; border-radius: var(--radius-2); border: 1px solid var(--border);
+       background: transparent; color: var(--text); font: 500 15px/1 var(--font-sans); cursor: pointer; text-decoration: none; }
+.btn:hover { background: var(--surface-2); }
+.btn-primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+.btn-ghost { border-color: transparent; color: var(--link); }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* card */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-3); padding: var(--space-3); }
+.card > .t-label-title + * { margin-top: var(--space-1); }
+
+/* form field */
+.field { display: flex; flex-direction: column; gap: var(--space-1); font-size: 14px; color: var(--text-2); }
+.input { min-height: 40px; padding: 0 12px; border-radius: var(--radius-2); border: 1px solid var(--border); background: var(--surface); color: var(--text); font: 400 15px/1 var(--font-sans); }
+.input::placeholder { color: var(--text-3); }
+.field .hint { font-size: var(--fs-credit); color: var(--text-3); }
+.field .error { font-size: var(--fs-credit); color: var(--err); }
+
+/* table: numbers in mono, right-aligned */
+.table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.table th { text-align: left; font: 500 13px/1.4 var(--font-sans); color: var(--text-3); padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.table td { padding: 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.table td.num, .table th.num { text-align: right; font-family: var(--font-mono); color: var(--text); }
+.table tr:last-child td { border-bottom: 0; }
+
+/* tag: status always carries a word, never colour alone */
+.tag { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: var(--radius-4); border: 1px solid var(--border); font: 400 13px/1.5 var(--font-mono); color: var(--text-2); }
+.tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--info); }
+.tag-accent::before { background: var(--accent-fg); }
+.tag-ok::before { background: var(--ok); }
+.tag-err::before { background: var(--err); border-radius: 1px; }
+
+/* callout: the one place the accent marks a block */
+.callout { border-left: 3px solid var(--accent-fg); background: var(--surface-2); padding: var(--space-2) var(--space-3); color: var(--text-2); }
+.callout strong { display: block; font: 400 var(--fs-lead)/var(--lh-lead) var(--font-display); color: var(--text); }
+
+/* stat */
+.stat { background: var(--surface-2); border-radius: var(--radius-3); padding: var(--space-3); }
+.stat .label { font-size: 14px; color: var(--text-2); }
+.stat .value { font: 500 40px/1.15 var(--font-mono); color: var(--text); }
+.stat .value em { font-style: normal; color: var(--accent-fg); }
+.stat .delta { font: 400 13px/1.5 var(--font-mono); color: var(--text-3); }
+
+/* slide: 16:9 frame with the system's ground, for decks built in HTML */
+.slide { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-3); padding: 6.5% 3.75%;
+         background: radial-gradient(ellipse at 50% 48%, var(--ground-600) 0%, var(--ground-700) 25%, var(--ground-800) 50%, var(--ground-900) 78%, var(--ground-950) 100%); }
+.slide .slide-foot { position: absolute; left: 3.75%; right: 3.75%; bottom: 3.4%; display: flex; justify-content: space-between; font-size: var(--fs-credit); color: var(--text-3); }

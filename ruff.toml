@@ -1,0 +1,14 @@
+line-length = 120
+target-version = "py311"
+
+[lint]
+select = ["E", "F", "W", "B", "UP", "SIM"]
+ignore = [
+  "E741",  # short geometry names (l) are conventional here
+  "E731",  # small local lambdas are clearer than nested defs in drawing code
+  "F403", "F405",  # scene scripts deliberately use `from kit import *`
+  "SIM108",
+  "B023",
+  "B905",  # zip(pts, pts[1:]) pairs neighbours; unequal lengths are intended
+  "E501",  # the formatter owns line length; long SVG attribute strings stay on one line
+]

@@ -1,0 +1,32 @@
+{
+ "default_color": "blue",
+ "default_type_set": "classic",
+ "fonts": {
+  "PT Serif": {"stack": "'PT Serif', Georgia, serif", "adv": 0.50, "files": [["400", "normal", "pt-serif-latin-400-normal"], ["400", "italic", "pt-serif-latin-400-italic"], ["700", "normal", "pt-serif-latin-700-normal"]]},
+  "Fraunces": {"stack": "Fraunces, 'Times New Roman', serif", "adv": 0.52, "files": [["400", "normal", "fraunces-latin-400-normal"], ["400", "italic", "fraunces-latin-400-italic"], ["600", "normal", "fraunces-latin-600-normal"]]},
+  "Space Grotesk": {"stack": "'Space Grotesk', 'Helvetica Neue', Arial, sans-serif", "adv": 0.55, "files": [["400", "normal", "space-grotesk-latin-400-normal"], ["500", "normal", "space-grotesk-latin-500-normal"]]},
+  "Inter": {"stack": "Inter, 'Helvetica Neue', Arial, sans-serif", "adv": 0.53, "files": [["400", "normal", "inter-latin-400-normal"], ["500", "normal", "inter-latin-500-normal"], ["600", "normal", "inter-latin-600-normal"]]},
+  "Source Sans 3": {"stack": "'Source Sans 3', 'Helvetica Neue', Arial, sans-serif", "adv": 0.48, "files": [["400", "normal", "source-sans-3-latin-400-normal"], ["500", "normal", "source-sans-3-latin-500-normal"], ["600", "normal", "source-sans-3-latin-600-normal"]]},
+  "JetBrains Mono": {"stack": "'JetBrains Mono', Consolas, monospace", "adv": 0.60, "files": [["400", "normal", "jetbrains-mono-latin-400-normal"], ["500", "normal", "jetbrains-mono-latin-500-normal"]]}
+ },
+ "type_sets": {
+  "classic": {"label": "Classic", "mood": "bookish, scholarly, calm", "display": "PT Serif", "sans": "Inter", "mono": "JetBrains Mono", "subtitle_style": "italic"},
+  "modern": {"label": "Modern", "mood": "technical, crisp, product-like", "display": "Space Grotesk", "sans": "Inter", "mono": "JetBrains Mono", "subtitle_style": "normal"},
+  "editorial": {"label": "Editorial", "mood": "magazine, expressive, warm", "display": "Fraunces", "sans": "Source Sans 3", "mono": "JetBrains Mono", "subtitle_style": "italic"}
+ },
+ "type_scale": {
+  "title-xl": {"size": 132, "line": 132, "family": "display", "weight": 400, "use": "one-word slides (Break)"},
+  "title-lg": {"size": 44, "line": 50, "family": "display", "weight": 400, "use": "figure and slide titles, two lines at most"},
+  "label-title": {"size": 30, "line": 34, "family": "display", "weight": 400, "use": "callout titles"},
+  "subtitle": {"size": 23, "line": 30, "family": "display", "weight": 400, "use": "original-language phrase under a title"},
+  "answer": {"size": 30, "line": 36, "family": "sans", "weight": 500, "use": "the one answer line on a slide"},
+  "answer-sm": {"size": 19, "line": 26, "family": "sans", "weight": 500, "use": "answer line under title-lg"},
+  "lead": {"size": 21, "line": 30, "family": "sans", "weight": 400, "use": "asides, intros"},
+  "body": {"size": 16.5, "line": 24, "family": "sans", "weight": 400, "use": "callout body, paragraphs"},
+  "tag": {"size": 15, "line": 20, "family": "mono", "weight": 400, "use": "tags, data labels"},
+  "data": {"size": 14, "line": 18, "family": "mono", "weight": 500, "use": "numbers on charts"},
+  "credit": {"size": 13, "line": 18, "family": "sans", "weight": 400, "use": "credits, footers (smallest allowed)"}
+ },
+ "spacing": [6, 12, 24, 32, 48, 72],
+ "radius": [2, 6, 12, 32]
+}
