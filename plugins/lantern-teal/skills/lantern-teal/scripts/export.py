@@ -20,6 +20,10 @@ from new_theme import NAMES
 
 
 def variant_css(c, light):
+    surface = c["G600"] if light else c["G900"]
+    fill, on_fill = c["CORE_FILL"], c["ON_CORE"]
+    if contrast(fill, surface) < 3:  # a core too close to the page (ivory on white): buttons fall back to ink
+        fill, on_fill = c["T1"], surface
     raw = [f"--{NAMES[k]}: {c[k]};" for k in NAMES if k in c] + [
         f"--ok: {c['OK']};",
         f"--warn: {c['WARN']};",
@@ -28,15 +32,15 @@ def variant_css(c, light):
     on_accent = max((c["INK"], "#ffffff"), key=lambda x: contrast(x, c["W300"]))
     sem = {
         "bg": c["G700"] if light else c["G950"],
-        "surface": c["G600"] if light else c["G900"],
+        "surface": surface,
         "surface-2": c["G800"],
         "border": c["L300"] if light else c["V500"],
         "text": c["T1"],
         "text-2": c["T2"],
         "text-3": c["T3"],
-        "primary": c["CORE_FILL"],
-        "on-primary": c["ON_CORE"],
-        "primary-hover": hexmix(c["CORE_FILL"], c["INK"] if light or c["ON_CORE"] == "#ffffff" else "#ffffff", 0.14),
+        "primary": fill,
+        "on-primary": on_fill,
+        "primary-hover": hexmix(fill, c["INK"] if light or on_fill == "#ffffff" else "#ffffff", 0.14),
         "accent-fg": c["W300"],
         "on-accent": on_accent,
         "link": c["L100"],

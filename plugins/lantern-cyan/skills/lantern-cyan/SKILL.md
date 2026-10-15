@@ -149,7 +149,7 @@ Display is weight 400 for titles and label titles, never bold in running display
 
 **Close-up portrait.** Two or three large characters (a person in strict profile, a robot, a lit object between them), soft gradients, one beam of light, no text in the image. Canvas 3:2. Faces are minimal: one brow, a closed eye, a mouth line, never frontal, never a likeness. Reference: `assets/reference/<colour>/portrait_*.jpg`.
 
-Recurring elements, all in `scripts/components.py`: sawtooth factory roofs with lit skylights, arched windows, pendant lamps, storm clouds with rain and a bolt (risk, uncertainty), batteries (reserves), conveyors, parcels and cars (output), string lights, ladders, presses, server racks, clocks (monitoring), coffered domes with an oculus, arcades, balcony rings, a lantern tower (the watcher), a saucer hull with glass dome and tractor beam, an orrery, a thinking core, wall screens. Reuse them before drawing something new; see `references/components.md` and `assets/reference/<colour>/sheet_*.jpg`.
+Recurring elements, all in `scripts/components.py`: sawtooth factory roofs with lit skylights, arched windows, pendant lamps, storm clouds with rain and a bolt (risk, uncertainty), batteries (reserves), conveyors, parcels and cars (output), string lights, ladders, presses, server racks, clocks (monitoring), coffered domes with an oculus, arcades, balcony rings, a lantern tower (the watcher), a saucer hull with glass dome and tractor beam, an orrery, a thinking core, wall screens, and the hanging glass lantern that gives the system its name. Reuse them before drawing something new; see `references/components.md` and `assets/reference/<colour>/sheet_*.jpg`.
 
 ## Visual rules
 1. **One scene sentence first**: what mechanism the picture explains and where the single light is. Build the image around that light.
@@ -189,9 +189,13 @@ Recurring elements, all in `scripts/components.py`: sawtooth factory roofs with 
 1. Settle colour, variant, type set (see "When to use, and what to ask"), then output, canvas and the scene sentence.
 2. Locate this skill folder (the directory holding this file) and import from it; do not copy the kit:
    ```python
-   import sys; sys.path.insert(0, r"<skill folder>/scripts")
-   from kit import *; from kit import T, C, F
+   import sys
+
+   sys.path.insert(0, r"<skill folder>/scripts")
+   from kit import *
+   from kit import T, C, F
    from components import *
+
    set_theme("dark", color="cyan", type_set="classic")
    ```
    Run `doctor()` once on a new machine. It names anything missing (Pillow, numpy, Playwright with Chromium, ffmpeg for animation) with the command that installs it, and re-checks contrast.

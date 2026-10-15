@@ -4,7 +4,7 @@
     python build/build.py --skip-render   reuse the existing reference images and pickers (docs and code only)
     python build/build.py --install       also copy every skill into ~/.claude/skills for local use
 
-Reads src/ (engine, themes, fonts, UI) and docs/ (templates). Writes:
+Reads src/ (engine, themes, fonts, UI) and build/templates/. Writes:
     plugins/<skill>/                      one plugin per skill, listed in .claude-plugin/marketplace.json
     dist/<skill>.zip                      one upload zip per skill (not committed; attach to a release)
 Needs the same Python packages as the skills themselves (Pillow, numpy, Playwright with Chromium).
@@ -21,7 +21,7 @@ import zipfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SRC, DOCS, PLUGINS, DIST = REPO / "src", REPO / "docs", REPO / "plugins", REPO / "dist"
+SRC, TEMPLATES, PLUGINS, DIST = REPO / "src", REPO / "build" / "templates", REPO / "plugins", REPO / "dist"
 VERSION = "1.0.0"
 BRAND = "lantern"
 sys.path.insert(0, str(SRC / "scripts"))
@@ -308,7 +308,7 @@ def write_skill(color, themes, ref, master_desc, single_desc):
             (shutil.copytree if src.is_dir() else shutil.copy)(src, sk / "assets" / p)
 
     mode = "master" if color is None else "single"
-    tpl = keep_mode((DOCS / "skill_template.md").read_text(encoding="utf-8"), mode)
+    tpl = keep_mode((TEMPLATES / "skill.md").read_text(encoding="utf-8"), mode)
     if color is None:
         v = dict(
             slug=slug(),
@@ -360,7 +360,7 @@ def write_skill(color, themes, ref, master_desc, single_desc):
     )
     write(
         sk / "references" / "animation.md",
-        (DOCS / "animation.md")
+        (TEMPLATES / "animation.md")
         .read_text(encoding="utf-8")
         .replace("# {N}: seamless loops", "# Seamless loops")
         .replace("{N}", title)
@@ -368,11 +368,11 @@ def write_skill(color, themes, ref, master_desc, single_desc):
     )
     write(
         sk / "references" / "voice.md",
-        (DOCS / "voice.md")
+        (TEMPLATES / "voice.md")
         .read_text(encoding="utf-8")
         .replace("none on titles of labels or on buttons", "none on titles, labels or buttons"),
     )
-    write(sk / "references" / "themes.md", (DOCS / "themes.md").read_text(encoding="utf-8"))
+    write(sk / "references" / "themes.md", (TEMPLATES / "themes.md").read_text(encoding="utf-8"))
     plugin = {
         "name": slug(color),
         "version": VERSION,

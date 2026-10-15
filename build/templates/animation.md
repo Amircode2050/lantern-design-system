@@ -9,15 +9,18 @@ The default loop is 25 s (`set_canvas("16:9", loop=25)`); any length works as lo
 - Grain is static: the kit adds the same noise field to every frame after rendering.
 
 ```python
-def build_frame(t): return build(t)          # module level, no text
+def build_frame(t):
+    return build(t)  # module level, no text
+
 
 if __name__ == "__main__":
-    set_theme("dark"); set_canvas("16:9", loop=25)
-    render(build(3.0), "still.png", scale=2)        # the static alternative
-    render_frames(build_frame, 10, "frames10")     # 250 frames, resumable
+    set_theme("dark")
+    set_canvas("16:9", loop=25)
+    render(build(3.0), "still.png", scale=2)  # the static alternative
+    render_frames(build_frame, 10, "frames10")  # 250 frames, resumable
     render_frames(build_frame, 24, "frames24")
-    print(check_loop("frames10"))                  # (seam, typical): should be close
-    make_gif("frames10", "loop.gif")               # 1280 wide, exact length; the palette shrinks if over 15 MB
+    print(check_loop("frames10"))  # (seam, typical): should be close
+    make_gif("frames10", "loop.gif")  # 1280 wide, exact length; the palette shrinks if over 15 MB
     make_mp4("frames24", "loop.mp4")
 ```
 

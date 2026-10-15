@@ -333,8 +333,10 @@ def main(argv=None):
                 r["label"],
             ),
             indent=1,
-        ),
+        )
+        + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     from kit import check_tokens
 

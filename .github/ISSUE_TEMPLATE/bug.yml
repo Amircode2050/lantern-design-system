@@ -1,0 +1,28 @@
+name: Bug
+description: Something renders wrongly, crashes, or a skill misbehaves
+labels: [bug]
+body:
+  - type: input
+    id: skill
+    attributes:
+      label: Skill and colour
+      placeholder: lantern-red, light variant
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you asked for, what you got, and what you expected. Attach the image if it is visual.
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of python scripts/kit.py
+      render: text
+  - type: input
+    id: env
+    attributes:
+      label: Operating system and Python version
+      placeholder: macOS 15, Python 3.12

@@ -1,0 +1,62 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check src/scripts build
+      - run: ruff format --check src/scripts build
+
+  consistency:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Contrast, names and engine copies
+        run: python build/check.py
+      - name: Generated skills match the source
+        run: |
+          python build/build.py --skip-render
+          git diff --exit-code -- plugins .claude-plugin
+      - name: README matches the themes
+        run: |
+          python build/readme.py
+          git diff --exit-code -- README.md
+
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: sudo apt-get install -y ffmpeg
+      - name: Render a scene in every colour
+        working-directory: ${{ runner.temp }}
+        run: |
+          for c in black white blue purple green red gray teal gold orange cyan rose; do
+            python "$GITHUB_WORKSPACE/src/scripts/examples.py" sheet dark "$c"
+          done
+      - name: Seamless loop
+        working-directory: ${{ runner.temp }}
+        run: python "$GITHUB_WORKSPACE/src/scripts/examples.py" loop

@@ -1,0 +1,23 @@
+name: New colour or shade
+description: Propose a colour theme or a shade for an existing family
+labels: [colour]
+body:
+  - type: input
+    id: core
+    attributes:
+      label: Core colour
+      placeholder: "#8E7CC3"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What it is for
+      description: The kind of deck, brand or mood it serves, and why no existing colour covers it.
+    validations:
+      required: true
+  - type: textarea
+    id: preview
+    attributes:
+      label: Preview
+      description: Optional. Paste the sheets from `python src/scripts/new_theme.py <name> "<hex>" --preview out`.

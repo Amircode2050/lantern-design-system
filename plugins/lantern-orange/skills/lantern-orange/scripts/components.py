@@ -557,58 +557,87 @@ def tractor_beam(cx, y, h=300, w0=70, w1=270, p=0.0, seed=9):
 # close-up portrait mode (large figures, soft gradients, one beam of light)
 # =====================================================================================================
 def bust_human(x, y, s=1.0, facing=1):
-    """Head-and-shoulders human in strict profile. (x, y) = base of the neck; the head is ~330*s tall and the
-    shoulders run ~330*s below, normally cropped by the canvas. Face stays minimal: one brow, a closed eye, a mouth line."""
-    skin_dark = hexmix(T.V300, T.W400, 0.25)
+    """Head-and-shoulders human in strict profile. (x, y) = base of the neck; the head is about 370*s tall and the
+    shoulders run about 340*s below, normally cropped by the canvas. The face stays minimal: a brow, a closed eye,
+    a nostril and a mouth line, lit from the side it faces with a rim of light along the profile."""
+    skin_dark = hexmix(T.V300, T.W400, 0.22)
+    face = (
+        "M44,-452 C86,-432 106,-388 108,-344 L114,-318 L106,-300 C120,-272 146,-238 156,-222 "
+        "Q162,-210 148,-207 L122,-204 C128,-196 130,-186 124,-180 L116,-176 C126,-170 124,-158 114,-152 "
+        "C108,-148 110,-140 114,-128 C118,-110 104,-96 80,-92 C30,-88 -20,-100 -50,-140 L-70,-200 "
+        "C-110,-300 -120,-420 -40,-460 Z"
+    )
+    profile = (
+        "M44,-452 C86,-432 106,-388 108,-344 L114,-318 L106,-300 C120,-272 146,-238 156,-222 "
+        "Q162,-210 148,-207 L122,-204 C128,-196 130,-186 124,-180 L116,-176 C126,-170 124,-158 114,-152 "
+        "C108,-148 110,-140 114,-128 C118,-110 104,-96 80,-92"
+    )
+    hair = (
+        "M46,-452 C10,-500 -120,-512 -190,-450 C-250,-395 -262,-290 -236,-200 C-222,-150 -196,-118 -160,-104 "
+        "L-112,-118 C-104,-150 -92,-185 -84,-210 C-70,-240 -60,-275 -40,-300 C-10,-330 20,-380 46,-452 Z"
+    )
     g = [
+        # jacket, shirt collar, tie knot, lapel
         path(
-            "M-360,340 C-360,120 -250,20 -90,-12 L10,62 L62,18 C200,60 300,160 322,340 Z",
+            "M-370,340 C-370,130 -262,26 -100,-6 L12,64 L66,20 C206,58 306,160 330,340 Z",
             "url(#cloth)",
             f'stroke="{T.IN900}" stroke-width="2"',
         ),
         path(
-            "M-78,-42 L52,0 L66,72 L10,62 L-72,22 Z",
+            "M-74,-30 L44,8 L60,74 L16,52 L-64,12 Z",
             T.MIST if not T.light else T.G600,
             f'stroke="{T.IN800}" stroke-width="1.2"',
         ),
-        path("M10,62 L66,72 L52,120 L22,104 Z", T.L300, 'opacity="0.8"'),
-        path("M-72,-150 L44,-92 L50,2 L-80,-40 Z", skin_dark),
+        path("M16,52 L60,74 L50,122 L24,108 Z", T.IN700, 'opacity="0.9"'),
+        path("M12,64 C42,150 58,250 62,340", "none", f'stroke="{T.L300}" stroke-width="1.6" opacity="0.45"'),
+        path("M-260,120 C-200,60 -140,30 -100,-6", "none", f'stroke="{T.L200}" stroke-width="1.4" opacity="0.25"'),
+        # neck, with the shadow the jaw throws on it
+        path("M-62,-150 C-58,-90 -70,-40 -78,-20 L50,8 C46,-30 42,-70 48,-96 Z", skin_dark),
+        ell(-4, -96, 66, 22, T.IN900, 'opacity="0.35" filter="url(#blur8)"'),
+        # head
+        path(face, "url(#skin)"),
+        ell(64, -236, 40, 20, T.W200, 'opacity="0.22" filter="url(#blur8)"'),
         path(
-            "M50,-430 C82,-398 98,-350 100,-300 L152,-214 L112,-200 L119,-176 L108,-163 L117,-141 C118,-110 96,-90 60,-84 C10,-80 -40,-100 -72,-142 L-92,-250 L-40,-332 Z",
-            "url(#skin)",
+            "M-50,-140 C-20,-104 30,-92 80,-94",
+            "none",
+            f'stroke="{T.IN800}" stroke-width="10" opacity="0.18" filter="url(#blur3)"',
         ),
+        path(profile, "none", f'stroke="{T.W200}" stroke-width="2.2" stroke-linejoin="round" opacity="0.55"'),
+        # hair, with two highlight strands
+        path(hair, "url(#cloth)", f'stroke="{T.IN900}" stroke-width="1.5"'),
         path(
-            "M55,-432 C20,-492 -150,-502 -215,-390 C-266,-300 -250,-170 -205,-95 L-110,-120 C-120,-170 -110,-215 -80,-250 L-45,-300 C-10,-330 30,-370 55,-432 Z",
-            "url(#cloth)",
-            f'stroke="{T.IN900}" stroke-width="1.5"',
-        ),
-        path(
-            "M-150,-440 C-90,-470 -30,-468 20,-446",
+            "M-160,-452 C-100,-486 -30,-486 24,-460",
             "none",
             f'stroke="{T.L200}" stroke-width="3" stroke-linecap="round" opacity="0.5"',
         ),
         path(
-            "M-176,-396 C-120,-430 -70,-436 -30,-424",
+            "M-206,-394 C-150,-436 -84,-446 -36,-432",
             "none",
             f'stroke="{T.L200}" stroke-width="2" stroke-linecap="round" opacity="0.35"',
         ),
-        ell(-76, -206, 19, 29, skin_dark, f'stroke="{T.IN800}" stroke-width="1.2" stroke-opacity="0.5"'),
+        # ear
+        ell(-56, -214, 20, 30, skin_dark, f'stroke="{T.IN800}" stroke-width="1.2" stroke-opacity="0.5"'),
         path(
-            "M-80,-222 C-66,-214 -66,-196 -78,-188",
+            "M-60,-230 C-46,-222 -46,-204 -58,-196",
             "none",
             f'stroke="{T.IN800}" stroke-width="1.6" stroke-linecap="round" opacity="0.6"',
         ),
-        path("M76,-302 L112,-297", "none", f'stroke="{T.INK}" stroke-width="3.2" stroke-linecap="round"'),
-        path("M74,-272 Q92,-263 108,-272", "none", f'stroke="{T.INK}" stroke-width="2.6" stroke-linecap="round"'),
-        path("M94,-163 L117,-160", "none", f'stroke="{T.INK}" stroke-width="2.2" stroke-linecap="round" opacity="0.8"'),
-        path("M10,62 C40,150 56,250 60,340", "none", f'stroke="{T.L300}" stroke-width="1.6" opacity="0.45"'),
+        # face details
+        path("M70,-320 Q88,-326 106,-316", "none", f'stroke="{T.INK}" stroke-width="3.2" stroke-linecap="round"'),
+        path("M74,-284 Q90,-276 104,-284", "none", f'stroke="{T.INK}" stroke-width="2.6" stroke-linecap="round"'),
+        path(
+            "M128,-214 Q136,-218 140,-212",
+            "none",
+            f'stroke="{T.INK}" stroke-width="1.8" stroke-linecap="round" opacity="0.55"',
+        ),
+        path("M98,-177 L118,-177", "none", f'stroke="{T.INK}" stroke-width="2.2" stroke-linecap="round" opacity="0.8"'),
     ]
     return f'<g transform="translate({f2(x)},{f2(y)}) scale({f2(s * facing)},{f2(s)})">' + "".join(g) + "</g>"
 
 
 def bust_robot(x, y, s=1.0, facing=1, visor=True):
-    """Head-and-shoulders robot: capsule head with a glowing visor band, vent lines, a ribbed neck and broad shoulders.
-    (x, y) = collar centre. The visor points the way it faces; vents and the rim light sit on the back of the head."""
+    """Head-and-shoulders robot: capsule head with a glowing visor band, an ear module, vent lines, a ribbed neck and
+    broad shoulders. (x, y) = collar centre. The visor points the way it faces; the rim light sits on the back."""
     g = [
         path(
             "M-330,340 C-330,130 -230,40 -100,20 L100,20 C230,40 330,130 330,340 Z",
@@ -617,6 +646,11 @@ def bust_robot(x, y, s=1.0, facing=1, visor=True):
         ),
         path("M-210,140 Q0,104 170,116", "none", f'stroke="{T.IN800}" stroke-width="1.6" opacity="0.5"'),
         line((0, 112), (0, 340), T.IN800, 1.4, 'opacity="0.5"'),
+        path(
+            "M200,70 C268,110 318,190 328,330",
+            "none",
+            f'stroke="{T.W400}" stroke-width="2.4" stroke-linecap="round" opacity="0.55"',
+        ),
         ell(0, 22, 122, 22, T.IN900),
     ]
     for i in range(4):
@@ -632,23 +666,84 @@ def bust_robot(x, y, s=1.0, facing=1, visor=True):
             )
         )
     g += [
+        ell(0, -116, 74, 12, T.IN900, 'opacity="0.5" filter="url(#blur3)"'),
         rrect(-160, -520, 320, 400, 150, "url(#chrome)", f'stroke="{T.IN900}" stroke-width="2.5"'),
+        path(
+            "M-110,-500 C-60,-522 20,-524 70,-506",
+            "none",
+            f'stroke="{T.MIST}" stroke-width="3" stroke-linecap="round" opacity="0.45"',
+        ),
         path("M-20,-518 C-10,-400 -30,-250 -22,-122", "none", f'stroke="{T.IN800}" stroke-width="1.6" opacity="0.6"'),
         path("M-158,-210 Q-90,-200 -22,-214", "none", f'stroke="{T.IN800}" stroke-width="1.6" opacity="0.6"'),
+        path("M-150,-170 Q-60,-138 40,-150", "none", f'stroke="{T.IN800}" stroke-width="1.4" opacity="0.4"'),
+        ell(0, -150, 150, 34, T.IN900, 'opacity="0.18" filter="url(#blur8)"'),
         path(
             "M150,-430 C166,-380 166,-260 150,-200",
             "none",
             f'stroke="{T.W400}" stroke-width="2.4" stroke-linecap="round" opacity="0.85"',
         ),
+        circ(92, -300, 34, "url(#metalv)", f'stroke="{T.IN900}" stroke-width="2"'),
+        circ(92, -300, 18, T.IN800),
+        circ(92, -300, 4, T.W300, 'filter="url(#dotglow)"'),
     ]
     if visor:
         g += [
             glow(-60, -332, 170, 70, op=0.8),
             rrect(-160, -360, 200, 56, 28, T.W200, f'stroke="{T.W400}" stroke-width="1.2" filter="url(#dotglow)"'),
+            rrect(-150, -352, 120, 10, 5, T.W100, 'opacity="0.7"'),
         ]
-    g += [line((52, y0), (122, y0), T.IN800, 4.2, 'stroke-linecap="round" opacity="0.8"') for y0 in (-250, -231, -212)]
-    g.append(circ(72, -404, 5, T.W100, 'filter="url(#dotglow)"'))
+    g += [line((40, y0), (70, y0), T.IN800, 4.2, 'stroke-linecap="round" opacity="0.8"') for y0 in (-250, -231, -212)]
+    g.append(circ(48, -408, 5, T.W100, 'filter="url(#dotglow)"'))
     return f'<g transform="translate({f2(x)},{f2(y)}) scale({f2(-s * facing)},{f2(s)})">' + "".join(g) + "</g>"
+
+
+def lantern(x, y, s=1.0, p=0.0, lit=True, glow_r=3.2):
+    """Hanging glass lantern, the system's emblem. (x, y) = top of the ring; it stands about 230*s tall.
+    Glass panes, a dark metal cap and base, a hot core and a pool of light; the flame flickers four times per loop."""
+    k = 0.94 + 0.06 * math.sin(TAU * 4 * p) if lit else 0
+    g = []
+    if lit:
+        g.append(glow(0, 120, 70 * glow_r, 70 * glow_r * 0.9, op=round(0.9 * k, 3)))
+    g += [
+        circ(0, 0, 14, "none", f'stroke="{T.IN900}" stroke-width="5"'),
+        circ(0, 0, 14, "none", f'stroke="{T.L200}" stroke-width="1.2" opacity="0.5"'),
+        rrect(-6, 12, 12, 14, 3, T.IN800),
+        path(
+            P([(-58, 64), (-30, 26), (30, 26), (58, 64)]),
+            "url(#metalh)",
+            f'stroke="{T.IN900}" stroke-width="2.5" stroke-linejoin="round"',
+        ),
+        rrect(-64, 62, 128, 12, 4, T.IN700, f'stroke="{T.IN900}" stroke-width="2"'),
+        path(
+            P([(-50, 74), (50, 74), (56, 184), (-56, 184)]),
+            "url(#warmwin)" if lit else T.IN700,
+            f'stroke="{T.IN900}" stroke-width="2.5" stroke-linejoin="round" opacity="0.92"',
+        ),
+    ]
+    if lit:
+        g += [
+            ell(0, 140, 30, 40, T.W200, f'opacity="{0.55 * k:.2f}" filter="url(#blur8)"'),
+            path(
+                "M0,104 C14,124 16,146 0,160 C-16,146 -14,124 0,104 Z",
+                T.W100,
+                f'opacity="{k:.2f}" filter="url(#dotglow)"',
+            ),
+            path("M0,124 C6,134 6,146 0,152 C-6,146 -6,134 0,124 Z", T.W200),
+        ]
+    g += [
+        line((0, 74), (0, 184), T.IN900, 3, 'opacity="0.85"'),
+        line((-34, 74), (-37, 184), T.IN900, 1.6, 'opacity="0.55"'),
+        line((34, 74), (37, 184), T.IN900, 1.6, 'opacity="0.55"'),
+        rrect(-66, 182, 132, 16, 5, T.IN700, f'stroke="{T.IN900}" stroke-width="2"'),
+        path(
+            P([(-44, 198), (44, 198), (30, 222), (-30, 222)]),
+            "url(#metalh)",
+            f'stroke="{T.IN900}" stroke-width="2" stroke-linejoin="round"',
+        ),
+        rrect(-60, 64, 4, 8, 2, T.L300, 'opacity="0.7"'),
+        path("M-44,82 L-48,176", "none", f'stroke="{T.MIST}" stroke-width="3" stroke-linecap="round" opacity="0.35"'),
+    ]
+    return f'<g transform="translate({f2(x)},{f2(y)}) scale({f2(s)})">' + "".join(g) + "</g>"
 
 
 def light_cone(x0, y0, x1, y_top, y_bot, spread0=8, op=0.85):
