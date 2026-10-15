@@ -32,9 +32,13 @@
   --radius-3: 12px;
   --radius-4: 32px;
 }
-[data-type="classic"] { --font-display: 'PT Serif', Georgia, serif; --font-sans: Inter, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Consolas, monospace; --subtitle-style: italic; }
-[data-type="modern"] { --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; --font-sans: Inter, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Consolas, monospace; --subtitle-style: normal; }
-[data-type="editorial"] { --font-display: Fraunces, 'Times New Roman', serif; --font-sans: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Consolas, monospace; --subtitle-style: italic; }
+[data-type="classic"] { --font-display: 'PT Serif', Inter, Vazirmatn, Georgia, serif; --font-sans: Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Inter, Vazirmatn, Consolas, monospace; --subtitle-style: italic; }
+[data-type="modern"] { --font-display: 'Space Grotesk', Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-sans: Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Inter, Vazirmatn, Consolas, monospace; --subtitle-style: normal; }
+[data-type="editorial"] { --font-display: Fraunces, 'PT Serif', Inter, Vazirmatn, Georgia, serif; --font-sans: 'Source Sans 3', Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Inter, Vazirmatn, Consolas, monospace; --subtitle-style: italic; }
+[data-type="technical"] { --font-display: 'IBM Plex Serif', 'PT Serif', Inter, Vazirmatn, Georgia, serif; --font-sans: 'IBM Plex Sans', Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'IBM Plex Mono', 'JetBrains Mono', Inter, Vazirmatn, Consolas, monospace; --subtitle-style: italic; }
+[data-type="geometric"] { --font-display: 'DM Serif Display', 'PT Serif', Inter, Vazirmatn, Georgia, serif; --font-sans: 'DM Sans', Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Inter, Vazirmatn, Consolas, monospace; --subtitle-style: italic; }
+[data-type="garamond"] { --font-display: 'EB Garamond', 'PT Serif', Inter, Vazirmatn, Georgia, serif; --font-sans: Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Inter, Vazirmatn, Consolas, monospace; --subtitle-style: italic; }
+[data-type="swiss"] { --font-display: 'Inter Tight', Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-sans: Inter, Vazirmatn, 'Helvetica Neue', Arial, sans-serif; --font-mono: 'JetBrains Mono', Inter, Vazirmatn, Consolas, monospace; --subtitle-style: normal; }
 [data-color="black"][data-theme="dark"] {
   color-scheme: dark;
   --ground-600: #1f1f21;

@@ -1,11 +1,11 @@
 ---
 name: "lantern"
-description: "Lantern, a design system for illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated figures, title and break slides, GIF/MP4 loops and a small UI kit with code tokens, in one style across many colour themes (Black, Blue, Cyan, Gold, Gray, Green, Orange, Purple, Red, Rose, Teal, White, and any colour added from a brand colour), each with a 50-950 shade ramp, dark and light variants and three type sets. Use when the user says 'lantern', 'lantern design system', 'multi-color design system', 'design system', 'my design system', 'house style', names a colour with no skill of its own, wants a new theme or palette from a brand colour, drops reference images to match, or wants tokens exported to CSS or Tailwind. Also use for any design task (slide, deck, figure, illustration, poster, title or break slide, animation, simple interface) with no style chosen: show the picker and ask which colour, then which variant, type set and shade, before designing."
+description: "Lantern, a design system for illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated figures, title and break slides, GIF/MP4 loops and a small UI kit with code tokens, in one style across many colour themes (Black, Blue, Cyan, Gold, Gray, Green, Orange, Purple, Red, Rose, Teal, White, and any colour added from a brand colour), each with a 50-950 shade ramp, dark and light variants, seven type sets and many languages. Use when the user says 'lantern', 'lantern design system', 'multi-color design system', 'design system', 'my design system', 'house style', names a colour with no skill of its own, wants a new theme or palette from a brand colour, drops reference images to match, or wants tokens exported to CSS or Tailwind. Also use for any design task (slide, deck, figure, illustration, poster, title or break slide, animation, simple interface) with no style chosen: show the picker and ask which colour, then which variant, type set and shade, before designing."
 ---
 
 # Lantern design system
 
-One illustration and interface style in many colours. Each colour is a theme (currently Black, Blue, Cyan, Gold, Gray, Green, Orange, Purple, Red, Rose, Teal, White); more are added from a single brand colour. Every theme has a **dark** and a **light** variant and works with three **type sets**.
+One illustration and interface style in many colours. Each colour is a theme (currently Black, Blue, Cyan, Gold, Gray, Green, Orange, Purple, Red, Rose, Teal, White); more are added from a single brand colour. Every theme has a **dark** and a **light** variant and works with seven **type sets** and many languages.
 
 The style: original **cut-away machines and buildings** and **close-up portrait scenes** drawn as flat vector, populated by **silhouette figures** who are *doing something*, lit by **one accent light**, with energy and information shown as **glowing flow lines**, on a deep ground under fine grain. The same tokens also drive a small **UI layer** and a written **voice**.
 
@@ -22,12 +22,13 @@ scripts/scenes.py        library of 24 ready cut-aways with their words
 scripts/social.py        scenes as square, 4:5 and 9:16 posts and loops
 scripts/deck.py          editable PowerPoint template in any colour
 scripts/brand.py         a new colour from a website, a logo or a hex value
+scripts/fonts.py         list, add and verify font packs (languages, type sets)
 scripts/new_theme.py     build a theme from one brand colour
 scripts/picker.py        render the two-step chooser
 scripts/export.py        CSS variables, fonts, Tailwind theme, UI demo
 scripts/intake.py        read reference images, suggest a theme
 ui/                      ui.css and demo.html (the UI layer)
-assets/fonts/            six families as woff2 (OFL)
+assets/fonts/            fonts as woff2 (OFL), manifest.json lists every file and pack
 assets/picker.jpg        step 1 of the chooser: every colour with its 50-950 ramp
 assets/picker/           step 2 of the chooser, one sheet per colour
 assets/reference/        rendered reference images per colour
@@ -38,7 +39,7 @@ references/              components.md, animation.md, voice.md, themes.md
 Choosing takes at most two short questions, each with a picture. Skip any part the user has already named, in this request or earlier in the conversation, and reuse the answers for the rest of the conversation.
 
 1. **Colour.** Show `assets/picker.jpg` (send or display the file): one tile per installed colour with its mood, its light and its 50-950 shade ramp. Ask which colour, recommending the one that fits the topic and destination.
-2. **Variant, type set and shade.** Show `assets/picker/<colour>.jpg`: the colour in dark and light, the three type sets, and the family's shade options with their ramps. Ask in **one** question: dark or light (recommend the theme's `default_variant`, or light for print and bright rooms), type set (recommend the theme's `default_type`), and shade (recommend the current one).
+2. **Variant, type set and shade.** Show `assets/picker/<colour>.jpg`: the colour in dark and light, the seven type sets, and the family's shade options with their ramps. Ask in **one** question: dark or light (recommend the theme's `default_variant`, or light for print and bright rooms), type set (recommend the theme's `default_type`), and shade (recommend the current one).
    - Another shade of the family (for example Burgundy instead of Maroon): build it with the same recipe, `python scripts/new_theme.py red_burgundy "#800020" --from red --preview out`, show the two previews, and use it once approved.
 
 Ask both as multiple-choice questions when the environment supports them.
@@ -134,15 +135,32 @@ Roles are the same in every theme; only the values differ.
 
 Derived gradients (metal, lit window, glow, light mask, cables, stars) are in the theme file under `fx` and are reached through `std_defs()`. `T.SERIES` is the ordered five-colour list for data series. `T.CORE_50` to `T.CORE_950` are the core colour's 11-step ramp from lightest to darkest (for charts, tints and UI states). `T.CORE_FILL` is the core, or the nearest ramp step that carries white text when the core cannot (burnt orange, for example); fill buttons with it and put `T.ON_CORE` on top.
 
-**Type.** Three type sets, chosen with `set_theme(type_set=...)`; fonts are reached as `F.DISPLAY`, `F.SANS`, `F.MONO` and sizes as `ts("title-lg")`:
+**Type.** Seven type sets, chosen with `set_theme(type_set=...)`; fonts are reached as `F.DISPLAY`, `F.SANS`, `F.MONO` and sizes as `ts("title-lg")`:
 
 | Set | Display | Sans | Mono | Mood |
 |---|---|---|---|---|
 | classic | PT Serif | Inter | JetBrains Mono | bookish, scholarly, calm |
 | modern | Space Grotesk | Inter | JetBrains Mono | technical, crisp, product-like |
 | editorial | Fraunces | Source Sans 3 | JetBrains Mono | magazine, expressive, warm |
+| technical | IBM Plex Serif | IBM Plex Sans | IBM Plex Mono | corporate, precise, engineered |
+| geometric | DM Serif Display | DM Sans | JetBrains Mono | clean, round, contemporary |
+| garamond | EB Garamond | Inter | JetBrains Mono | old-style, literary, humane |
+| swiss | Inter Tight | Inter | JetBrains Mono | neutral, dense, poster-like |
 
-Display is weight 400 for titles and label titles, never bold in running display text, never letter-spaced; the subtitle is italic (upright in modern). Sans 400 for body, 500 for the answer line. Mono for numbers, data labels, tags and code. Scale at a 1920 frame (in `system.json`): title-xl 132/1 · title-lg 44/50 · label-title 30/34 · subtitle 23/30 · answer 30/36, or 19 under title-lg (accent, **one per slide**) · lead 21/30 · body 16.5/24 · tag 15/20 mono · data 14/18 mono · credit 13/18 (text-muted). Nothing smaller than 13. One type set per piece. The fonts are bundled and embedded by the renderer, which stops with an error if one fails to load, so there is no silent fallback.
+Display is weight 400 for titles and label titles, never bold in running display text, never letter-spaced; the subtitle is italic (upright in modern and swiss). Sans 400 for body, 500 for the answer line. Mono for numbers, data labels, tags and code. Scale at a 1920 frame (in `system.json`): title-xl 132/1 · title-lg 44/50 · label-title 30/34 · subtitle 23/30 · answer 30/36, or 19 under title-lg (accent, **one per slide**) · lead 21/30 · body 16.5/24 · tag 15/20 mono · data 14/18 mono · credit 13/18 (text-muted). Nothing smaller than 13. One type set per piece. The fonts are bundled and embedded by the renderer, which stops with an error if one fails to load, so there is no silent fallback.
+
+**Languages.** Write the words on a piece in the user's language; the fonts follow automatically. Font packs (`python scripts/fonts.py list`):
+
+| Pack | Covers |
+|---|---|
+| core | Latin for classic, modern and editorial |
+| sets | Latin for technical, geometric, garamond and swiss |
+| europe | accented Latin (Polish, Czech, Turkish, Romanian and more) and Vietnamese |
+| cyrillic-greek | Russian, Ukrainian, Bulgarian, Serbian, Greek |
+| arabic | Persian, Arabic, Urdu, set right to left |
+
+This skill carries every pack.
+Where a set's own font lacks a script, its stack falls back to PT Serif or Inter, then Vazirmatn for Arabic script. Arabic-script text is set right to left: `title_block` moves to the top right, and every text block aligns to its right edge, so the slide keeps its columns and leader lines. Write right-to-left labels in the left or right column as usual. Text widths are estimates (Greek and Cyrillic about 12% wider), so check leader starts after changing language. Chinese, Japanese and Korean are not bundled; they render in the system font if one is installed.
 
 **Spacing:** 6 · 12 · 24 · 32 · 48 · 72 (slide margin). **Radius:** 2 · 6 · 12 · 32 (capsules = half the short side). **Fixed strengths** (in each theme): grain overlay 0.30 + screen 0.06 on dark, 0.22 overlay on light; rim light 0.5; vignette max 0.72 dark, 0.30 light.
 

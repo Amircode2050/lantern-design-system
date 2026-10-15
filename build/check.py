@@ -8,6 +8,7 @@
 - every generated skill carries the same engine as src/
 - the exported UI tokens keep buttons, text and links readable in every theme and variant
 - every library scene draws, and its labels point at anchors it defines
+- every font file matches its recorded hash, and each skill carries the font packs it should
 """
 
 import filecmp
@@ -73,6 +74,25 @@ def scene_check():
     return out
 
 
+def font_check(on_disk):
+    """Every font file matches its recorded hash; the master skill carries every pack, colour skills carry `core`."""
+    import hashlib
+
+    manifest = json.loads((REPO / "src" / "assets" / "fonts" / "manifest.json").read_text(encoding="utf-8"))
+    out = []
+    for name in ["src"] + sorted(on_disk):
+        folder = REPO / "src" / "assets" / "fonts" if name == "src" else REPO / "skills" / name / "assets" / "fonts"
+        want = {f["file"] for f in manifest["files"] if name in ("src", "lantern") or f["pack"] == "core"}
+        have = {p.stem for p in folder.glob("*.woff2")}
+        if have != want:
+            out.append(f"{name}: fonts {sorted(have ^ want)[:4]} differ from the packs it should carry")
+        for f in manifest["files"]:
+            p = folder / (f["file"] + ".woff2")
+            if p.exists() and hashlib.sha256(p.read_bytes()).hexdigest() != f["sha256"]:
+                out.append(f"{name}: {p.name} does not match its recorded hash")
+    return out
+
+
 def main():
     problems = list(check_tokens()) + ui_contrast() + scene_check()
 
@@ -102,6 +122,7 @@ def main():
             if not same_tree(REPO / "src" / part, skill / part):
                 problems.append(f"{name}: {part}/ differs from src/{part}; run python build/build.py --skip-render")
 
+    problems += font_check(on_disk)
     for p in problems:
         print("FAIL", p)
     print(f"{len(on_disk)} skills checked, {len(problems)} problem(s)")

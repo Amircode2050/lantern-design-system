@@ -14,14 +14,14 @@
   <a href="LICENSE"><img alt="Licence: Apache 2.0" src="https://img.shields.io/badge/licence-Apache%202.0-3366ff"></a>
   <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-1b4d3e">
   <img alt="Twelve colours" src="https://img.shields.io/badge/colours-12-d4af37">
-  <img alt="Version 1.0.2" src="https://img.shields.io/badge/version-1.0.2-7a1f2b">
+  <img alt="Version 1.1.0" src="https://img.shields.io/badge/version-1.1.0-7a1f2b">
 </p>
 
 ---
 
 Most slide decks explain with bullet points. Lantern explains with pictures: cut-away machines and buildings full of small figures at work, one warm light in the dark, glowing lines that show where energy and information flow. Ask for "a slide that explains how a data centre stays cool" and you get an original illustration, a title that asks the question, one line that answers it, and labels that point to the parts that matter.
 
-It comes in twelve colours, each with a dark and a light version, three type sets and a full shade ramp. The same colours drive a small web interface kit, so a deck, a report and a dashboard can look like one family.
+It comes in twelve colours, each with a dark and a light version, seven type sets, many languages and a full shade ramp. The same colours drive a small web interface kit, so a deck, a report and a dashboard can look like one family.
 
 <p align="center">
   <a href="https://amircode2050.github.io/lantern-design-system/"><b>Open the playground</b></a> ·
@@ -44,6 +44,7 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - [Choosing a look](#choosing-a-look)
 - [The colours](#the-colours)
 - [Type sets](#type-sets)
+- [Languages](#languages)
 - [Illustration modes and components](#illustration-modes-and-components)
 - [Animation](#animation)
 - [Interface kit and design tokens](#interface-kit-and-design-tokens)
@@ -63,7 +64,7 @@ It comes in twelve colours, each with a dark and a light version, three type set
 - **Twelve colour themes**, each in a dark and a light variant, with an 11-step shade ramp (50 to 950) and two alternative shades you can switch to.
 - **Two illustration modes**: cut-away scenes with many small figures, and close-up portraits with large characters and a single beam of light.
 - **About forty drawing components**: factory roofs, storm clouds, batteries, conveyors, server racks, domes, a watchtower, a saucer with a tractor beam, profile busts, robots, light cones and the lantern itself.
-- **Three type sets**, every font bundled, so nothing falls back to Arial on someone else's machine.
+- **Seven type sets** and **many languages** (accented Latin, Vietnamese, Cyrillic, Greek, and right-to-left Persian and Arabic), every font bundled or one command away, so nothing falls back to Arial on someone else's machine.
 - **Seamless looping animation** as GIF and MP4, with an automatic seam check.
 - **An interface kit**: CSS variables, a Tailwind theme and eight components, in any colour.
 - **A theme generator** that turns one brand colour into a complete theme and checks every text colour for contrast.
@@ -85,7 +86,7 @@ The **[Lantern playground](https://amircode2050.github.io/lantern-design-system/
 
 | On the page | What you can do |
 |---|---|
-| Pick a colour | Switch between the twelve colours, dark or light, and the three type sets. |
+| Pick a colour | Switch between the twelve colours, dark or light, and the seven type sets. |
 | Six scenes | See the supply chain, the cloud, a data centre, a power grid, a knowledge base and a sales funnel in the chosen colour. |
 | The shade ramp | Copy any of the eleven shades, 50 to 950, with one click. |
 | The interface kit | See buttons, cards, a form and a stat in that colour. |
@@ -123,14 +124,14 @@ The page remembers your last choice in your own browser and sends nothing anywhe
 24 cut-aways, ready to drop into a deck. Each comes in every colour and both variants, carries its own words (a question, an answer line and three labels), and moves as a seamless loop. Shown here across the twelve colours.
 
 <table>
-<tr><td width="33%" valign="top"><img src="docs/site/lib/supply_chain.jpg" alt="Cut-away of a factory and a warehouse, with a van carrying a lit parcel along a road to a house." width="100%"><br><b>How does a parcel reach your door?</b><br><code>supply_chain</code></td><td width="33%" valign="top"><img src="docs/site/lib/data_pipeline.jpg" alt="Homes and a shop send glowing records along pipes into a hall of servers, then a store, then a big screen." width="100%"><br><b>Where does a dashboard's number come from?</b><br><code>data_pipeline</code></td><td width="33%" valign="top"><img src="docs/site/lib/data_centre.jpg" alt="Cut-away data centre with rows of server racks, coolant pipes looping to chillers on the roof and a lit control room." width="100%"><br><b>How does a data centre stay cool?</b><br><code>data_centre</code></td></tr>
-<tr><td width="33%" valign="top"><img src="docs/site/lib/power_grid.jpg" alt="Wind turbines and solar panels feed glowing power lines over pylons to a substation and a street of lit homes." width="100%"><br><b>How does power reach a home?</b><br><code>power_grid</code></td><td width="33%" valign="top"><img src="docs/site/lib/internet.jpg" alt="A person at a lit desk at home, cables through an exchange building to a server hall, with information flowing both ways." width="100%"><br><b>What happens when you open a web page?</b><br><code>internet</code></td><td width="33%" valign="top"><img src="docs/site/lib/org_team.jpg" alt="A three-storey cut-away office: leads at a board on top, makers at benches in the middle, support staff below." width="100%"><br><b>Who does what on a team?</b><br><code>org_team</code></td></tr>
-<tr><td width="33%" valign="top"><img src="docs/site/lib/sales_funnel.jpg" alt="A building of four floors that narrows downward like a funnel: crowds on top, one buyer carrying a lit parcel at the bottom." width="100%"><br><b>Why do most visitors never buy?</b><br><code>sales_funnel</code></td><td width="33%" valign="top"><img src="docs/site/lib/research_lab.jpg" alt="A domed laboratory in cut-away: an orrery under the dome, benches and machines below, and a library on the ground floor." width="100%"><br><b>How does a lab turn questions into results?</b><br><code>research_lab</code></td><td width="33%" valign="top"><img src="docs/site/lib/model_training.jpg" alt="Shelves of examples ride a conveyor into a hall of servers around a glowing core, with a falling error line on a screen." width="100%"><br><b>How does a model learn from examples?</b><br><code>model_training</code></td></tr>
-<tr><td width="33%" valign="top"><img src="docs/site/lib/water_supply.jpg" alt="Rain falls on a reservoir; water flows through a treatment plant, up a water tower and down to houses." width="100%"><br><b>How does clean water reach a tap?</b><br><code>water_supply</code></td><td width="33%" valign="top"><img src="docs/site/lib/hospital.jpg" alt="A three-storey hospital in cut-away: a ward of beds on top, a lab in the middle, an ambulance bay and front desk below." width="100%"><br><b>What keeps a hospital running at night?</b><br><code>hospital</code></td><td width="33%" valign="top"><img src="docs/site/lib/school.jpg" alt="A school in cut-away: a classroom of pupils facing a teacher, a library upstairs, and a yard with trees outside." width="100%"><br><b>What makes a school work?</b><br><code>school</code></td></tr>
-<tr><td width="33%" valign="top"><img src="docs/site/lib/bank.jpg" alt="A cut-away bank: money flows in from a saver's house, out to a home and a workshop, and a small reserve in the vault." width="100%"><br><b>Where does your deposit go?</b><br><code>bank</code></td><td width="33%" valign="top"><img src="docs/site/lib/support_desk.jpg" alt="An office in cut-away: tickets ride a conveyor to agents at desks, and a few climb to engineers at server racks upstairs." width="100%"><br><b>How does a support ticket get solved?</b><br><code>support_desk</code></td><td width="33%" valign="top"><img src="docs/site/lib/newsroom.jpg" alt="A newspaper building in cut-away: a dish brings stories to editors upstairs, a press prints below, and a van drives off." width="100%"><br><b>How does a story reach print?</b><br><code>newsroom</code></td></tr>
-<tr><td width="33%" valign="top"><img src="docs/site/lib/retail_store.jpg" alt="A shop in cut-away: customers at shelves in front, a stock room behind, an office upstairs and a van at the loading dock." width="100%"><br><b>What sits behind a shop shelf?</b><br><code>retail_store</code></td><td width="33%" valign="top"><img src="docs/site/lib/farm_to_table.jpg" alt="An orchard, a packing barn, a van on the road and a lit restaurant kitchen with diners at a table." width="100%"><br><b>How does food get from field to plate?</b><br><code>farm_to_table</code></td><td width="33%" valign="top"><img src="docs/site/lib/knowledge_base.jpg" alt="A domed reading room in cut-away: shelves on curved galleries, a shaft of light from the oculus onto a reader's desk." width="100%"><br><b>How does a knowledge base answer a question?</b><br><code>knowledge_base</code></td></tr>
-<tr><td width="33%" valign="top"><img src="docs/site/lib/network_defence.jpg" alt="A walled compound at night: a lit watchtower with sight lines over a server building, a guarded gate and a storm outside." width="100%"><br><b>How is a network defended?</b><br><code>network_defence</code></td><td width="33%" valign="top"><img src="docs/site/lib/cloud_computing.jpg" alt="A big soft cloud with a beam of light dropping from it into a cut-away building full of server racks, linked to homes and offices." width="100%"><br><b>What is the cloud, really?</b><br><code>cloud_computing</code></td><td width="33%" valign="top"><img src="docs/site/lib/remote_team.jpg" alt="Four small lit homes, each with a person at a desk, linked by flowing lines to a central hub on a hill." width="100%"><br><b>How does a team stay in step from home?</b><br><code>remote_team</code></td></tr>
-<tr><td width="33%" valign="top"><img src="docs/site/lib/recycling.jpg" alt="A loop of glowing dots: a house, a van, a sorting plant, a factory and a shop, then back to the house." width="100%"><br><b>Where does a bottle go after the bin?</b><br><code>recycling</code></td><td width="33%" valign="top"><img src="docs/site/lib/startup_growth.jpg" alt="A garage with two people, a small office and a four-storey building in a row, growing left to right under a bar chart." width="100%"><br><b>How does a small team become a company?</b><br><code>startup_growth</code></td><td width="33%" valign="top"><img src="docs/site/lib/mission_control.jpg" alt="A mission control room of consoles facing a big screen, a dish outside, and a dotted signal arcing up to a ship." width="100%"><br><b>How does mission control talk to a ship?</b><br><code>mission_control</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/supply_chain.webp" alt="Cut-away of a factory and a warehouse, with a van carrying a lit parcel along a road to a house." width="100%"><br><b>How does a parcel reach your door?</b><br><code>supply_chain</code></td><td width="33%" valign="top"><img src="docs/site/lib/data_pipeline.webp" alt="Homes and a shop send glowing records along pipes into a hall of servers, then a store, then a big screen." width="100%"><br><b>Where does a dashboard's number come from?</b><br><code>data_pipeline</code></td><td width="33%" valign="top"><img src="docs/site/lib/data_centre.webp" alt="Cut-away data centre with rows of server racks, coolant pipes looping to chillers on the roof and a lit control room." width="100%"><br><b>How does a data centre stay cool?</b><br><code>data_centre</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/power_grid.webp" alt="Wind turbines and solar panels feed glowing power lines over pylons to a substation and a street of lit homes." width="100%"><br><b>How does power reach a home?</b><br><code>power_grid</code></td><td width="33%" valign="top"><img src="docs/site/lib/internet.webp" alt="A person at a lit desk at home, cables through an exchange building to a server hall, with information flowing both ways." width="100%"><br><b>What happens when you open a web page?</b><br><code>internet</code></td><td width="33%" valign="top"><img src="docs/site/lib/org_team.webp" alt="A three-storey cut-away office: leads at a board on top, makers at benches in the middle, support staff below." width="100%"><br><b>Who does what on a team?</b><br><code>org_team</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/sales_funnel.webp" alt="A building of four floors that narrows downward like a funnel: crowds on top, one buyer carrying a lit parcel at the bottom." width="100%"><br><b>Why do most visitors never buy?</b><br><code>sales_funnel</code></td><td width="33%" valign="top"><img src="docs/site/lib/research_lab.webp" alt="A domed laboratory in cut-away: an orrery under the dome, benches and machines below, and a library on the ground floor." width="100%"><br><b>How does a lab turn questions into results?</b><br><code>research_lab</code></td><td width="33%" valign="top"><img src="docs/site/lib/model_training.webp" alt="Shelves of examples ride a conveyor into a hall of servers around a glowing core, with a falling error line on a screen." width="100%"><br><b>How does a model learn from examples?</b><br><code>model_training</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/water_supply.webp" alt="Rain falls on a reservoir; water flows through a treatment plant, up a water tower and down to houses." width="100%"><br><b>How does clean water reach a tap?</b><br><code>water_supply</code></td><td width="33%" valign="top"><img src="docs/site/lib/hospital.webp" alt="A three-storey hospital in cut-away: a ward of beds on top, a lab in the middle, an ambulance bay and front desk below." width="100%"><br><b>What keeps a hospital running at night?</b><br><code>hospital</code></td><td width="33%" valign="top"><img src="docs/site/lib/school.webp" alt="A school in cut-away: a classroom of pupils facing a teacher, a library upstairs, and a yard with trees outside." width="100%"><br><b>What makes a school work?</b><br><code>school</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/bank.webp" alt="A cut-away bank: money flows in from a saver's house, out to a home and a workshop, and a small reserve in the vault." width="100%"><br><b>Where does your deposit go?</b><br><code>bank</code></td><td width="33%" valign="top"><img src="docs/site/lib/support_desk.webp" alt="An office in cut-away: tickets ride a conveyor to agents at desks, and a few climb to engineers at server racks upstairs." width="100%"><br><b>How does a support ticket get solved?</b><br><code>support_desk</code></td><td width="33%" valign="top"><img src="docs/site/lib/newsroom.webp" alt="A newspaper building in cut-away: a dish brings stories to editors upstairs, a press prints below, and a van drives off." width="100%"><br><b>How does a story reach print?</b><br><code>newsroom</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/retail_store.webp" alt="A shop in cut-away: customers at shelves in front, a stock room behind, an office upstairs and a van at the loading dock." width="100%"><br><b>What sits behind a shop shelf?</b><br><code>retail_store</code></td><td width="33%" valign="top"><img src="docs/site/lib/farm_to_table.webp" alt="An orchard, a packing barn, a van on the road and a lit restaurant kitchen with diners at a table." width="100%"><br><b>How does food get from field to plate?</b><br><code>farm_to_table</code></td><td width="33%" valign="top"><img src="docs/site/lib/knowledge_base.webp" alt="A domed reading room in cut-away: shelves on curved galleries, a shaft of light from the oculus onto a reader's desk." width="100%"><br><b>How does a knowledge base answer a question?</b><br><code>knowledge_base</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/network_defence.webp" alt="A walled compound at night: a lit watchtower with sight lines over a server building, a guarded gate and a storm outside." width="100%"><br><b>How is a network defended?</b><br><code>network_defence</code></td><td width="33%" valign="top"><img src="docs/site/lib/cloud_computing.webp" alt="A big soft cloud with a beam of light dropping from it into a cut-away building full of server racks, linked to homes and offices." width="100%"><br><b>What is the cloud, really?</b><br><code>cloud_computing</code></td><td width="33%" valign="top"><img src="docs/site/lib/remote_team.webp" alt="Four small lit homes, each with a person at a desk, linked by flowing lines to a central hub on a hill." width="100%"><br><b>How does a team stay in step from home?</b><br><code>remote_team</code></td></tr>
+<tr><td width="33%" valign="top"><img src="docs/site/lib/recycling.webp" alt="A loop of glowing dots: a house, a van, a sorting plant, a factory and a shop, then back to the house." width="100%"><br><b>Where does a bottle go after the bin?</b><br><code>recycling</code></td><td width="33%" valign="top"><img src="docs/site/lib/startup_growth.webp" alt="A garage with two people, a small office and a four-storey building in a row, growing left to right under a bar chart." width="100%"><br><b>How does a small team become a company?</b><br><code>startup_growth</code></td><td width="33%" valign="top"><img src="docs/site/lib/mission_control.webp" alt="A mission control room of consoles facing a big screen, a dish outside, and a dotted signal arcing up to a ship." width="100%"><br><b>How does mission control talk to a ship?</b><br><code>mission_control</code></td></tr>
 </table>
 
 ```bash
@@ -237,7 +238,7 @@ The master skill asks at most two short questions, each with a picture, and reme
 
 <p align="center"><img src="docs/images/picker.jpg" alt="The colour picker" width="100%"></p>
 
-**Step two, the details.** That colour in dark and light, the three type sets, and the family's shade options. Pick a different shade (Burgundy instead of Maroon, say) and the skill builds it on the spot with the same recipe.
+**Step two, the details.** That colour in dark and light, the seven type sets, and the family's shade options. Pick a different shade (Burgundy instead of Maroon, say) and the skill builds it on the spot with the same recipe.
 
 <p align="center"><img src="docs/images/colors/red.jpg" alt="Step two for Red: dark and light, type sets and shade options" width="100%"></p>
 
@@ -577,15 +578,43 @@ A deep rose ground (#C2185B), with one champagne-gold light. Best for culture, w
 
 ## Type sets
 
-<p align="center"><img src="docs/images/type-sets.jpg" alt="Classic, Modern and Editorial type sets" width="100%"></p>
+<p align="center"><img src="docs/images/type-sets.jpg" alt="The seven type sets: Classic, Modern, Editorial, Technical, Geometric, Garamond and Swiss" width="100%"></p>
 
 | Set | Display | Text | Numbers and code | Mood |
 |---|---|---|---|---|
 | Classic | PT Serif | Inter | JetBrains Mono | bookish, scholarly, calm |
 | Modern | Space Grotesk | Inter | JetBrains Mono | technical, crisp, product-like |
 | Editorial | Fraunces | Source Sans 3 | JetBrains Mono | magazine, expressive, warm |
+| Technical | IBM Plex Serif | IBM Plex Sans | IBM Plex Mono | corporate, precise, engineered |
+| Geometric | DM Serif Display | DM Sans | JetBrains Mono | clean, round, contemporary |
+| Garamond | EB Garamond | Inter | JetBrains Mono | old-style, literary, humane |
+| Swiss | Inter Tight | Inter | JetBrains Mono | neutral, dense, poster-like |
 
 Any type set works with any colour. The scale is fixed so pieces stay consistent: a 132-point word for break slides, 44 for titles, 30 for labels, 16.5 for body text, and nothing smaller than 13.
+
+## Languages
+
+<p align="center"><img src="docs/images/languages.jpg" alt="The same slide in Polish, Vietnamese, Russian, Greek, Persian and Arabic" width="100%"></p>
+
+Write the words in your language and Lantern picks the right letters. Persian, Arabic and Urdu are set right to left: titles move to the top right and every text block aligns to its right edge, while the picture and its labels keep their places.
+
+| Font pack | Covers | Size |
+|---|---|---|
+| `core` | English and other plain-Latin languages, for Classic, Modern and Editorial | 0.35 MB |
+| `sets` | the Technical, Geometric, Garamond and Swiss type sets | 0.40 MB |
+| `europe` | Polish, Czech, Slovak, Hungarian, Romanian, Turkish, the Baltic languages, Vietnamese and more | 0.97 MB |
+| `cyrillic-greek` | Russian, Ukrainian, Bulgarian, Serbian, Kazakh, Greek and more | 0.82 MB |
+| `arabic` | Persian, Arabic, Urdu (Vazirmatn) | 0.06 MB |
+
+The master `lantern` skill includes every pack. A colour skill includes `core`; add the others when you need them:
+
+```bash
+python scripts/fonts.py list              # what is installed
+python scripts/fonts.py add sets europe   # or: add all
+python scripts/fonts.py verify            # check every file against its recorded hash
+```
+
+`fonts.py` downloads only the files pinned in `assets/fonts/manifest.json`, from jsDelivr's mirror of the [Fontsource](https://fontsource.org) packages, and keeps a file only if its SHA-256 hash matches. Chinese, Japanese and Korean are not bundled yet; they render in your system's font if it has one.
 
 ## Illustration modes and components
 

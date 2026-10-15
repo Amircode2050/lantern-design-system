@@ -13,6 +13,7 @@ import json
 import math
 import os
 import random
+import re
 import shutil
 import subprocess
 import textwrap
@@ -513,35 +514,51 @@ def svg_doc(defs, body, alt=""):
 _ADV = {
     v["stack"]: v["adv"] for v in SYS["fonts"].values()
 }  # average advance per em: good to about 5%; measure in the browser if a layout needs exact widths
+_RTL = re.compile("[\u0590-\u08ff\ufb1d-\ufdff\ufe70-\ufefc]")  # Hebrew and Arabic script: set right to left
+
+
+def is_rtl(s):
+    return bool(_RTL.search(s))
 
 
 def text_width(s, size, family=None):
-    return len(s) * size * _ADV[family or F.SANS]
+    adv = SYS["fonts"]["Vazirmatn"]["adv"] if is_rtl(s) else _ADV[family or F.SANS]
+    if not is_rtl(s) and any(ord(ch) > 0x24F for ch in s):  # ponytail: Greek and Cyrillic run about 12% wider
+        adv *= 1.12
+    return len(s) * size * adv
 
 
-def text(x, y, s, size=None, fill=None, family=None, extra=""):
-    return f'<text x="{f2(x)}" y="{f2(y)}" font-family="{family or F.SANS}" font-size="{size or ts("body")}" fill="{fill or T.T2}" {extra}>{esc(s)}</text>'
+def text(x, y, s, size=None, fill=None, family=None, extra="", right=None):
+    """One line of text with its left edge at x. Right-to-left text (Arabic script) is set right to left and aligned
+    to `right` (the right edge of its block), or to its own measured width when no block edge is given."""
+    family, size = family or F.SANS, size or ts("body")
+    if is_rtl(s) and "text-anchor" not in extra:
+        x = right if right is not None else x + text_width(s, size, family)
+        extra += ' direction="rtl"'
+    return f'<text x="{f2(x)}" y="{f2(y)}" font-family="{family}" font-size="{size}" fill="{fill or T.T2}" {extra}>{esc(s)}</text>'
 
 
 def title_block(title_lines, subtitle=None, answer=None, x=72, y=100):
-    """Question in display serif (<=2 lines), an optional subtitle in italic, one answer line in the accent."""
-    s = "".join(text(x, y + i * 50, t, ts("title-lg"), T.T1, F.DISPLAY) for i, t in enumerate(title_lines))
+    """Question in display serif (<=2 lines), an optional subtitle in italic, one answer line in the accent.
+    A right-to-left title (Arabic script) mirrors to the top right and aligns right."""
+    edge = C.W - x if is_rtl("".join(title_lines)) else None
+    s = "".join(text(x, y + i * 50, t, ts("title-lg"), T.T1, F.DISPLAY, right=edge) for i, t in enumerate(title_lines))
     yy = y + (len(title_lines) - 1) * 50
     if subtitle:
         yy += 40
-        s += text(x + 1, yy, subtitle, ts("subtitle"), T.T2, F.DISPLAY, f'font-style="{F.SUB_STYLE}"')
+        s += text(x + 1, yy, subtitle, ts("subtitle"), T.T2, F.DISPLAY, f'font-style="{F.SUB_STYLE}"', right=edge)
     if answer:
         yy += 38
-        s += text(x + 2, yy, answer, ts("answer-sm"), T.W300, F.SANS, 'font-weight="500"')
+        s += text(x + 2, yy, answer, ts("answer-sm"), T.W300, F.SANS, 'font-weight="500"', right=edge)
     return s
 
 
 def callout(x, y, title, lines, anchor, side="left", tag=None):
     """Label + leader. side='left' = label in the left column (leader leaves from its right edge, measured from the text).
     tag = (prefix, body) or None; e.g. ("Step", "final check")."""
-    s = [text(x, y, title, ts("label-title"), T.T1, F.DISPLAY)]
-    s += [text(x, y + 32 + i * 24, ln, ts("body"), T.T2) for i, ln in enumerate(lines)]
     wid = max([text_width(title, ts("label-title"), F.DISPLAY)] + [text_width(ln, ts("body")) for ln in lines])
+    s = [text(x, y, title, ts("label-title"), T.T1, F.DISPLAY, right=x + wid)]
+    s += [text(x, y + 32 + i * 24, ln, ts("body"), T.T2, right=x + wid) for i, ln in enumerate(lines)]
     if tag:
         pre, body = tag
         tag_size = ts("tag")
@@ -565,10 +582,19 @@ def callout(x, y, title, lines, anchor, side="left", tag=None):
 
 
 def break_slide(word="Break", answer="Back in 15 minutes", aside=(), x=1300, y=440):
-    s = text(x, y, word, ts("title-xl"), T.T1, F.DISPLAY) + text(
-        x + 4, y + 58, answer, ts("answer"), T.W300, F.SANS, 'font-weight="500"'
+    edge = (
+        x
+        + max(
+            [text_width(word, ts("title-xl"), F.DISPLAY), text_width(answer, ts("answer"))]
+            + [text_width(a, ts("lead")) for a in aside]
+        )
+        if is_rtl(word + answer)
+        else None
     )
-    return s + "".join(text(x + 4, y + 110 + i * 30, ln, ts("lead"), T.T2) for i, ln in enumerate(aside))
+    s = text(x, y, word, ts("title-xl"), T.T1, F.DISPLAY, right=edge) + text(
+        x + 4, y + 58, answer, ts("answer"), T.W300, F.SANS, 'font-weight="500"', right=edge
+    )
+    return s + "".join(text(x + 4, y + 110 + i * 30, ln, ts("lead"), T.T2, right=edge) for i, ln in enumerate(aside))
 
 
 def credit(s, margin=72):
@@ -576,22 +602,67 @@ def credit(s, margin=72):
 
 
 # ---------- rendering ----------
-_FONT_FILES = {fam: v["files"] for fam, v in SYS["fonts"].items()}
-_font_css_cache = {}
+FONT_DIR = ROOT / "assets" / "fonts"
+FONT_MANIFEST = json.loads((FONT_DIR / "manifest.json").read_text(encoding="utf-8"))
+_FONT_FILES = {}  # family -> manifest entries, each with its unicode ranges parsed
+for _f in FONT_MANIFEST["files"]:
+    _f["spans"] = [
+        tuple(int(v, 16) for v in (part[2:].split("-") * 2)[:2])
+        for part in _f["range"].split(",")
+        if part.startswith("U+")
+    ]
+    _FONT_FILES.setdefault(_f["family"], []).append(_f)
+_font_face_cache = {}
 
 
-def font_css(families=None):
-    """@font-face rules with the bundled woff2 files embedded (works in a blank page and in any HTML editor)."""
+def font_installed(entry):
+    return (FONT_DIR / (entry["file"] + ".woff2")).exists()
+
+
+def font_packs():
+    """{pack: (files present, files in the pack)}. Missing packs are added with scripts/fonts.py."""
+    out = {}
+    for f in FONT_MANIFEST["files"]:
+        have, total = out.get(f["pack"], (0, 0))
+        out[f["pack"]] = (have + font_installed(f), total + 1)
+    return out
+
+
+def stack_families(stack):
+    """The bundled families named in a CSS font stack, in order."""
+    return [n for n in (p.strip().strip("'\"") for p in stack.split(",")) if n in _FONT_FILES]
+
+
+def font_css(families=None, text=None):
+    """@font-face rules with the font files embedded (works in a blank page and in any HTML editor). Each rule carries
+    its unicode-range, so browsers use a subset only where its characters appear. With `text`, subsets whose characters
+    do not appear in it are left out entirely, which keeps renders light."""
+    codes = None if text is None else {ord(ch) for ch in text if ord(ch) > 0x7E}
     out = []
     for fam in families or _FONT_FILES:
-        if fam not in _font_css_cache:
-            _font_css_cache[fam] = "".join(
-                f"@font-face{{font-family:'{fam}';font-weight:{w};font-style:{st};src:url(data:font/woff2;base64,"
-                f"{base64.b64encode((ROOT / 'assets' / 'fonts' / (fn + '.woff2')).read_bytes()).decode()}) format('woff2');}}"
-                for w, st, fn in _FONT_FILES[fam]
-            )
-        out.append(_font_css_cache[fam])
+        for f in _FONT_FILES.get(fam, []):
+            if not font_installed(f):
+                continue
+            if (
+                codes is not None
+                and f["subset"] != "latin"
+                and not any(lo <= c <= hi for c in codes for lo, hi in f["spans"])
+            ):
+                continue
+            if f["file"] not in _font_face_cache:
+                data = base64.b64encode((FONT_DIR / (f["file"] + ".woff2")).read_bytes()).decode()
+                _font_face_cache[f["file"]] = (
+                    f"@font-face{{font-family:'{fam}';font-weight:{f['weight']};font-style:{f['style']};"
+                    f"unicode-range:{f['range']};src:url(data:font/woff2;base64,{data}) format('woff2');}}"
+                )
+            out.append(_font_face_cache[f["file"]])
     return "".join(out)
+
+
+def _missing_font(fam):
+    """Error text for a type set whose own font is not installed in this skill."""
+    pack = next((f["pack"] for f in _FONT_FILES.get(fam, []) if f["subset"] == "latin"), "core")
+    return f"the font '{fam}' is not installed here; add it with: python scripts/fonts.py add {pack}"
 
 
 def _offline(pg):
@@ -604,10 +675,15 @@ def _offline(pg):
 
 
 def _shoot(pg, svg, path, transparent=False):
-    used = [f for f in _FONT_FILES if f in svg] if "<text" in svg else []
+    has_text = "<text" in svg
+    named = [f for f in _FONT_FILES if f in svg] if has_text else []
+    used = sorted({m for m in re.findall(r"font-family=\"'?([^,'\"]+)", svg) if m in _FONT_FILES}) if has_text else []
+    for fam in used:
+        if not any(font_installed(f) for f in _FONT_FILES[fam]):
+            raise RuntimeError(_missing_font(fam))
     bg = "transparent" if transparent else T.G950
     pg.set_content(
-        f"<!doctype html><html><head><style>{font_css(used)}html,body{{margin:0;background:{bg}}}svg{{display:block}}</style></head><body>{svg}</body></html>"
+        f"<!doctype html><html><head><style>{font_css(named, svg)}html,body{{margin:0;background:{bg}}}svg{{display:block}}</style></head><body>{svg}</body></html>"
     )
     if used:
         bad = pg.evaluate(
@@ -615,7 +691,9 @@ def _shoot(pg, svg, path, transparent=False):
             used,
         )
         if bad:
-            raise RuntimeError(f"fonts failed to load: {bad} (check assets/fonts)")
+            raise RuntimeError(
+                f"fonts failed to load: {bad} (check assets/fonts, or run python scripts/fonts.py verify)"
+            )
     pg.screenshot(path=path, clip={"x": 0, "y": 0, "width": C.W, "height": C.H}, omit_background=transparent)
 
 
@@ -926,16 +1004,21 @@ def doctor():
         need.append("install ffmpeg (only needed for GIF/MP4)")
     if importlib.util.find_spec("pptx") is None:
         need.append("pip install python-pptx (only needed for slide templates)")
-    missing_fonts = [
-        fn
-        for fam in _FONT_FILES.values()
-        for _, _, fn in fam
-        if not (ROOT / "assets" / "fonts" / (fn + ".woff2")).exists()
-    ]
-    if missing_fonts:
-        need.append(f"restore font files in assets/fonts: {missing_fonts}")
+    packs = font_packs()
+    if packs["core"][0] < packs["core"][1]:
+        need.append("restore the core fonts: python scripts/fonts.py add core")
     need += check_tokens()
     print(f"kit ({', '.join(colors())}): " + ("ready" if not need else "missing -> " + "; ".join(need)))
+    extra = [k for k, (have, total) in packs.items() if k != "core" and have < total]
+    print(
+        "font packs: "
+        + ", ".join(k for k, (have, total) in packs.items() if have == total)
+        + (
+            f" (optional, not installed: {', '.join(extra)}; add with python scripts/fonts.py add <pack>)"
+            if extra
+            else ""
+        )
+    )
     return not need
 
 

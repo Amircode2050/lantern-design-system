@@ -34,6 +34,8 @@ jobs:
         run: python build/check.py
       - name: Brand reader refuses local and non-web addresses
         run: python src/scripts/brand.py --selftest
+      - name: Every font matches its recorded hash
+        run: python src/scripts/fonts.py verify
       - name: Generated skills match the source
         run: |
           python build/build.py --skip-render
@@ -72,3 +74,6 @@ jobs:
           python "$GITHUB_WORKSPACE/src/scripts/scenes.py" all teal light
           python "$GITHUB_WORKSPACE/src/scripts/social.py" power_grid story orange
           python "$GITHUB_WORKSPACE/src/scripts/deck.py" green --out green.pptx
+      - name: Six languages, right to left included
+        working-directory: ${{ runner.temp }}
+        run: python "$GITHUB_WORKSPACE/src/scripts/examples.py" languages

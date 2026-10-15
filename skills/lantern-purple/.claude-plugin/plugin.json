@@ -1,8 +1,8 @@
 {
   "name": "lantern-purple",
   "displayName": "Lantern Purple",
-  "version": "1.0.2",
-  "description": "Lantern Purple: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Purple colour theme (night-violet ground, one warm peach light, grain, silhouette figures, glowing flow lines), in dark or light with three type sets.",
+  "version": "1.1.0",
+  "description": "Lantern Purple: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Purple colour theme (night-violet ground, one warm peach light, grain, silhouette figures, glowing flow lines), in dark or light with seven type sets.",
   "author": {
     "name": "Lantern contributors",
     "url": "https://github.com/Amircode2050/lantern-design-system"

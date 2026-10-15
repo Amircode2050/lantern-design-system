@@ -103,7 +103,7 @@ def scene_table():
     import scenes
 
     cells = [
-        f'<td width="33%" valign="top"><img src="docs/site/lib/{n}.jpg" alt="{sc["alt"]}" width="100%"><br>'
+        f'<td width="33%" valign="top"><img src="docs/site/lib/{n}.webp" alt="{sc["alt"]}" width="100%"><br>'
         f"<b>{' '.join(sc['title'])}</b><br><code>{n}</code></td>"
         for n, sc in scenes.SCENES.items()
     ]

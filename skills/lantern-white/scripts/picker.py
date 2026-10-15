@@ -1,7 +1,7 @@
 """picker: render the two-step chooser shown to the user before a design starts.
 
     python picker.py              step 1, the overview: every installed colour with its 50-950 ramp -> ../assets/picker.jpg
-    python picker.py red          step 2 for one colour: dark and light, the three type sets, its shade options
+    python picker.py red          step 2 for one colour: dark and light, the seven type sets, its shade options
                                   -> ../assets/picker/red.jpg
     python picker.py --all        both steps for every colour
 
@@ -155,17 +155,21 @@ def detail(color, out):
     sets = list(SYS["type_sets"])
     shades = load_theme(color).get("shades") or [1]
     sh_h = 100 + 56 * len(shades)
-    sheet = Image.new("RGB", (TW * 2, TH + round(TH * 2 / 3) + sh_h // 1), BG)
+    per = 4  # type sets in rows of four, each tile keeping the 16:9 shape
+    tw, th = TW * 2 // per, TH * 2 // per
+    type_h = th * ((len(sets) + per - 1) // per)
+    sheet = Image.new("RGB", (TW * 2, TH + type_h + sh_h), BG)
     for c, variant in enumerate(("dark", "light")):
         set_theme(variant, color)
         sheet.paste(_render(variant_tile(), tmp, variant), (c * TW, 0))
-    tw = TW * 2 // len(sets)
     for i, s in enumerate(sets):
         set_theme("dark", color, s)
-        sheet.paste(_render(type_tile(), tmp, s).resize((tw, round(TH * 2 / 3)), Image.LANCZOS), (i * tw, TH))
+        sheet.paste(
+            _render(type_tile(), tmp, s).resize((tw, th), Image.LANCZOS), ((i % per) * tw, TH + (i // per) * th)
+        )
     set_theme("dark", color)
     set_canvas(TW * 2, sh_h)
-    sheet.paste(_render(shades_tile(sh_h), tmp, "shades"), (0, TH + round(TH * 2 / 3)))
+    sheet.paste(_render(shades_tile(sh_h), tmp, "shades"), (0, TH + type_h))
     set_canvas(TW, TH)
     sheet.save(out, quality=88)
     return out
