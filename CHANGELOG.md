@@ -2,6 +2,11 @@
 
 All notable changes to this project are recorded here. Versions follow [semantic versioning](https://semver.org): a new colour or component is a minor release, a change that breaks existing scenes or token names is a major one.
 
+## Unreleased
+
+- The minimum Pillow version is now 12.3.0, which carries recent security fixes.
+- CI uses the current `actions/checkout` and `actions/setup-python`, still pinned to exact commits. Dependabot now raises a minimum version only when it has to.
+
 ## 1.0.1
 
 Security and robustness.

@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="../../actions/workflows/check.yml"><img alt="Checks" src="https://github.com/Amircode2050/lantern-design-system/actions/workflows/check.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="Licence: Apache 2.0" src="https://img.shields.io/badge/licence-Apache%202.0-3366ff"></a>
   <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-1b4d3e">
   <img alt="Twelve colours" src="https://img.shields.io/badge/colours-12-d4af37">

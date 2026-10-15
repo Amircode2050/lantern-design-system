@@ -4,7 +4,12 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: monthly
+    # requirements are minimum versions: raise one only when a release falls outside it or for a security fix
+    versioning-strategy: increase-if-necessary
