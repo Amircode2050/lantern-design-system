@@ -2,6 +2,15 @@
 
 All notable changes to this project are recorded here. Versions follow [semantic versioning](https://semver.org): a new colour or component is a minor release, a change that breaks existing scenes or token names is a major one.
 
+## 1.0.1
+
+Security and robustness.
+
+- `brand.py` reads public web addresses only: local, private and non-web addresses are refused, every redirect is checked, and compressed pages are unpacked within the same 2 MB limit. `brand.py --selftest` checks this, and CI runs it.
+- Websites that send compressed pages unasked are now read correctly.
+- The master skill's description no longer trips a prompt-injection rule in skill scanners.
+- CI actions are pinned to exact commits, with Dependabot keeping them current.
+
 ## 1.0.0
 
 First public release.

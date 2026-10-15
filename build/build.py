@@ -22,7 +22,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC, TEMPLATES, PLUGINS, DIST = REPO / "src", REPO / "build" / "templates", REPO / "plugins", REPO / "dist"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 BRAND = "lantern"
 sys.path.insert(0, str(SRC / "scripts"))
 from new_theme import NAMES as GENERIC  # noqa: E402
@@ -239,7 +239,7 @@ def keep_mode(md, keep):
 def descriptions(themes):
     names = ", ".join(t["name"] for t in themes.values())
     master = (
-        "Lantern design system: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated figures, title and break slides, GIF/MP4 loops "
+        "Lantern, a design system for illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated figures, title and break slides, GIF/MP4 loops "
         f"and a small UI kit with code tokens, in one style across many colour themes ({names}, and any colour added from a brand colour), each with a 50-950 shade ramp, "
         "dark and light variants and three type sets. Use when the user says 'lantern', 'lantern design system', 'multi-color design system', 'design system', 'my design system', "
         "'house style', names a colour with no skill of its own, wants a new theme or palette from a brand colour, drops reference images to match, or wants tokens exported to "

@@ -10,16 +10,20 @@ the near-black ground of Gold, a grey the monochrome recipe of Black or White), 
 renders a cover slide, a scene and the component sheet in dark and light, plus CSS and Tailwind tokens.
 
 The website mode is the only part of Lantern that touches the network: it downloads the one page and up to five
-of its stylesheets over http(s), 10 s timeout, 2 MB each. Nothing is sent except the requests themselves.
+of its stylesheets over http(s) from public addresses only (no local or private network), 10 s timeout, 2 MB each.
+Nothing is sent except the requests themselves, and nothing downloaded is run.
 """
 
 import argparse
+import ipaddress
 import os
 import re
+import socket
 import sys
+import zlib
 from collections import Counter
 from urllib.parse import urljoin, urlparse
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from components import *
@@ -35,12 +39,39 @@ LIMIT = 2_000_000
 FAMILIES = ["black", "white", "blue", "purple", "green", "red", "gray", "teal", "gold", "orange", "cyan", "rose"]
 
 
-def fetch(url):
-    if urlparse(url).scheme not in ("http", "https"):
+def public(url):
+    """Refuse anything but http(s) to a public address, so a page cannot point the reader at the local network."""
+    u = urlparse(url)
+    if u.scheme not in ("http", "https") or not u.hostname:
         raise ValueError(f"only http and https addresses are read (got {url!r})")
-    req = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; lantern-brand)"})
-    with urlopen(req, timeout=10) as r:  # noqa: S310  (scheme checked above)
-        return r.read(LIMIT).decode("utf-8", "replace")
+    try:
+        addrs = {i[4][0] for i in socket.getaddrinfo(u.hostname, u.port or (443 if u.scheme == "https" else 80))}
+    except socket.gaierror as e:
+        raise ValueError(f"cannot resolve {u.hostname}") from e
+    for a in addrs:
+        if not ipaddress.ip_address(a.split("%")[0]).is_global:
+            raise ValueError(f"{u.hostname} resolves to a private or local address ({a}); only public sites are read")
+    return url
+
+
+class _Redirects(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        public(newurl)  # every hop is checked, not just the first address
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = build_opener(_Redirects)
+
+
+def fetch(url):
+    # ponytail: the address is checked when resolved, not pinned for the connection; enough for a tool you run yourself
+    req = Request(public(url), headers={"User-Agent": "Mozilla/5.0 (compatible; lantern-brand)"})
+    with _OPENER.open(req, timeout=10) as r:
+        body, enc = r.read(LIMIT), (r.headers.get("Content-Encoding") or "").lower()
+    if enc in ("gzip", "deflate") or body[:2] == bytes([0x1F, 0x8B]):  # some servers compress unasked
+        d = zlib.decompressobj(zlib.MAX_WBITS | 32)  # gzip or zlib header
+        body = d.decompress(body, LIMIT)  # capped after decompression too
+    return body.decode("utf-8", "replace")
 
 
 def norm(h):
@@ -192,5 +223,26 @@ def main(argv=None):
     return bad
 
 
+def _selftest():
+    for bad in (
+        "file:///tmp/style.css",
+        "ftp://example.com/x.css",
+        "http://127.0.0.1/",
+        "http://10.0.0.1/",
+        "http://[::1]/",
+    ):
+        try:
+            public(bad)
+        except ValueError:
+            continue
+        raise AssertionError(f"accepted {bad}")
+    assert pick(Counter({"#3776ab": 30, "#ffd343": 30, "#111111": 400}))[0] == "#3776ab"
+    assert pick(Counter({"#111111": 10, "#eeeeee": 10}))[0] is None
+    print("brand self-test passed")
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    if sys.argv[1:] == ["--selftest"]:
+        _selftest()
+    else:
+        sys.exit(main())
