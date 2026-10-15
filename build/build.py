@@ -302,11 +302,11 @@ def write_skill(color, themes, ref, master_desc, single_desc):
         shutil.copytree(SRC / d, sk / d, ignore=ignore)
     # the master skill carries every font pack; a colour skill carries `core` and fetches others with scripts/fonts.py
     packs = None if color is None else {"core"}
-    keep = {f["file"] + ".woff2" for f in FONT_MANIFEST["files"] if packs is None or f["pack"] in packs}
+    font_files = {f["file"] + ".woff2" for f in FONT_MANIFEST["files"] if packs is None or f["pack"] in packs}
     shutil.copytree(
         SRC / "assets" / "fonts",
         sk / "assets" / "fonts",
-        ignore=lambda d, names: [n for n in names if n.endswith(".woff2") and n not in keep],
+        ignore=lambda d, names: [n for n in names if n.endswith(".woff2") and n not in font_files],
     )
     (sk / "themes").mkdir()
     sysj = json.loads((SRC / "system.json").read_text(encoding="utf-8"))
