@@ -10,6 +10,7 @@ Security and robustness.
 - Websites that send compressed pages unasked are now read correctly.
 - The master skill's description no longer trips a prompt-injection rule in skill scanners.
 - CI actions are pinned to exact commits, with Dependabot keeping them current.
+- Every skill now lives in its own folder under `skills/` (the Agent Skills layout), so it installs in Claude Code, Codex, Gemini CLI, GitHub Copilot, Cursor and other agents that read `SKILL.md`. Claude Code installs each skill straight from its folder. The README covers terminal installs and other agents.
 
 ## 1.0.0
 

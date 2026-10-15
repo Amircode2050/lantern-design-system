@@ -16,7 +16,7 @@ ffmpeg is only needed if you touch animation.
 
 ## Where things live
 
-Everything in `plugins/` is generated. Edit the source, then rebuild:
+Everything in `skills/` and `.claude-plugin/` is generated. Edit the source, then rebuild:
 
 | To change | Edit |
 |---|---|

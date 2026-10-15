@@ -37,7 +37,7 @@ jobs:
       - name: Generated skills match the source
         run: |
           python build/build.py --skip-render
-          git diff --exit-code -- plugins .claude-plugin
+          git diff --exit-code -- skills .claude-plugin
       - name: README matches the themes
         run: |
           python build/readme.py

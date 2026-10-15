@@ -117,18 +117,50 @@ Change the words without touching the drawing: `build("bank", words={"title": ["
 
 ### 1. Install the skills
 
-**Claude Code**, from this repository as a plugin marketplace:
+Every skill is a plain folder in [`skills/`](skills): `skills/lantern` is the master skill with every colour, and `skills/lantern-<colour>` holds one colour each. Install the master skill, or just the colours you use.
+
+**Claude Code, inside a session**, from this repository as a plugin marketplace:
 
 ```
 /plugin marketplace add Amircode2050/lantern-design-system
 /plugin install lantern@lantern-design-system
 ```
 
-`lantern` is the master skill with every colour. If you always want the same look, install a single colour instead, for example `lantern-red@lantern-design-system`.
+**Claude Code, from your terminal**, the same two steps without opening a session:
+
+```bash
+claude plugin marketplace add Amircode2050/lantern-design-system
+claude plugin install lantern@lantern-design-system
+claude plugin install lantern-teal@lantern-design-system
+```
+
+Update later with `claude plugin marketplace update lantern-design-system`, and remove a skill with `claude plugin uninstall lantern-teal@lantern-design-system`.
 
 **claude.ai**: download the skill's zip from the [latest release](../../releases/latest), then upload it under **Settings, Capabilities, Skills**.
 
-**By hand**: copy `plugins/<skill>/skills/<skill>/` into `~/.claude/skills/`.
+**Other coding agents.** The skills follow the open [Agent Skills](https://agentskills.io) format (a folder with a `SKILL.md`), so agents that read that format can use them unchanged, among them OpenAI Codex, Gemini CLI, GitHub Copilot and Cursor. The [`skills` installer](https://github.com/vercel-labs/skills) puts them in the right place for each agent:
+
+```bash
+npx skills add Amircode2050/lantern-design-system                          # choose skills and agents interactively
+npx skills add Amircode2050/lantern-design-system --skill lantern -a codex -g # the master skill, for Codex, for all projects
+```
+
+Or copy a folder from `skills/` by hand into your agent's skills directory:
+
+| Agent | This project only | Every project |
+|---|---|---|
+| Claude Code | `.claude/skills/` | `~/.claude/skills/` |
+| OpenAI Codex | `.agents/skills/` | `~/.agents/skills/` |
+| Gemini CLI | `.agents/skills/` | `~/.gemini/skills/` |
+| GitHub Copilot | `.agents/skills/` | `~/.copilot/skills/` |
+| Cursor | `.agents/skills/` | `~/.cursor/skills/` |
+
+```bash
+git clone https://github.com/Amircode2050/lantern-design-system
+cp -r lantern-design-system/skills/lantern ~/.agents/skills/
+```
+
+Paths change as agents evolve, so check your agent's documentation if a skill does not appear. Whatever the agent, the skill draws with Python on your machine, so step 2 below applies to every agent. In agents that cannot show multiple-choice questions, the colour picker asks the same questions in plain text.
 
 | Skill | What it does |
 |---|---|
@@ -667,7 +699,7 @@ The skills are plain Python, so you can script them:
 ```python
 import sys
 
-sys.path.insert(0, "plugins/lantern/skills/lantern/scripts")
+sys.path.insert(0, "skills/lantern/scripts")
 from kit import *
 from components import *
 
@@ -697,12 +729,12 @@ render(svg_doc(std_defs(), "".join(body), alt="A lantern in the dark."), "slide.
 
 ## Building from source
 
-Every skill in `plugins/` is generated from one source, so a fix lands everywhere at once.
+Every skill in `skills/` is generated from one source, so a fix lands everywhere at once.
 
 ```
 src/            the engine (scripts, interface kit, fonts, system.json) and the twelve themes
 build/          build.py, themes.py (colour recipes), check.py, release.py, teasers.py, templates/
-plugins/        the generated skills, one plugin each, listed in .claude-plugin/marketplace.json
+skills/         the generated skills, one folder each; .claude-plugin/marketplace.json lists each as a plugin
 docs/images/    everything on this page
 docs/index.html the playground, served by GitHub Pages
 ```

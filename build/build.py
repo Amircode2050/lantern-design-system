@@ -5,7 +5,8 @@
     python build/build.py --install       also copy every skill into ~/.claude/skills for local use
 
 Reads src/ (engine, themes, fonts, UI) and build/templates/. Writes:
-    plugins/<skill>/                      one plugin per skill, listed in .claude-plugin/marketplace.json
+    skills/<skill>/                       one folder per skill (the Agent Skills layout), each also a Claude Code
+                                          plugin listed in .claude-plugin/marketplace.json
     dist/<skill>.zip                      one upload zip per skill (not committed; attach to a release)
 Needs the same Python packages as the skills themselves (Pillow, numpy, Playwright with Chromium).
 """
@@ -21,7 +22,7 @@ import zipfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SRC, TEMPLATES, PLUGINS, DIST = REPO / "src", REPO / "build" / "templates", REPO / "plugins", REPO / "dist"
+SRC, TEMPLATES, SKILLS, DIST = REPO / "src", REPO / "build" / "templates", REPO / "skills", REPO / "dist"
 VERSION = "1.0.1"
 BRAND = "lantern"
 sys.path.insert(0, str(SRC / "scripts"))
@@ -277,7 +278,7 @@ def render_references(work):
 
 
 def skill_dir(color=None):
-    return PLUGINS / slug(color) / "skills" / slug(color)
+    return SKILLS / slug(color)
 
 
 def write_skill(color, themes, ref, master_desc, single_desc):
@@ -385,21 +386,18 @@ def write_skill(color, themes, ref, master_desc, single_desc):
         .replace("none on titles of labels or on buttons", "none on titles, labels or buttons"),
     )
     write(sk / "references" / "themes.md", (TEMPLATES / "themes.md").read_text(encoding="utf-8"))
-    plugin = {
-        "name": slug(color),
-        "version": VERSION,
-        "description": v["description"].split(". Use when")[0] + ".",
-        "license": "Apache-2.0",
-        "author": {"name": "Lantern contributors"},
-        "keywords": ["design-system", "slides", "illustration", "svg", "theme"]
-        + ([color] + COLORS[color]["aliases"][:2] if color else ["multi-color"]),
-    }
-    (PLUGINS / slug(color) / ".claude-plugin").mkdir(exist_ok=True)
-    write(PLUGINS / slug(color) / ".claude-plugin" / "plugin.json", json.dumps(plugin, indent=2) + "\n")
     return sk, v["description"]
 
 
+def keywords(name):
+    color = name.removeprefix(BRAND + "-") if name != BRAND else None
+    extra = [color] + COLORS[color]["aliases"][:2] if color else ["multi-color"]
+    return ["design-system", "slides", "illustration", "svg", "theme"] + extra
+
+
 def marketplace(names, descs):
+    """Each skill folder is also a plugin: an entry whose source is the folder itself, which holds SKILL.md at its
+    root and no plugin.json, so the entry is its manifest and an install copies only that one skill."""
     m = {
         "name": "lantern-design-system",
         "owner": {"name": "Lantern contributors"},
@@ -410,9 +408,12 @@ def marketplace(names, descs):
         "plugins": [
             {
                 "name": n,
-                "source": f"./plugins/{n}",
+                "source": f"./skills/{n}",
                 "description": descs[n].split(". Use when")[0] + ".",
                 "version": VERSION,
+                "author": {"name": "Lantern contributors"},
+                "license": "Apache-2.0",
+                "keywords": keywords(n),
             }
             for n in names
         ],
