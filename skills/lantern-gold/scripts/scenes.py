@@ -4,14 +4,18 @@
     python scenes.py supply_chain                         render one, annotated, in the default colour
     python scenes.py supply_chain teal light modern clean any colour, variant and type set; clean = no words
     python scenes.py all [colour] [variant]               every scene into ./out/scenes/
+    python scenes.py bank fa                              in Persian (right to left) or Spanish (es)
 
 Each scene is a function of t (seconds into the loop), so it is also a seamless loop, and carries its own words
 (a question, an answer line and three labels, written to the voice guide). Use one as it is, change the words with
 build(name, words={...}), or copy its draw function as the start of a new picture.
 """
 
+import functools
+import json
 import os
 import sys
+from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from components import *
@@ -1011,7 +1015,7 @@ def startup_growth(p):
             for i in range(4 if k else 2)
         ]
     s += [pendant_lamp(tr[0][0] + 200, tr[0][1] - 100, 20, 50), standing(tr[0][0] + 160, tr[0][1], 1)]
-    s += [bars(820, 470, 300, 120, [2, 9, 60], ["Year 1", "Year 3", "Year 6"], highlight=2)]
+    s += [bars(820, 470, 300, 120, [2, 9, 60], say("years", ["Year 1", "Year 3", "Year 6"]), highlight=2)]
     s += [
         flow([(660, BASE - 30), (790, BASE - 30)], "energy", p, 10, gap=14),
         flow([(1010, BASE - 30), (1160, BASE - 30)], "energy", p, 10, gap=14),
@@ -1059,11 +1063,54 @@ def mission_control(p):
 # =====================================================================================================
 # compose
 # =====================================================================================================
-def build(name, t=0.0, annotate=True, words=None):
-    """One scene as a finished SVG. words may override 'title' (list of lines), 'answer' and 'labels'."""
-    sc = dict(SCENES[name], **(words or {}))
+WORDS = Path(__file__).resolve().parent / "words"  # translations: words/<language code>.json
+_EXTRA = {}  # translated words a drawing itself uses (chart labels), set while a scene is drawn
+
+
+def languages():
+    """Language codes with translated scene words; English is built in."""
+    return sorted(p.stem for p in WORDS.glob("*.json"))
+
+
+@functools.cache
+def _translation(lang):
+    if lang not in languages():
+        raise ValueError(f"no translation '{lang}'; available: en, {', '.join(languages())}")
+    return json.loads((WORDS / f"{lang}.json").read_text(encoding="utf-8"))
+
+
+def say(key, default):
+    """A word the drawing prints itself, in the scene's current language."""
+    return _EXTRA.get(key, default)
+
+
+def scene_words(name, lang=None):
+    """The scene's registry entry with its words in `lang` (None or 'en' = English). Labels keep their slots and
+    anchors; only the text changes, so a translation can never move a label."""
+    sc = dict(SCENES[name], credit="Illustrative scene. Places, people and numbers stylised.", extra={})
+    if lang in (None, "en"):
+        return sc
+    tr = _translation(lang)
+    w = tr["scenes"][name]
+    sc.update(
+        title=w["title"],
+        answer=w["answer"],
+        alt=w["alt"],
+        credit=tr["credit"],
+        extra=w.get("extra", {}),
+        labels=[(slot, key, *w["labels"][key]) for slot, key, _, _ in SCENES[name]["labels"]],
+    )
+    return sc
+
+
+def build(name, t=0.0, annotate=True, words=None, lang=None):
+    """One scene as a finished SVG, in English or a translated language (`lang`, e.g. 'fa' or 'es').
+    words may override 'title' (list of lines), 'answer' and 'labels'."""
+    sc = dict(scene_words(name, lang), **(words or {}))
     set_canvas("16:9")
     p = (t % C.LOOP) / C.LOOP
+    _EXTRA.clear()
+    _EXTRA.update(sc["extra"])
     art, anchors = sc["draw"](p)
     zt = zoomer(sc["zoom"])
     z = sc["zoom"]  # the art is drawn at a 1920 frame and enlarged about the middle of the ground line
@@ -1074,14 +1121,14 @@ def build(name, t=0.0, annotate=True, words=None):
         for (x, y), key, title, txt in sc["labels"]:
             side = "left" if x < 960 else "right"
             body.append(callout(x, y, title, wrap(txt, 30 if side == "left" else 34), zt(anchors[key]), side))
-        body.append(credit("Illustrative scene. Places, people and numbers stylised."))
+        body.append(credit(sc["credit"]))
     lx, ly, lr = sc["lit"]
     return svg_doc(std_defs(*zt(sc["centre"]), lit=(lx, ly), lit_r=lr), "".join(body), alt=sc["alt"])
 
 
-def art(name, t=0.0):
+def art(name, t=0.0, lang=None):
     """The drawing alone (with its ground), for social cards and slide backgrounds."""
-    return build(name, t, annotate=False)
+    return build(name, t, annotate=False, lang=lang)
 
 
 if __name__ == "__main__":
@@ -1096,7 +1143,9 @@ if __name__ == "__main__":
     variant = ([a for a in args if a in ("dark", "light")] or [None])[0]
     tset = ([a for a in args if a in SYS["type_sets"]] or [None])[0]
     color = ([a for a in args if a in colors()] or [None])[0]
+    lang = ([a for a in args if a in languages()] or [None])[0]
     set_theme(variant or "dark", color, tset)
     os.makedirs("out/scenes", exist_ok=True)
     for n in names:
-        print(render(build(n, annotate="clean" not in args), f"out/scenes/{n}_{T.color}_{T.variant}.png", scale=1))
+        out = f"out/scenes/{n}_{T.color}_{T.variant}" + (f"_{lang}" if lang else "") + ".png"
+        print(render(build(n, annotate="clean" not in args, lang=lang), out, scale=1))

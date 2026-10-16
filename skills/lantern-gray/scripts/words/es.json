@@ -1,0 +1,247 @@
+{
+ "language": "Español",
+ "credit": "Escena ilustrativa. Lugares, personas y cifras estilizados.",
+ "scenes": {
+  "supply_chain": {
+   "title": ["¿Cómo llega un paquete", "hasta tu puerta?"],
+   "answer": "Se fabrica, se almacena y se reparte: cada entrega es un eslabón encendido.",
+   "labels": {
+    "factory": ["La fábrica", "Las piezas se convierten en productos y se revisan antes de salir."],
+    "store": ["El almacén", "El stock espera en las estanterías hasta que un pedido lo reclama."],
+    "van": ["La última milla", "El trayecto más corto y el más caro: una furgoneta, muchas puertas."]
+   },
+   "alt": "Corte de una fábrica y un almacén, con una furgoneta que lleva un paquete iluminado por la carretera hasta una casa."
+  },
+  "data_pipeline": {
+   "title": ["¿De dónde sale el número", "de un panel de control?"],
+   "answer": "Los registros llegan, se limpian, se guardan, se cuentan y se muestran.",
+   "labels": {
+    "src": ["Las fuentes", "Tiendas, hogares y máquinas anotan lo que acaba de pasar."],
+    "proc": ["La sala de limpieza", "Se quitan duplicados, se marcan huecos y cada registro recibe su hora."],
+    "dash": ["El panel", "Un número siempre al día, con su rastro detrás."]
+   },
+   "alt": "Casas y una tienda envían registros luminosos por tuberías a una sala de servidores, luego a un almacén y después a una gran pantalla."
+  },
+  "data_centre": {
+   "title": ["¿Cómo se mantiene fresco", "un centro de datos?"],
+   "answer": "El agua fría se lleva el calor de los servidores hacia el tejado.",
+   "labels": {
+    "racks": ["Las salas de servidores", "Filas de máquinas convierten la electricidad en respuestas y en calor."],
+    "roof": ["Las enfriadoras", "El agua tibia sube, cede su calor al aire de la noche y vuelve a bajar."],
+    "ctl": ["La sala de control", "Dos personas vigilan mil números, casi todos de temperatura."]
+   },
+   "alt": "Corte de un centro de datos con filas de racks, tuberías de refrigeración hasta las enfriadoras del tejado y una sala de control iluminada."
+  },
+  "power_grid": {
+   "title": ["¿Cómo llega la electricidad", "a una casa?"],
+   "answer": "Se genera lejos, se reduce la tensión y se reparte calle por calle.",
+   "labels": {
+    "farm": ["El parque eólico y solar", "Combustible gratis y horas irregulares: la producción sube y baja con el tiempo."],
+    "line": ["La línea de alta tensión", "La alta tensión pierde menos energía en los largos trayectos."],
+    "sub": ["La subestación", "Baja la tensión y guarda una batería para el pico de la tarde."]
+   },
+   "alt": "Aerogeneradores y paneles solares alimentan líneas luminosas sobre torres hasta una subestación y una calle de casas iluminadas."
+  },
+  "internet": {
+   "title": ["¿Qué pasa cuando abres", "una página web?"],
+   "answer": "Tu petición cruza la red hasta un servidor y la página vuelve.",
+   "labels": {
+    "you": ["Tú", "Un clic envía una petición corta: qué página y en qué idioma."],
+    "net": ["El nodo de intercambio", "Los routers pasan la petición salto a salto, en milésimas de segundo."],
+    "srv": ["El servidor", "Encuentra la página, la empaqueta y la devuelve por el mismo camino."]
+   },
+   "alt": "Una persona en un escritorio iluminado en casa, cables hasta un edificio de intercambio y una sala de servidores, con información en ambos sentidos."
+  },
+  "org_team": {
+   "title": ["¿Quién hace qué", "en un equipo?"],
+   "answer": "Quien dirige marca el rumbo, quien construye construye y el apoyo lo mantiene en marcha.",
+   "labels": {
+    "lead": ["La dirección", "Decide qué importa este mes y qué puede esperar."],
+    "make": ["Los creadores", "Convierten el plan en trabajo terminado, pieza a pieza."],
+    "help": ["El equipo de apoyo", "Herramientas, material y respuestas, para que nadie espere."]
+   },
+   "alt": "Corte de una oficina de tres plantas: la dirección ante una pizarra arriba, los creadores en sus mesas en medio y el apoyo abajo."
+  },
+  "sales_funnel": {
+   "title": ["¿Por qué la mayoría", "nunca compra?"],
+   "answer": "Cada paso pide un poco más y solo unos pocos llegan al final.",
+   "labels": {
+    "look": ["Los visitantes", "Muchos llegan, echan un vistazo y se van. Es normal."],
+    "try": ["Los interesados", "Menos se quedan a leer, comparar y preguntar."],
+    "buy": ["Los compradores", "Un puñado dice que sí. Aquí cada pequeña mejora cuenta más."]
+   },
+   "alt": "Un edificio de cuatro plantas que se estrecha hacia abajo como un embudo: mucha gente arriba y un comprador con un paquete iluminado abajo."
+  },
+  "research_lab": {
+   "title": ["¿Cómo convierte un laboratorio", "preguntas en resultados?"],
+   "answer": "Observar, probar, anotar y volver a comprobarlo todo.",
+   "labels": {
+    "dome": ["El observatorio", "Todo resultado empieza por algo que alguien notó."],
+    "bench": ["La mesa de pruebas", "Cada prueba cambia una sola cosa y mantiene el resto fijo."],
+    "lib": ["La biblioteca", "Los resultados se redactan, se archivan y los lee el siguiente equipo."]
+   },
+   "alt": "Corte de un laboratorio con cúpula: un planetario bajo la cúpula, mesas y máquinas debajo y una biblioteca en la planta baja."
+  },
+  "model_training": {
+   "title": ["¿Cómo aprende un modelo", "de los ejemplos?"],
+   "answer": "Adivina, mide el error y se ajusta, millones de veces.",
+   "labels": {
+    "data": ["Los ejemplos", "Casos etiquetados: cada uno, una pregunta con su respuesta."],
+    "core": ["El modelo", "Propone una respuesta y la compara con la correcta."],
+    "loss": ["La puntuación", "El error baja en cada pasada hasta que deja de mejorar."]
+   },
+   "alt": "Estanterías de ejemplos viajan en una cinta hasta una sala de servidores alrededor de un núcleo luminoso, con una línea de error que baja en una pantalla."
+  },
+  "water_supply": {
+   "title": ["¿Cómo llega el agua limpia", "hasta el grifo?"],
+   "answer": "La lluvia llena el embalse; el agua se depura, se guarda en alto y llega a casa.",
+   "labels": {
+    "res": ["El embalse", "Lo llenan la lluvia y los ríos. El nivel se vigila cada hora."],
+    "tower": ["El depósito elevado", "Altura es presión: empuja el agua cuesta arriba hasta cada grifo."],
+    "plant": ["La depuradora", "Decanta, filtra y desinfecta, y analiza lo que sale."]
+   },
+   "alt": "La lluvia cae sobre un embalse; el agua pasa por una depuradora, sube a un depósito elevado y baja hasta las casas."
+  },
+  "hospital": {
+   "title": ["¿Qué mantiene un hospital", "en marcha por la noche?"],
+   "answer": "Las plantas descansan mientras el laboratorio, la recepción y urgencias siguen despiertos.",
+   "labels": {
+    "ward": ["La planta", "Tranquila, pero siempre vigilada: una enfermera recorre las camas cada hora."],
+    "lab": ["El laboratorio", "Las muestras llegan toda la noche y los resultados vuelven en menos de una hora."],
+    "bay": ["La entrada de ambulancias", "Puertas que nunca se cierran, con un equipo listo dentro."]
+   },
+   "alt": "Corte de un hospital de tres plantas: una sala de camas arriba, un laboratorio en medio y la entrada de ambulancias con recepción abajo."
+  },
+  "school": {
+   "title": ["¿Qué hace que una escuela", "funcione?"],
+   "answer": "Docentes, libros y tiempo compartido, todos los días.",
+   "labels": {
+    "class": ["El aula", "Una maestra, treinta preguntas y una pizarra que no se queda atrás."],
+    "lib": ["La biblioteca", "Una sala tranquila donde ocurre la lectura."],
+    "yard": ["El patio", "Donde ocurre la mitad del aprendizaje, en el recreo."]
+   },
+   "alt": "Corte de una escuela: un aula con alumnos frente a la maestra, una biblioteca arriba y un patio con árboles fuera."
+  },
+  "bank": {
+   "title": ["¿Adónde va", "tu depósito?"],
+   "answer": "Casi todo se presta a familias y empresas; un poco se queda en la cámara.",
+   "labels": {
+    "dep": ["El ahorrador", "Ingresa dinero y mañana puede volver a sacarlo."],
+    "loan": ["Los prestatarios", "Una casa y un taller que lo devuelven durante años."],
+    "vault": ["La cámara", "Aquí solo se guarda una parte, lo justo para una semana normal."]
+   },
+   "alt": "Corte de un banco: el dinero entra desde la casa de un ahorrador, sale hacia una casa y un taller, y una pequeña reserva queda en la cámara."
+  },
+  "support_desk": {
+   "title": ["¿Cómo se resuelve", "una incidencia?"],
+   "answer": "Se registra, la responde un agente y solo se escala cuando hace falta.",
+   "labels": {
+    "in": ["Los clientes", "Escriben cuando algo falla, sobre todo a las nueve y a las dos."],
+    "desk": ["La primera línea", "Resuelve la mayoría de las incidencias en la primera respuesta."],
+    "eng": ["Los ingenieros", "Se quedan con las pocas difíciles y arreglan la causa, no solo el caso."]
+   },
+   "alt": "Corte de una oficina: las incidencias llegan por una cinta a agentes en sus mesas, y unas pocas suben a ingenieros junto a racks de servidores."
+  },
+  "newsroom": {
+   "title": ["¿Cómo llega una noticia", "a la imprenta?"],
+   "answer": "Se cuenta, se edita, se imprime y se reparte antes del desayuno.",
+   "labels": {
+    "wire": ["Los reporteros", "Traen los hechos por teléfono, por agencia y en libreta."],
+    "ed": ["La redacción", "Los editores revisan dos veces cada nombre y cada cifra."],
+    "press": ["La rotativa", "Miles de ejemplares por hora, en paquetes para las furgonetas."]
+   },
+   "alt": "Corte de un periódico: una antena trae noticias a los editores de arriba, la rotativa imprime abajo y sale una furgoneta."
+  },
+  "retail_store": {
+   "title": ["¿Qué hay detrás", "de un estante?"],
+   "answer": "Un almacén, un muelle de carga y un recuento al cerrar.",
+   "labels": {
+    "shop": ["La sala de ventas", "Estantes llenos, colas cortas y lo más vendido a la altura de los ojos."],
+    "office": ["La oficina", "Cuenta lo vendido hoy y pide el género de mañana."],
+    "dock": ["El muelle de carga", "Los pedidos llegan antes de abrir, con los pasillos vacíos."]
+   },
+   "alt": "Corte de una tienda: clientes ante los estantes, un almacén detrás, una oficina arriba y una furgoneta en el muelle de carga."
+  },
+  "farm_to_table": {
+   "title": ["¿Cómo llega la comida", "del campo al plato?"],
+   "answer": "Se cultiva, se empaqueta, se transporta y se cocina, a menudo en menos de una semana.",
+   "labels": {
+    "farm": ["El huerto", "Se recoge a mano cuando está maduro, unas filas cada día."],
+    "pack": ["El almacén de empaquetado", "Se clasifica por tamaño, se embala y se enfría antes del mediodía."],
+    "kitchen": ["La cocina", "Se cocina esta noche para gente que nunca verá el campo."]
+   },
+   "alt": "Un huerto, un almacén de empaquetado, una furgoneta en la carretera y la cocina iluminada de un restaurante con comensales a la mesa."
+  },
+  "knowledge_base": {
+   "title": ["¿Cómo responde una", "base de conocimiento?"],
+   "answer": "Todo se archiva una vez, para que cualquiera lo encuentre rápido.",
+   "labels": {
+    "shelves": ["Los fondos", "Cada respuesta vive en un solo sitio, con un nombre claro."],
+    "light": ["El índice", "Una sola luz sobre el catálogo: dónde está cada cosa."],
+    "reader": ["El lector", "Pregunta una vez y lo guían directo al estante correcto."]
+   },
+   "alt": "Corte de una sala de lectura con cúpula: estantes en galerías curvas y un haz de luz que cae desde el óculo sobre la mesa de un lector."
+  },
+  "network_defence": {
+   "title": ["¿Cómo se defiende", "una red?"],
+   "answer": "Vigilar cada puerta, comprobar cada visita y mantener aparte la cámara.",
+   "labels": {
+    "tower": ["La torre de vigilancia", "Ve todas las puertas a la vez y registra quién entra y sale."],
+    "storm": ["El ataque", "La mayoría ni llega al muro; la puerta detiene al resto."],
+    "gate": ["La puerta", "Cada visita enseña su pase, siempre, incluso las conocidas."]
+   },
+   "alt": "Un recinto amurallado de noche: una torre iluminada vigila un edificio de servidores, una puerta con guardia y una tormenta fuera."
+  },
+  "cloud_computing": {
+   "title": ["¿Qué es la nube,", "en realidad?"],
+   "answer": "Los ordenadores de otra persona, alquilados por minutos.",
+   "labels": {
+    "users": ["Tú y tus aplicaciones", "Guardas una foto o lanzas un informe, y sube."],
+    "cloud": ["La nube", "Un nombre amable para un edificio largo y sencillo, muy lejos."],
+    "dc": ["El centro de datos", "Racks de máquinas compartidas, refrigeradas, alimentadas y vigiladas."]
+   },
+   "alt": "Una gran nube suave de la que cae un haz de luz sobre un edificio lleno de racks, conectado con casas y oficinas."
+  },
+  "remote_team": {
+   "title": ["¿Cómo se coordina", "un equipo en remoto?"],
+   "answer": "Las herramientas compartidas llevan el trabajo y una breve llamada diaria, el resto.",
+   "labels": {
+    "home": ["Los escritorios en casa", "Cuatro habitaciones, cuatro husos horarios, un plan común."],
+    "hub": ["El espacio compartido", "Archivos, chat y plan viven aquí, no en el correo de nadie."],
+    "call": ["La llamada diaria", "Quince minutos: lo hecho, lo siguiente y cualquier bloqueo."]
+   },
+   "alt": "Cuatro casitas iluminadas, cada una con una persona en su escritorio, unidas por líneas luminosas a un centro en una colina."
+  },
+  "recycling": {
+   "title": ["¿Adónde va una botella", "después del cubo?"],
+   "answer": "Se recoge, se separa, se funde y se vuelve a fabricar: un ciclo, no una línea.",
+   "labels": {
+    "home": ["El cubo de la cocina", "El ciclo empieza con un enjuague y el contenedor correcto."],
+    "sort": ["La planta de selección", "Cintas, imanes y ojos atentos separan vidrio, metal y plástico."],
+    "make": ["La fábrica", "Funde el material separado y hace la siguiente botella."]
+   },
+   "alt": "Un ciclo de puntos luminosos: una casa, una furgoneta, una planta de selección, una fábrica y una tienda, y de vuelta a la casa."
+  },
+  "startup_growth": {
+   "title": ["¿Cómo se convierte un equipo", "pequeño en una empresa?"],
+   "answer": "Una habitación, luego una planta, luego un edificio, cada uno iluminado por el anterior.",
+   "labels": {
+    "garage": ["El garaje", "Dos personas, una idea y una lámpara prestada."],
+    "chart": ["El equipo", "Plantilla por año: despacio, despacio y de repente."],
+    "tower": ["La empresa", "Cuatro plantas y la misma lámpara colgada en el vestíbulo."]
+   },
+   "extra": {"years": ["Año 1", "Año 3", "Año 6"]},
+   "alt": "Un garaje con dos personas, una pequeña oficina y un edificio de cuatro plantas en fila, creciendo bajo un gráfico de barras."
+  },
+  "mission_control": {
+   "title": ["¿Cómo habla el control", "de misión con una nave?"],
+   "answer": "Una antena envía la señal; la nave responde minutos después.",
+   "labels": {
+    "room": ["La sala de control", "Filas de consolas, una gran pantalla y nadie que hable encima de otro."],
+    "ship": ["La nave", "Oye tarde la llamada y responde más tarde aún: la luz tarda."],
+    "dish": ["La antena", "Apunta a un punto del cielo y escucha un susurro."]
+   },
+   "alt": "Una sala de control con consolas frente a una gran pantalla, una antena fuera y una señal punteada que sube hasta una nave."
+  }
+ }
+}

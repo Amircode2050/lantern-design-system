@@ -532,8 +532,11 @@ def text(x, y, s, size=None, fill=None, family=None, extra="", right=None):
     """One line of text with its left edge at x. Right-to-left text (Arabic script) is set right to left and aligned
     to `right` (the right edge of its block), or to its own measured width when no block edge is given."""
     family, size = family or F.SANS, size or ts("body")
-    if is_rtl(s) and "text-anchor" not in extra:
-        x = right if right is not None else x + text_width(s, size, family)
+    if is_rtl(s):
+        if "text-anchor" not in extra:
+            x = right if right is not None else x + text_width(s, size, family)
+        else:  # under direction="rtl", start is the right edge: swap so an anchored line keeps its side
+            extra = extra.replace('"end"', '"__s"').replace('"start"', '"end"').replace('"__s"', '"start"')
         extra += ' direction="rtl"'
     return f'<text x="{f2(x)}" y="{f2(y)}" font-family="{family}" font-size="{size}" fill="{fill or T.T2}" {extra}>{esc(s)}</text>'
 
