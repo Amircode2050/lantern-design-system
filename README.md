@@ -598,6 +598,16 @@ Any type set works with any colour. The scale is fixed so pieces stay consistent
 
 Write the words in your language and Lantern picks the right letters. Persian, Arabic and Urdu are set right to left: titles move to the top right and every text block aligns to its right edge, while the picture and its labels keep their places.
 
+All 24 library scenes also come translated into **Persian** and **Spanish**, and the slide template comes in **Persian**, right to left throughout (mirrored layouts, Persian digits, the chart reading from the right):
+
+```bash
+python scripts/scenes.py bank fa                    # a scene in Persian; es for Spanish
+python scripts/social.py bank story rose fa         # a social post in Persian
+python scripts/deck.py purple --lang fa             # a Persian slide template (font: Vazirmatn)
+```
+
+Persian slide templates for every colour are attached to each [release](../../releases/latest).
+
 | Font pack | Covers | Size |
 |---|---|---|
 | `core` | English and other plain-Latin languages, for Classic, Modern and Editorial | 0.35 MB |
