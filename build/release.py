@@ -3,6 +3,7 @@
     python build/release.py            uses VERSION from build/build.py
     python build/release.py --dry-run  run every check, create no tags
 
+dist/*.zip includes lantern-design-system.zip, the whole marketplace for installs without git.
 Tags: v<VERSION> for the repo, and <plugin>--v<VERSION> for each plugin (the form plugin managers look for).
 Afterwards push and publish yourself:
     git push origin main --tags
