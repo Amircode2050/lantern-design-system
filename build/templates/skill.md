@@ -77,7 +77,7 @@ Ask both as multiple-choice questions when the environment supports them.
 | Animation | GIF (1280 wide, 10 fps, loops forever, under 15 MB), MP4 (1080p, 24 fps), and a static PNG of the same frame for anyone who prefers no motion |
 | Editable slide text | An editable canvas or slide tool: illustration or GIF as the background image, text kept live on top in the bundled fonts |
 | A deck | Any slide tool, or HTML slides using `.slide` from the UI layer; illustrations go in as images |
-| An editable template for PowerPoint, Keynote or Google Slides | `python scripts/deck.py <colour> [dark\|light] [type set] --out deck.pptx`: ten slides (title, agenda, section, three illustrated explainers, text, two columns, a live chart, closing) with the theme's colours and fonts set in the file; needs `python-pptx` |
+| An editable template for PowerPoint, Keynote or Google Slides | `python scripts/deck.py <colour> [dark\|light] [type set] [--lang fa] --out deck.pptx`: ten slides (title, agenda, section, three illustrated explainers, text, two columns, a live chart, closing) with the theme's colours and fonts set in the file; needs `python-pptx` |
 | A social post | `python scripts/social.py <scene> square\|portrait\|story <colour>`; add `--loop 8` for a seamless MP4 |
 | A web page, dashboard or app screen | `export.py` output (tokens.css, fonts.css, ui.css) plus markup using the UI layer; see `references/themes.md` |
 | Tokens for a codebase | `export.py` output, including `tailwind.theme.js` |
@@ -136,6 +136,8 @@ This skill carries every pack.
 This skill carries `core`. Before using another type set or a language beyond plain Latin, run `python scripts/fonts.py add <pack>` (it downloads only the pinned files, checks each against its recorded hash, and needs network access once); the renderer names the missing pack if one is needed.
 [[/single]]
 Where a set's own font lacks a script, its stack falls back to PT Serif or Inter, then Vazirmatn for Arabic script. Arabic-script text is set right to left: `title_block` moves to the top right, and every text block aligns to its right edge, so the slide keeps its columns and leader lines. Write right-to-left labels in the left or right column as usual. Text widths are estimates (Greek and Cyrillic about 12% wider), so check leader starts after changing language. Chinese, Japanese and Korean are not bundled; they render in the system font if one is installed.
+
+**Translated scenes and templates.** The scene library's words are translated into Persian (`fa`) and Spanish (`es`) in `scripts/words/<code>.json`, matched to each label, so the drawing never changes: `python scripts/scenes.py bank fa`, `python scripts/social.py bank story rose es`, or `build(name, lang="fa")`. The slide template comes in Persian, set right to left with mirrored layouts and Persian digits: `python scripts/deck.py purple --lang fa` (font Vazirmatn; built into Google Slides, a free download for PowerPoint and Keynote). For any other language, write the words yourself; the fonts and right-to-left layout still apply.
 
 **Spacing:** 6 · 12 · 24 · 32 · 48 · 72 (slide margin). **Radius:** 2 · 6 · 12 · 32 (capsules = half the short side). **Fixed strengths** (in each theme): grain overlay 0.30 + screen 0.06 on dark, 0.22 overlay on light; rim light 0.5; vignette max 0.72 dark, 0.30 light.
 

@@ -77,3 +77,9 @@ jobs:
       - name: Six languages, right to left included
         working-directory: ${{ runner.temp }}
         run: python "$GITHUB_WORKSPACE/src/scripts/examples.py" languages
+      - name: Translated scenes and the Persian slide template
+        working-directory: ${{ runner.temp }}
+        run: |
+          python "$GITHUB_WORKSPACE/src/scripts/scenes.py" bank purple fa
+          python "$GITHUB_WORKSPACE/src/scripts/scenes.py" bank teal light es
+          python "$GITHUB_WORKSPACE/src/scripts/deck.py" purple --lang fa --out fa.pptx

@@ -9,6 +9,7 @@
 - the exported UI tokens keep buttons, text and links readable in every theme and variant
 - every library scene draws, and its labels point at anchors it defines
 - every font file matches its recorded hash, and each skill carries the font packs it should
+- every translation covers every scene with the scene's own labels
 """
 
 import filecmp
@@ -74,6 +75,28 @@ def scene_check():
     return out
 
 
+def translation_check():
+    """Every translation covers every scene, with exactly the scene's labels and at most two title lines."""
+    import scenes
+
+    out = []
+    for lang in scenes.languages():
+        tr = scenes._translation(lang)
+        for name, sc in scenes.SCENES.items():
+            w = tr["scenes"].get(name)
+            if w is None:
+                out.append(f"{lang}: scene {name} is not translated")
+                continue
+            want = {k for _, k, _, _ in sc["labels"]}
+            if set(w["labels"]) != want:
+                out.append(f"{lang}: {name} labels {sorted(w['labels'])} should be {sorted(want)}")
+            if not 1 <= len(w["title"]) <= 2 or not w["answer"] or not w["alt"]:
+                out.append(f"{lang}: {name} needs one or two title lines, an answer and alt text")
+        if "credit" not in tr:
+            out.append(f"{lang}: credit line missing")
+    return out
+
+
 def font_check(on_disk):
     """Every font file matches its recorded hash; the master skill carries every pack, colour skills carry `core`."""
     import hashlib
@@ -94,7 +117,7 @@ def font_check(on_disk):
 
 
 def main():
-    problems = list(check_tokens()) + ui_contrast() + scene_check()
+    problems = list(check_tokens()) + ui_contrast() + scene_check() + translation_check()
 
     market = json.loads((REPO / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8"))
     listed = {p["name"]: p for p in market["plugins"]}

@@ -2,6 +2,12 @@
 
 All notable changes to this project are recorded here. Versions follow [semantic versioning](https://semver.org): a new colour or component is a minor release, a change that breaks existing scenes or token names is a major one.
 
+## 1.2.0
+
+- The 24 library scenes in Persian and Spanish: every title, answer, label and alt text, matched to the scene's own labels (`scenes.py bank fa`, `social.py ... es`, `build(name, lang=...)`). CI checks that every translation covers every scene.
+- A Persian slide template, right to left throughout: right-to-left paragraphs, mirrored layouts, Persian digits, a chart that reads from the right, and Vazirmatn as the font. Persian templates for every colour are attached to the release.
+- Right-to-left text that is centred or anchored to one side now keeps its place (social cards, credit lines).
+
 ## 1.1.0
 
 - Four new type sets: **Technical** (IBM Plex), **Geometric** (DM Serif Display and DM Sans), **Garamond** (EB Garamond with Inter) and **Swiss** (Inter Tight with Inter), for seven in all.

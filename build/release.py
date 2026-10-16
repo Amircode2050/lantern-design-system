@@ -43,6 +43,9 @@ def main():
         sys.exit("the build changed tracked files; commit the result and run again")
 
     subprocess.run([sys.executable, "src/scripts/deck.py", "all", "--out", "dist"], cwd=REPO, check=True)
+    subprocess.run(
+        [sys.executable, "src/scripts/deck.py", "all", "--lang", "fa", "--out", "dist"], cwd=REPO, check=True
+    )
     plugins = sorted(p.name for p in (REPO / "skills").iterdir() if p.is_dir())
     tags = [f"v{version}"] + [f"{p}--v{version}" for p in plugins]
     if a.dry_run:

@@ -4,6 +4,7 @@
     python social.py supply_chain story teal light         story (1080x1920), any colour and variant
     python social.py supply_chain portrait --loop 8        4:5 feed post as an 8 s MP4 loop (and its still)
     python social.py all square gold                       every scene as a square still
+    python social.py bank story rose fa                    in Persian (right to left) or Spanish (es)
     options: --handle "@you"  a small line at the foot; --out DIR (default ./out/social)
 
 Formats: square 1080x1080 (LinkedIn, X, Instagram), portrait 1080x1350 (feed posts), story 1080x1920 (Stories,
@@ -37,12 +38,12 @@ def _nest(svg, x, y, w, h, view):
     )
 
 
-def card(name, fmt="square", t=0.0, handle=None, words=None):
+def card(name, fmt="square", t=0.0, handle=None, words=None, lang=None):
     """One social card as an SVG: question and answer on clear ground, the scene's drawing below."""
-    sc = dict(scenes.SCENES[name], **(words or {}))
+    sc = dict(scenes.scene_words(name, lang), **(words or {}))
     W, H = FORMATS[fmt]
     set_canvas(W, H)
-    art = scenes.art(name, t)
+    art = scenes.art(name, t, lang)
     set_canvas(W, H)
     zt = scenes.zoomer(sc["zoom"])
     x0, y0 = zt(sc["focus"][:2])
@@ -105,16 +106,17 @@ def main(argv=None):
         sys.exit(f"unknown scene; choose from: {', '.join(scenes.SCENES)}")
     pick = lambda opts, default: ([x for x in a.rest if x in opts] or [default])[0]
     fmt = pick(FORMATS, "square")
+    lang = pick(scenes.languages(), None)
     set_theme(pick(("dark", "light"), "dark"), pick(colors(), None), pick(SYS["type_sets"], None))
     os.makedirs(a.out, exist_ok=True)
     for n in names:
-        stem = os.path.join(a.out, f"{n}_{fmt}_{T.color}_{T.variant}")
-        print(render(card(n, fmt, 3.0, a.handle), stem + ".png", scale=1))
+        stem = os.path.join(a.out, f"{n}_{fmt}_{T.color}_{T.variant}" + (f"_{lang}" if lang else ""))
+        print(render(card(n, fmt, 3.0, a.handle, lang=lang), stem + ".png", scale=1))
         if a.loop:
             W, H = FORMATS[fmt]
             set_canvas(W, H, loop=a.loop)
             frames = stem + "_frames"
-            render_frames(functools.partial(card, n, fmt, handle=a.handle), 24, frames, fresh=True)
+            render_frames(functools.partial(card, n, fmt, handle=a.handle, lang=lang), 24, frames, fresh=True)
             mb = make_mp4(frames, stem + ".mp4", fps=24)
             seam, typical = check_loop(frames)
             print(f"{stem}.mp4  {mb:.1f} MB, seam {seam:.2f} vs typical {typical:.2f}")
