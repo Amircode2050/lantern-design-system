@@ -14,7 +14,7 @@
   <a href="LICENSE"><img alt="Licence: Apache 2.0" src="https://img.shields.io/badge/licence-Apache%202.0-3366ff"></a>
   <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-1b4d3e">
   <img alt="Twelve colours" src="https://img.shields.io/badge/colours-12-d4af37">
-  <img alt="Version 1.1.0" src="https://img.shields.io/badge/version-1.1.0-7a1f2b">
+  <img alt="Version 1.2.0" src="https://img.shields.io/badge/version-1.2.0-7a1f2b">
 </p>
 
 ---
@@ -811,7 +811,8 @@ pip install -r requirements.txt ruff
 python -m playwright install chromium
 python build/build.py                 # renders reference images and writes every skill (about ten minutes)
 python build/build.py --skip-render   # code and docs only
-python build/check.py                 # contrast, names, interface contrast, engine copies
+python build/check.py                 # contrast, names, interface contrast, fonts, translations, engine copies
+python -m unittest discover -s tests  # unit tests, no browser needed
 python build/readme_images.py         # the images on this page
 python build/site.py                  # the playground in docs/ (GitHub Pages, deploy from /docs)
 python src/scripts/deck.py all --out dist   # slide templates for a release

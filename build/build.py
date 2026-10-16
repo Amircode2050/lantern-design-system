@@ -23,7 +23,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC, TEMPLATES, SKILLS, DIST = REPO / "src", REPO / "build" / "templates", REPO / "skills", REPO / "dist"
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 BRAND = "lantern"
 sys.path.insert(0, str(SRC / "scripts"))
 from new_theme import NAMES as GENERIC  # noqa: E402
@@ -332,6 +332,7 @@ def write_skill(color, themes, ref, master_desc, single_desc):
     if color is None:
         v = dict(
             slug=slug(),
+            version=VERSION,
             title="Lantern design system",
             description=master_desc,
             installed=", ".join(t["name"] for t in themes.values()),
@@ -348,6 +349,7 @@ def write_skill(color, themes, ref, master_desc, single_desc):
         v = dict(
             s,
             slug=slug(color),
+            version=VERSION,
             title=f"Lantern {s['N']}",
             description=single_desc[color],
             nl=color,
@@ -396,6 +398,8 @@ def write_skill(color, themes, ref, master_desc, single_desc):
     )
     write(sk / "references" / "themes.md", (TEMPLATES / "themes.md").read_text(encoding="utf-8"))
     plugin_files(sk, color, v)
+    if color is None:  # the evaluation suite travels with the master skill (claude plugin eval skills/lantern)
+        shutil.copytree(REPO / "evals", sk / "evals", ignore=shutil.ignore_patterns("results"))
     return sk, v["description"]
 
 

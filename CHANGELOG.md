@@ -7,6 +7,10 @@ All notable changes to this project are recorded here. Versions follow [semantic
 - The 24 library scenes in Persian and Spanish: every title, answer, label and alt text, matched to the scene's own labels (`scenes.py bank fa`, `social.py ... es`, `build(name, lang=...)`). CI checks that every translation covers every scene.
 - A Persian slide template, right to left throughout: right-to-left paragraphs, mirrored layouts, Persian digits, a chart that reads from the right, and Vazirmatn as the font. Persian templates for every colour are attached to the release.
 - Right-to-left text that is centred or anchored to one side now keeps its place (social cards, credit lines).
+- Polished portraits: natural hair that tapers into the nape, a notched lapel and a lit shoulder, a robot visor set into its recess, a chest panel, and bodies that run off the frame instead of floating.
+- Unit tests (`python -m unittest discover -s tests`) for the colour maths, themes, brand colours, fonts, right-to-left text, scenes, translations and slide-template words, run in CI on Python 3.11 and 3.13.
+- An evaluation suite in `evals/` that measures what the skill adds over plain Claude (colour first, the right scene, brand and Persian commands, the slide voice), run with `claude plugin eval skills/lantern`.
+- Every SKILL.md carries the Agent Skills `license`, `compatibility` and `metadata` fields, and all skills pass the specification's validator.
 
 ## 1.1.0
 
