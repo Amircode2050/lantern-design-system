@@ -165,6 +165,21 @@ claude plugin install lantern-teal@lantern-design-system
 
 Update later with `claude plugin marketplace update lantern-design-system`, and remove a skill with `claude plugin uninstall lantern-teal@lantern-design-system`.
 
+**If adding the marketplace fails** (an SSH `Permission denied (publickey)`, a checkout error, or a message that the repo has no release to download), add it by its full HTTPS address instead:
+
+```bash
+claude plugin marketplace add https://github.com/Amircode2050/lantern-design-system.git
+```
+
+or install from the release download, which needs no git at all: download `lantern-design-system.zip` from the [latest release](../../releases/latest), unzip it, and from the folder that holds it run
+
+```bash
+claude plugin marketplace add ./lantern-design-system
+claude plugin install lantern@lantern-design-system
+```
+
+On Windows, a checkout error usually means a path over 260 characters; `git config --global core.longpaths true` fixes it.
+
 **claude.ai**: download the skill's zip from the [latest release](../../releases/latest), then upload it under **Settings, Capabilities, Skills**.
 
 **Other coding agents.** The skills follow the open [Agent Skills](https://agentskills.io) format (a folder with a `SKILL.md`), so agents that read that format can use them unchanged, among them OpenAI Codex, Gemini CLI, GitHub Copilot and Cursor. The [`skills` installer](https://github.com/vercel-labs/skills) puts them in the right place for each agent:

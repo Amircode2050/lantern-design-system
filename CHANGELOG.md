@@ -2,6 +2,11 @@
 
 All notable changes to this project are recorded here. Versions follow [semantic versioning](https://semver.org): a new colour or component is a minor release, a change that breaks existing scenes or token names is a major one.
 
+## Unreleased
+
+- `lantern-design-system.zip` on every release: the whole marketplace in one download, for installing in Claude Code without git (`claude plugin marketplace add ./lantern-design-system`).
+- Install troubleshooting in the README: the full HTTPS address when SSH or checkout fails, and the Windows long-path setting.
+
 ## 1.2.0
 
 - The 24 library scenes in Persian and Spanish: every title, answer, label and alt text, matched to the scene's own labels (`scenes.py bank fa`, `social.py ... es`, `build(name, lang=...)`). CI checks that every translation covers every scene.

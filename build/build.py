@@ -8,6 +8,7 @@ Reads src/ (engine, themes, fonts, UI) and build/templates/. Writes:
     skills/<skill>/                       one folder per skill (the Agent Skills layout), each also a Claude Code
                                           plugin listed in .claude-plugin/marketplace.json
     dist/<skill>.zip                      one upload zip per skill (not committed; attach to a release)
+    dist/lantern-design-system.zip        the whole collection: marketplace and every skill, for installs from a release
 Needs the same Python packages as the skills themselves (Pillow, numpy, Playwright with Chromium).
 """
 
@@ -498,6 +499,21 @@ def zip_skill(sk):
     return out
 
 
+def zip_bundle():
+    """The whole plugin collection in one file: the marketplace and every skill, for installs from a release.
+    Unzip it and run `claude plugin marketplace add ./lantern-design-system`."""
+    DIST.mkdir(exist_ok=True)
+    out = DIST / "lantern-design-system.zip"
+    files = [REPO / ".claude-plugin" / "marketplace.json", REPO / "README.md", REPO / "LICENSE", REPO / "NOTICE"]
+    files += sorted(
+        f for f in SKILLS.rglob("*") if f.is_file() and "__pycache__" not in f.parts and "results" not in f.parts
+    )
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+        for f in files:
+            z.write(f, "lantern-design-system/" + f.relative_to(REPO).as_posix())
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--skip-render", action="store_true")
@@ -534,6 +550,8 @@ def main():
         z = zip_skill(sk)
         print(f"{sk.name}: {r.stdout.strip() or r.stderr.strip()[-200:]}; zip {z.stat().st_size // 1024} KB")
     marketplace([sk.name for sk in built], descs)
+    bundle = zip_bundle()
+    print(f"{bundle.name}: {bundle.stat().st_size // 1024} KB")
     for p in (SRC / "scripts").rglob("__pycache__"):
         shutil.rmtree(p, ignore_errors=True)
     if a.install:
