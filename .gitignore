@@ -5,6 +5,8 @@ __pycache__/
 venv/
 
 # Build output and scratch renders
+evals/results/
+skills/*/evals/results/
 dist/
 out/
 build/*.log

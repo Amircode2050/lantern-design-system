@@ -469,7 +469,8 @@ pip install -r requirements.txt ruff
 python -m playwright install chromium
 python build/build.py                 # renders reference images and writes every skill (about ten minutes)
 python build/build.py --skip-render   # code and docs only
-python build/check.py                 # contrast, names, interface contrast, engine copies
+python build/check.py                 # contrast, names, interface contrast, fonts, translations, engine copies
+python -m unittest discover -s tests  # unit tests, no browser needed
 python build/readme_images.py         # the images on this page
 python build/site.py                  # the playground in docs/ (GitHub Pages, deploy from /docs)
 python src/scripts/deck.py all --out dist   # slide templates for a release

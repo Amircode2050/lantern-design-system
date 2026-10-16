@@ -1,6 +1,12 @@
 ---
 name: "lantern"
 description: "Lantern, a design system for illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated figures, title and break slides, GIF/MP4 loops and a small UI kit with code tokens, in one style across many colour themes (Black, Blue, Cyan, Gold, Gray, Green, Orange, Purple, Red, Rose, Teal, White, and any colour added from a brand colour), each with a 50-950 shade ramp, dark and light variants, seven type sets and many languages. Use when the user says 'lantern', 'lantern design system', 'multi-color design system', 'design system', 'my design system', 'house style', names a colour with no skill of its own, wants a new theme or palette from a brand colour, drops reference images to match, or wants tokens exported to CSS or Tailwind. Also use for any design task (slide, deck, figure, illustration, poster, title or break slide, animation, simple interface) with no style chosen: show the picker and ask which colour, then which variant, type set and shade, before designing."
+license: Apache-2.0 (code) and SIL OFL 1.1 (fonts); see LICENSE, NOTICE and assets/fonts/LICENSES.txt
+compatibility: Needs Python 3.11+ with Pillow, NumPy and Playwright (Chromium) to render; ffmpeg for GIF and MP4; python-pptx for slide templates. Works offline, except brand.py reading a website and fonts.py adding a font pack.
+metadata:
+  version: "1.2.0"
+  homepage: https://amircode2050.github.io/lantern-design-system/
+  repository: https://github.com/Amircode2050/lantern-design-system
 ---
 
 # Lantern design system

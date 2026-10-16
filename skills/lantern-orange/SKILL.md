@@ -1,6 +1,12 @@
 ---
 name: "lantern-orange"
 description: "Lantern Orange: illustrated slides, cut-away machines and buildings, close-up portrait scenes, annotated concept figures, title and break slides, seamless GIF/MP4 loops, and a small UI kit with code tokens, in the Orange colour theme (warm near-black ground, one tangerine light, grain, silhouette figures, glowing flow lines), in dark or light with seven type sets. Use when the user says 'lantern orange', 'orange design system', 'orange system', 'orange style', 'my orange style', 'the orange one', 'orange theme', 'orange deck' or any variation, or a shade name with 'design system', 'style' or 'theme': burnt orange, tangerine, persimmon, copper. For a choice between colours, a new colour, or a design task with no colour named, use the lantern skill instead."
+license: Apache-2.0 (code) and SIL OFL 1.1 (fonts); see LICENSE, NOTICE and assets/fonts/LICENSES.txt
+compatibility: Needs Python 3.11+ with Pillow, NumPy and Playwright (Chromium) to render; ffmpeg for GIF and MP4; python-pptx for slide templates. Works offline, except brand.py reading a website and fonts.py adding a font pack.
+metadata:
+  version: "1.2.0"
+  homepage: https://amircode2050.github.io/lantern-design-system/
+  repository: https://github.com/Amircode2050/lantern-design-system
 ---
 
 # Lantern Orange

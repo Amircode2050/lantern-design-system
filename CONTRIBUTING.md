@@ -52,6 +52,16 @@ Put it in `src/scripts/components.py`. Follow the existing ones: return an SVG s
 
 Add a function to `src/scripts/scenes.py` with the `@scene(...)` decorator: a question of at most two lines, one answer line, three labels and one sentence of alt text, all written to the voice guide. Draw on the ground line `BASE` with `building()` and the components, put one light where the story is (`lit=`), and return the drawing with a dictionary of label anchors. Check it in dark and light and in two or three colours (`python src/scripts/scenes.py <name> teal light`); leader lines must not cross. `python build/check.py` confirms every label has its anchor.
 
+## Tests and evaluations
+
+```bash
+python -m unittest discover -s tests -v     # fast, no browser: colour maths, fonts, right-to-left, scenes, words
+python build/check.py                       # contrast, names, fonts, translations, engine copies
+claude plugin eval skills/lantern --runs 1 --trust-plugin --no-publish   # what the skill adds over plain Claude
+```
+
+The evaluation suite in `evals/` runs each case with and without the skill and reports the difference. It uses your Claude plan, needs Claude Code 2.1.269 or later, and is not part of CI. Add a case when you add a capability: a realistic request in `prompt.md` and one or two graders that check the result.
+
 ## Pull requests
 
 - One topic per pull request.
