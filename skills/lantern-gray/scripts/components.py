@@ -764,17 +764,36 @@ def bust_human(x, y, s=1.0, facing=1):
         "Q162,-210 148,-207 L122,-204 C128,-196 130,-186 124,-180 L116,-176 C126,-170 124,-158 114,-152 "
         "C108,-148 110,-140 114,-128 C118,-110 104,-96 80,-92"
     )
-    hair = (
-        "M46,-452 C10,-500 -120,-512 -190,-450 C-250,-395 -262,-290 -236,-200 C-222,-150 -196,-118 -160,-104 "
-        "L-112,-118 C-104,-150 -92,-185 -84,-210 C-70,-240 -60,-275 -40,-300 C-10,-330 20,-380 46,-452 Z"
+    hair = (  # over the skull, down the back of the head, tapering into the nape; the hairline curves in front of the ear
+        "M46,-452 C10,-500 -120,-512 -190,-450 C-250,-395 -264,-300 -244,-222 C-230,-170 -200,-136 -156,-116 "
+        "C-128,-104 -100,-108 -86,-126 C-98,-150 -104,-176 -96,-202 C-80,-240 -60,-268 -34,-302 "
+        "C-6,-338 22,-392 46,-452 Z"
     )
+    strands = [  # fine strands that follow the hair's direction
+        "M30,-456 C-30,-490 -130,-492 -196,-436",
+        "M8,-420 C-50,-458 -150,-460 -214,-392",
+        "M-20,-372 C-80,-410 -170,-410 -230,-330",
+        "M-46,-318 C-110,-352 -190,-340 -238,-262",
+        "M-80,-250 C-140,-274 -200,-256 -226,-196",
+    ]
     g = [
         # jacket, shirt collar, tie knot, lapel
-        path(
-            "M-370,340 C-370,130 -262,26 -100,-6 L12,64 L66,20 C206,58 306,160 330,340 Z",
+        path(  # runs below the canvas edge so the figure never floats
+            "M-370,440 L-370,340 C-370,130 -262,26 -100,-6 L12,64 L66,20 C206,58 306,160 330,340 L330,440 Z",
             "url(#cloth)",
             f'stroke="{T.IN900}" stroke-width="2"',
         ),
+        path(  # notched lapel on the near side
+            "M66,20 L150,72 L118,104 L176,236 L70,340 L52,96 Z",
+            T.IN700 if not T.light else T.IN600,
+            f'stroke="{T.IN900}" stroke-width="1.6" stroke-linejoin="round"',
+        ),
+        path(
+            "M66,20 C200,58 300,150 326,320",
+            "none",
+            f'stroke="{T.W400}" stroke-width="2.4" stroke-linecap="round" opacity="0.5"',
+        ),
+        path("M-300,180 C-240,120 -180,96 -130,90", "none", f'stroke="{T.IN900}" stroke-width="1.4" opacity="0.5"'),
         path(
             "M-74,-30 L44,8 L60,74 L16,52 L-64,12 Z",
             T.MIST if not T.light else T.G600,
@@ -785,6 +804,12 @@ def bust_human(x, y, s=1.0, facing=1):
         path("M-260,120 C-200,60 -140,30 -100,-6", "none", f'stroke="{T.L200}" stroke-width="1.4" opacity="0.25"'),
         # neck, with the shadow the jaw throws on it
         path("M-62,-150 C-58,-90 -70,-40 -78,-20 L50,8 C46,-30 42,-70 48,-96 Z", skin_dark),
+        path(
+            "M-40,-130 C-20,-80 6,-30 34,4",
+            "none",
+            f'stroke="{T.IN800}" stroke-width="8" opacity="0.16" filter="url(#blur3)"',
+        ),
+        path("M40,-92 C38,-60 40,-26 46,4", "none", f'stroke="{T.W400}" stroke-width="2" opacity="0.4"'),
         ell(-4, -96, 66, 22, T.IN900, 'opacity="0.35" filter="url(#blur8)"'),
         # head
         path(face, "url(#skin)"),
@@ -797,6 +822,15 @@ def bust_human(x, y, s=1.0, facing=1):
         path(profile, "none", f'stroke="{T.W200}" stroke-width="2.2" stroke-linejoin="round" opacity="0.55"'),
         # hair, with two highlight strands
         path(hair, "url(#cloth)", f'stroke="{T.IN900}" stroke-width="1.5"'),
+        *(
+            path(d, "none", f'stroke="{T.L200}" stroke-width="1.3" stroke-linecap="round" opacity="0.22"')
+            for d in strands
+        ),
+        path(
+            "M-236,-210 C-226,-166 -200,-138 -160,-120",
+            "none",
+            f'stroke="{T.W400}" stroke-width="2" stroke-linecap="round" opacity="0.3"',
+        ),
         path(
             "M-160,-452 C-100,-486 -30,-486 24,-460",
             "none",
@@ -831,11 +865,19 @@ def bust_robot(x, y, s=1.0, facing=1, visor=True):
     """Head-and-shoulders robot: capsule head with a glowing visor band, an ear module, vent lines, a ribbed neck and
     broad shoulders. (x, y) = collar centre. The visor points the way it faces; the rim light sits on the back."""
     g = [
-        path(
-            "M-330,340 C-330,130 -230,40 -100,20 L100,20 C230,40 330,130 330,340 Z",
+        path(  # runs below the canvas edge so the figure never floats
+            "M-330,440 L-330,340 C-330,130 -230,40 -100,20 L100,20 C230,40 330,130 330,340 L330,440 Z",
             "url(#chrome)",
             f'stroke="{T.IN900}" stroke-width="2"',
         ),
+        path("M-250,90 C-230,140 -226,200 -232,260", "none", f'stroke="{T.IN800}" stroke-width="1.6" opacity="0.5"'),
+        path("M230,80 C214,130 210,200 216,260", "none", f'stroke="{T.IN800}" stroke-width="1.6" opacity="0.5"'),
+        rrect(-70, 160, 140, 96, 14, T.IN800 if not T.light else T.V400, f'stroke="{T.IN900}" stroke-width="2"'),
+        *(
+            line((-50, 184 + i * 18), (30, 184 + i * 18), T.L200, 2, 'opacity="0.45" stroke-linecap="round"')
+            for i in range(4)
+        ),
+        circ(48, 184, 6, T.W200, 'filter="url(#dotglow)"'),
         path("M-210,140 Q0,104 170,116", "none", f'stroke="{T.IN800}" stroke-width="1.6" opacity="0.5"'),
         line((0, 112), (0, 340), T.IN800, 1.4, 'opacity="0.5"'),
         path(
@@ -878,11 +920,12 @@ def bust_robot(x, y, s=1.0, facing=1, visor=True):
         circ(92, -300, 18, T.IN800),
         circ(92, -300, 4, T.W300, 'filter="url(#dotglow)"'),
     ]
-    if visor:
+    if visor:  # set into a dark recess inside the head outline, on the side it faces
         g += [
             glow(-60, -332, 170, 70, op=0.8),
-            rrect(-160, -360, 200, 56, 28, T.W200, f'stroke="{T.W400}" stroke-width="1.2" filter="url(#dotglow)"'),
-            rrect(-150, -352, 120, 10, 5, T.W100, 'opacity="0.7"'),
+            rrect(-152, -368, 200, 72, 34, T.IN900, f'stroke="{T.IN800}" stroke-width="1.5"'),
+            rrect(-142, -358, 180, 52, 26, T.W200, f'stroke="{T.W400}" stroke-width="1.2" filter="url(#dotglow)"'),
+            rrect(-130, -350, 110, 9, 4.5, T.W100, 'opacity="0.7"'),
         ]
     g += [line((40, y0), (70, y0), T.IN800, 4.2, 'stroke-linecap="round" opacity="0.8"') for y0 in (-250, -231, -212)]
     g.append(circ(48, -408, 5, T.W100, 'filter="url(#dotglow)"'))
