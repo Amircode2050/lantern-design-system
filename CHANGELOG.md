@@ -5,6 +5,7 @@ All notable changes to this project are recorded here. Versions follow [semantic
 ## Unreleased
 
 - `lantern-design-system.zip` on every release: the whole marketplace in one download, for installing in Claude Code without git (`claude plugin marketplace add ./lantern-design-system`).
+- One install route per agent: Codex (`codex plugin marketplace add`), GitHub Copilot CLI, Gemini CLI (`gemini extensions install`), Cursor team marketplaces, OpenCode and Grok Build. The repo root is also an Agent Plugins plugin (`plugin.json`), a Gemini CLI extension and a Codex marketplace (`.agents/plugins/marketplace.json`).
 - Install troubleshooting in the README: the full HTTPS address when SSH or checkout fails, and the Windows long-path setting.
 
 ## 1.2.0

@@ -124,6 +124,9 @@ def main():
     on_disk = {p.name for p in (REPO / "skills").iterdir() if p.is_dir()}
     if set(listed) != on_disk:
         problems.append(f"marketplace lists {sorted(listed)} but skills/ holds {sorted(on_disk)}")
+    for f in ("plugin.json", "gemini-extension.json"):  # the whole-collection manifests for other agents
+        if json.loads((REPO / f).read_text(encoding="utf-8")).get("version") != market["metadata"]["version"]:
+            problems.append(f"{f}: version disagrees with the marketplace")
 
     for name in sorted(on_disk):
         skill = REPO / "skills" / name

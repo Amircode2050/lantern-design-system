@@ -1,0 +1,20 @@
+{
+  "name": "lantern-design-system",
+  "interface": {
+    "displayName": "Lantern"
+  },
+  "plugins": [
+    {
+      "name": "lantern-design-system",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    }
+  ]
+}

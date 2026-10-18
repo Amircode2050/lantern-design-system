@@ -148,14 +148,28 @@ Change the words without touching the drawing: `build("bank", words={"title": ["
 
 Every skill is a plain folder in [`skills/`](skills): `skills/lantern` is the master skill with every colour, and `skills/lantern-<colour>` holds one colour each. Install the master skill, or just the colours you use.
 
-**Claude Code, inside a session**, from this repository as a plugin marketplace:
+| Agent | Quickest install | What you get |
+|---|---|---|
+| [Claude Code](#claude-code) (terminal, desktop, IDE) | `/plugin marketplace add Amircode2050/lantern-design-system` | any skill, one at a time |
+| [Claude.ai and the Claude app](#claudeai-and-the-claude-app) | upload a zip from the latest release | one skill per zip |
+| [OpenAI Codex](#openai-codex) | `codex plugin marketplace add Amircode2050/lantern-design-system` | all 13 skills |
+| [GitHub Copilot CLI](#github-copilot-cli) | `copilot plugin marketplace add Amircode2050/lantern-design-system` | any skill, one at a time |
+| [Gemini CLI](#gemini-cli) | `gemini extensions install https://github.com/Amircode2050/lantern-design-system` | all 13 skills |
+| [Cursor](#cursor) | `npx skills add Amircode2050/lantern-design-system -a cursor` | the skills you pick |
+| [OpenCode](#opencode) | `npx skills add Amircode2050/lantern-design-system -a opencode` | the skills you pick |
+| [Grok Build](#grok-build) | `npx skills add Amircode2050/lantern-design-system -a grok` | the skills you pick |
+| [Any other agent](#any-other-agent) | copy a folder from `skills/` | the skills you copy |
+
+#### Claude Code
+
+Inside a session (the terminal, the desktop app or an IDE extension):
 
 ```
 /plugin marketplace add Amircode2050/lantern-design-system
 /plugin install lantern@lantern-design-system
 ```
 
-**Claude Code, from your terminal**, the same two steps without opening a session:
+Or from your terminal, without opening a session:
 
 ```bash
 claude plugin marketplace add Amircode2050/lantern-design-system
@@ -180,16 +194,64 @@ claude plugin install lantern@lantern-design-system
 
 On Windows, a checkout error usually means a path over 260 characters; `git config --global core.longpaths true` fixes it.
 
-**claude.ai**: download the skill's zip from the [latest release](../../releases/latest), then upload it under **Settings, Capabilities, Skills**.
+#### Claude.ai and the Claude app
 
-**Other coding agents.** The skills follow the open [Agent Skills](https://agentskills.io) format (a folder with a `SKILL.md`), so agents that read that format can use them unchanged, among them OpenAI Codex, Gemini CLI, GitHub Copilot and Cursor. The [`skills` installer](https://github.com/vercel-labs/skills) puts them in the right place for each agent:
+Download the skill's zip (for example `lantern.zip` or `lantern-teal.zip`) from the [latest release](../../releases/latest), then upload it under **Settings, Capabilities, Skills**. Skills you upload there also work in the Claude desktop and mobile apps.
+
+#### OpenAI Codex
 
 ```bash
-npx skills add Amircode2050/lantern-design-system                          # choose skills and agents interactively
-npx skills add Amircode2050/lantern-design-system --skill lantern -a codex -g # the master skill, for Codex, for all projects
+codex plugin marketplace add Amircode2050/lantern-design-system
+codex plugin add lantern-design-system@lantern-design-system
 ```
 
-Or copy a folder from `skills/` by hand into your agent's skills directory:
+The plugin carries all thirteen skills; Codex picks the colour you name. In the ChatGPT desktop app, the same marketplace appears in the Plugins directory once added. To install a single skill instead, use `npx skills add Amircode2050/lantern-design-system --skill lantern -a codex`.
+
+#### GitHub Copilot CLI
+
+```bash
+copilot plugin marketplace add Amircode2050/lantern-design-system
+copilot plugin install lantern@lantern-design-system
+copilot plugin install lantern-teal@lantern-design-system
+```
+
+For Copilot in VS Code, use `npx skills add Amircode2050/lantern-design-system -a github-copilot`.
+
+#### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/Amircode2050/lantern-design-system
+```
+
+The extension carries all thirteen skills. Update it with `gemini extensions update lantern-design-system`.
+
+#### Cursor
+
+```bash
+npx skills add Amircode2050/lantern-design-system --skill lantern -a cursor -g
+```
+
+A Cursor team can also add the skills as plugins: import this repository under **Dashboard, Settings, Plugins, Import** (it reads `.cursor-plugin/marketplace.json`).
+
+#### OpenCode
+
+```bash
+npx skills add Amircode2050/lantern-design-system --skill lantern -a opencode -g
+```
+
+OpenCode also reads skills from `.opencode/skills/`, `~/.config/opencode/skills/`, `.agents/skills/` and `.claude/skills/`, so a copied folder works too.
+
+#### Grok Build
+
+```bash
+npx skills add Amircode2050/lantern-design-system --skill lantern -a grok -g
+```
+
+Grok Build also reads Claude Code plugins and skills, so if Lantern is installed in Claude Code, Grok Build finds it without another step. Skills live in `.grok/skills/` (this project) or `~/.grok/skills/` (every project).
+
+#### Any other agent
+
+The skills follow the open [Agent Skills](https://agentskills.io) format (a folder with a `SKILL.md`), so any agent that reads that format can use them unchanged. The [`skills` installer](https://github.com/vercel-labs/skills) knows where each agent looks (`npx skills add Amircode2050/lantern-design-system` asks which skills and agents), or copy a folder by hand:
 
 | Agent | This project only | Every project |
 |---|---|---|
@@ -198,6 +260,8 @@ Or copy a folder from `skills/` by hand into your agent's skills directory:
 | Gemini CLI | `.agents/skills/` | `~/.gemini/skills/` |
 | GitHub Copilot | `.agents/skills/` | `~/.copilot/skills/` |
 | Cursor | `.agents/skills/` | `~/.cursor/skills/` |
+| OpenCode | `.opencode/skills/` | `~/.config/opencode/skills/` |
+| Grok Build | `.grok/skills/` | `~/.grok/skills/` |
 
 ```bash
 git clone https://github.com/Amircode2050/lantern-design-system
