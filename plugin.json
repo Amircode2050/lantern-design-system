@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "lantern-design-system",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Lantern: illustrated slides, scenes, slide templates and UI tokens in one style and twelve colours.",
   "author": {
     "name": "Lantern contributors",
