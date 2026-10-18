@@ -2,7 +2,7 @@
 
 All notable changes to this project are recorded here. Versions follow [semantic versioning](https://semver.org): a new colour or component is a minor release, a change that breaks existing scenes or token names is a major one.
 
-## Unreleased
+## 1.2.1
 
 - `lantern-design-system.zip` on every release: the whole marketplace in one download, for installing in Claude Code without git (`claude plugin marketplace add ./lantern-design-system`).
 - One install route per agent: Codex (`codex plugin marketplace add`), GitHub Copilot CLI, Gemini CLI (`gemini extensions install`), Cursor team marketplaces, OpenCode and Grok Build. The repo root is also an Agent Plugins plugin (`plugin.json`), a Gemini CLI extension and a Codex marketplace (`.agents/plugins/marketplace.json`).

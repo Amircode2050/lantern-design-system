@@ -4,7 +4,7 @@ description: "Lantern Black: illustrated slides, cut-away machines and buildings
 license: Apache-2.0 (code) and SIL OFL 1.1 (fonts); see LICENSE, NOTICE and assets/fonts/LICENSES.txt
 compatibility: Needs Python 3.11+ with Pillow, NumPy and Playwright (Chromium) to render; ffmpeg for GIF and MP4; python-pptx for slide templates. Works offline, except brand.py reading a website and fonts.py adding a font pack.
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   homepage: https://amircode2050.github.io/lantern-design-system/
   repository: https://github.com/Amircode2050/lantern-design-system
 ---
