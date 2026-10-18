@@ -487,6 +487,39 @@ def marketplace(names, descs):
     }
     (REPO / ".claude-plugin").mkdir(exist_ok=True)
     write(REPO / ".claude-plugin" / "marketplace.json", json.dumps(m, indent=2) + "\n")
+    (REPO / ".cursor-plugin").mkdir(exist_ok=True)  # same format; a Cursor team imports the repo by this file
+    write(REPO / ".cursor-plugin" / "marketplace.json", json.dumps(m, indent=2) + "\n")
+    # The repo root is also one plugin holding every skill in skills/: the open Agent Plugins format (Codex,
+    # Cursor, Copilot), a Gemini CLI extension, and a Codex marketplace that lists it.
+    about = "Lantern: illustrated slides, scenes, slide templates and UI tokens in one style and twelve colours."
+    root = {
+        "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+        "name": "lantern-design-system",
+        "version": VERSION,
+        "description": about,
+        "author": {"name": "Lantern contributors", "url": REPO_URL},
+        "homepage": SITE_URL,
+        "repository": REPO_URL,
+        "license": "Apache-2.0",
+        "keywords": ["design-system", "slides", "illustration", "svg", "theme", "skills"],
+    }
+    write(REPO / "plugin.json", json.dumps(root, indent=2) + "\n")
+    gemini = {"name": "lantern-design-system", "version": VERSION, "description": about}
+    write(REPO / "gemini-extension.json", json.dumps(gemini, indent=2) + "\n")
+    codex = {
+        "name": "lantern-design-system",
+        "interface": {"displayName": "Lantern"},
+        "plugins": [
+            {
+                "name": "lantern-design-system",
+                "source": {"source": "local", "path": "./"},
+                "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                "category": "Design",
+            }
+        ],
+    }
+    (REPO / ".agents" / "plugins").mkdir(parents=True, exist_ok=True)
+    write(REPO / ".agents" / "plugins" / "marketplace.json", json.dumps(codex, indent=2) + "\n")
 
 
 def zip_skill(sk):

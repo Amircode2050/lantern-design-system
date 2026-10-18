@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "lantern-design-system",
+  "version": "1.2.0",
+  "description": "Lantern: illustrated slides, scenes, slide templates and UI tokens in one style and twelve colours.",
+  "author": {
+    "name": "Lantern contributors",
+    "url": "https://github.com/Amircode2050/lantern-design-system"
+  },
+  "homepage": "https://amircode2050.github.io/lantern-design-system/",
+  "repository": "https://github.com/Amircode2050/lantern-design-system",
+  "license": "Apache-2.0",
+  "keywords": [
+    "design-system",
+    "slides",
+    "illustration",
+    "svg",
+    "theme",
+    "skills"
+  ]
+}
