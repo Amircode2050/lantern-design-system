@@ -145,7 +145,7 @@ Every skill is a plain folder in [`skills/`](skills): `skills/lantern` is the ma
 | [Claude.ai and the Claude app](#claudeai-and-the-claude-app) | upload a zip from the latest release | one skill per zip |
 | [OpenAI Codex](#openai-codex) | `codex plugin marketplace add Amircode2050/lantern-design-system` | all 13 skills |
 | [GitHub Copilot CLI](#github-copilot-cli) | `copilot plugin marketplace add Amircode2050/lantern-design-system` | any skill, one at a time |
-| [Gemini CLI](#gemini-cli) | `gemini extensions install https://github.com/Amircode2050/lantern-design-system` | all 13 skills |
+| [Antigravity CLI](#antigravity-cli) | `npx skills add Amircode2050/lantern-design-system -a antigravity-cli` | the skills you pick |
 | [Cursor](#cursor) | `npx skills add Amircode2050/lantern-design-system -a cursor` | the skills you pick |
 | [OpenCode](#opencode) | `npx skills add Amircode2050/lantern-design-system -a opencode` | the skills you pick |
 | [Grok Build](#grok-build) | `npx skills add Amircode2050/lantern-design-system -a grok` | the skills you pick |
@@ -208,13 +208,13 @@ copilot plugin install lantern-teal@lantern-design-system
 
 For Copilot in VS Code, use `npx skills add Amircode2050/lantern-design-system -a github-copilot`.
 
-#### Gemini CLI
+#### Antigravity CLI
 
 ```bash
-gemini extensions install https://github.com/Amircode2050/lantern-design-system
+npx skills add Amircode2050/lantern-design-system --skill lantern -a antigravity-cli -g
 ```
 
-The extension carries all thirteen skills. Update it with `gemini extensions update lantern-design-system`.
+Antigravity CLI (`agy`), which replaced Gemini CLI, reads skills from `.agents/skills/` (this project) or `~/.gemini/antigravity-cli/skills/` (every project), so a copied folder works too.
 
 #### Cursor
 
@@ -248,7 +248,7 @@ The skills follow the open [Agent Skills](https://agentskills.io) format (a fold
 |---|---|---|
 | Claude Code | `.claude/skills/` | `~/.claude/skills/` |
 | OpenAI Codex | `.agents/skills/` | `~/.agents/skills/` |
-| Gemini CLI | `.agents/skills/` | `~/.gemini/skills/` |
+| Antigravity CLI | `.agents/skills/` | `~/.gemini/antigravity-cli/skills/` |
 | GitHub Copilot | `.agents/skills/` | `~/.copilot/skills/` |
 | Cursor | `.agents/skills/` | `~/.cursor/skills/` |
 | OpenCode | `.opencode/skills/` | `~/.config/opencode/skills/` |

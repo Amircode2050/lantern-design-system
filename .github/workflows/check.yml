@@ -41,7 +41,7 @@ jobs:
       - name: Generated skills match the source
         run: |
           python build/build.py --skip-render
-          git diff --exit-code -- skills .claude-plugin .cursor-plugin .agents plugin.json gemini-extension.json
+          git diff --exit-code -- skills .claude-plugin .cursor-plugin .agents plugin.json
       - name: README matches the themes
         run: |
           python build/readme.py

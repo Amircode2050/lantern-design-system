@@ -490,7 +490,7 @@ def marketplace(names, descs):
     (REPO / ".cursor-plugin").mkdir(exist_ok=True)  # same format; a Cursor team imports the repo by this file
     write(REPO / ".cursor-plugin" / "marketplace.json", json.dumps(m, indent=2) + "\n")
     # The repo root is also one plugin holding every skill in skills/: the open Agent Plugins format (Codex,
-    # Cursor, Copilot), a Gemini CLI extension, and a Codex marketplace that lists it.
+    # Cursor, Copilot) and a Codex marketplace that lists it.
     about = "Lantern: illustrated slides, scenes, slide templates and UI tokens in one style and twelve colours."
     root = {
         "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
@@ -504,8 +504,6 @@ def marketplace(names, descs):
         "keywords": ["design-system", "slides", "illustration", "svg", "theme", "skills"],
     }
     write(REPO / "plugin.json", json.dumps(root, indent=2) + "\n")
-    gemini = {"name": "lantern-design-system", "version": VERSION, "description": about}
-    write(REPO / "gemini-extension.json", json.dumps(gemini, indent=2) + "\n")
     codex = {
         "name": "lantern-design-system",
         "interface": {"displayName": "Lantern"},
