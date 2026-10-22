@@ -79,6 +79,22 @@ def ui_shots(tmp):
         jpg(tmp / f"ui-{variant}.png", IMG / f"ui-{variant}.jpg", width=1000)
 
 
+def powerpoint_export(pptx, out):
+    """Export every slide as s1.png, s2.png ... with PowerPoint on Windows; False when it is not available."""
+    if sys.platform != "win32":
+        return False
+    import subprocess
+
+    ps = (
+        "$pp = New-Object -ComObject PowerPoint.Application; "
+        f"$p = $pp.Presentations.Open('{pptx}', $true, $false, $false); $i = 1; "
+        f"foreach ($s in $p.Slides) {{ $s.Export('{out}\\s' + $i + '.png', 'PNG', 1920, 1080); $i++ }}; "
+        "$p.Close(); $pp.Quit()"
+    )
+    r = subprocess.run(["powershell", "-NoProfile", "-Command", ps], capture_output=True)
+    return r.returncode == 0 and (Path(out) / "s1.png").exists()
+
+
 def deck_preview(tmp):
     """Six slides of the Blue template, drawn from the .pptx itself: its background pictures and its text boxes,
     set in the bundled fonts (a slide tool would substitute fonts that are not installed)."""
@@ -93,16 +109,24 @@ def deck_preview(tmp):
     prs = Presentation(path)
     px = lambda emu: emu / deck.EMU
     tiles = []
-    for k in (0, 2, 3, 4, 5, 9):
+    show = (0, 1, 3, 5, 7, 9)  # title, agenda, two explainers, two columns, closing
+    if powerpoint_export(path, tmp):  # the real thing, when PowerPoint is installed
+        tiles = [Image.open(tmp / f"s{k + 1}.png").convert("RGB").resize((640, 360), Image.LANCZOS) for k in show]
+    for k in show if not tiles else ():  # otherwise an approximation drawn from the .pptx
         sl = prs.slides[k]
         set_canvas("16:9")
         b = []
         for sh in sl.shapes:
-            if sh.shape_type == 13:  # picture
+            x, y0, w, h = px(sh.left), px(sh.top), px(sh.width), px(sh.height)
+            if sh.shape_type == 13:  # picture: full-frame background or a framed panel
                 data = base64.b64encode(sh.image.blob).decode()
-                b.append(f'<image href="data:image/jpeg;base64,{data}" width="1920" height="1080"/>')
+                b.append(
+                    f'<image href="data:image/jpeg;base64,{data}" x="{x}" y="{y0}" width="{w}" height="{h}" preserveAspectRatio="none"/>'
+                )
+            elif sh.shape_type == 1:  # an autoshape: the hairline rules
+                b.append(f'<rect x="{x}" y="{y0}" width="{w}" height="{max(h, 2)}" fill="#{sh.fill.fore_color.rgb}"/>')
             elif sh.has_text_frame:
-                y = px(sh.top)
+                y = y0
                 for para in sh.text_frame.paragraphs:
                     if not para.runs:
                         continue
@@ -110,9 +134,10 @@ def deck_preview(tmp):
                     size = r.font.size.pt * 2  # 1 pt = 2 px on the 1920 frame
                     fam = next(f["stack"] for n, f in SYS["fonts"].items() if n == r.font.name)
                     y += (para.space_before.pt * 2 if para.space_before else 0) + size * 0.95
-                    for ln in wrap(para.text, max(8, int(px(sh.width) / (size * 0.5)))):
-                        weight = 'font-weight="500"' if r.font.bold else ""
-                        b.append(text(px(sh.left), y, ln, size, "#" + str(r.font.color.rgb), fam, weight))
+                    right = para.alignment is not None and int(para.alignment) == 3  # PP_ALIGN.RIGHT
+                    for ln in wrap(para.text, max(8, int(w / (size * 0.5)))):
+                        extra = ('font-weight="500" ' if r.font.bold else "") + ('text-anchor="end"' if right else "")
+                        b.append(text(x + w if right else x, y, ln, size, "#" + str(r.font.color.rgb), fam, extra))
                         y += size * 1.12
         png = render(svg_doc("", "".join(b), alt="slide"), str(tmp / f"slide{k}.png"), scale=1, grain=False)
         tiles.append(Image.open(png).convert("RGB").resize((640, 360), Image.LANCZOS))

@@ -2,6 +2,13 @@
 
 All notable changes to this project are recorded here. Versions follow [semantic versioning](https://semver.org): a new colour or component is a minor release, a change that breaks existing scenes or token names is a major one.
 
+## 1.3.0
+
+- Slide templates in an editorial layout: thin rules, small labels and page numbers, and more room. Each illustrated explainer frames its drawing, numbers its three parts and describes them beside it as editable text; the chart slide sets its key number large. Persian templates follow the same layout, right to left.
+- Antigravity CLI replaces Gemini CLI, which Google retired for most users in June 2026: `npx skills add Amircode2050/lantern-design-system -a antigravity-cli`. `gemini-extension.json` is gone.
+- A 26-second tour of the playground, linked from the README and the playground.
+- The README's slide-template preview is rendered by PowerPoint when it is installed.
+
 ## 1.2.1
 
 - `lantern-design-system.zip` on every release: the whole marketplace in one download, for installing in Claude Code without git (`claude plugin marketplace add ./lantern-design-system`).
