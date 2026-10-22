@@ -24,7 +24,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC, TEMPLATES, SKILLS, DIST = REPO / "src", REPO / "build" / "templates", REPO / "skills", REPO / "dist"
-VERSION = "1.2.1"
+VERSION = "1.3.0"
 BRAND = "lantern"
 sys.path.insert(0, str(SRC / "scripts"))
 from new_theme import NAMES as GENERIC  # noqa: E402

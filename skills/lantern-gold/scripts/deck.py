@@ -100,6 +100,17 @@ def _theme_xml(blob, fonts, cs_font=None):
 
 
 EN = {
+    "kicker": "Quarterly review",
+    "labels": {
+        "agenda": "Agenda",
+        "section": "Part 01",
+        "scene": "Explainer",
+        "text": "Context",
+        "columns": "Options",
+        "chart": "Results",
+    },
+    "options": ["Option A", "Option B"],
+    "chart_note": "Revenue by quarter, in millions",
     "title": "Presentation title",
     "subtitle": "One line that says why it matters.",
     "byline": "Name, team, date",
@@ -189,11 +200,12 @@ def build_deck(out, words=None, lang=None):
         """Mirror a box across the slide for right-to-left layouts."""
         return 1920 - x - w if rtl else x
 
-    def picture(svg):
+    def picture(svg, crop=None):
         count[0] += 1
         png = render(svg, os.path.join(tmp, f"bg{count[0]}.png"), scale=1)
         jpg = png[:-4] + ".jpg"
-        Image.open(png).convert("RGB").save(jpg, quality=86)
+        im = Image.open(png).convert("RGB")
+        (im.crop(crop) if crop else im).save(jpg, quality=88)
         return jpg
 
     def slide(bg_svg, note=""):
@@ -235,62 +247,155 @@ def build_deck(out, words=None, lang=None):
         r.text = txt
         style(para, r, size, color, font, bold)
 
-    def head(s, x, y, w, title, answer, tsize=36, asize=18):
-        """Title and its answer line in one box, so a long title pushes the answer down instead of under it."""
-        tb = box(s, x, y, w, 300, title, tsize, T.T1, disp, gap=1.0)
-        text_frame_add(tb, answer, asize, T.W300, sans, tsize * 0.35, bold=True)
-        return tb
-
-    def bullets(s, x, y, w, h, items, size=20):
-        tb = box(s, x, y, w, h, [f"•  {t}" for t in items], size, T.T2, sans, gap=1.5)
-        for para in tb.text_frame.paragraphs:
-            para.space_after = Pt(10)
-        return tb
-
     N = D["notes"]
+    LB = D["labels"]
+    total = 10
+    hair = T.IN700 if not T.light else T.L300  # hairline rules: the chart's gridline colour
+
+    def rule(s, x, y, w, h=2, color=None):
+        r = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Emu(mx(x, w) * EMU), Emu(y * EMU), Emu(w * EMU), Emu(h * EMU))
+        r.fill.solid()
+        r.fill.fore_color.rgb = _rgb(color or hair)
+        r.line.fill.background()
+        return r
+
+    def chrome(s, label, n):
+        """Editorial frame: a mono label and a rule at the top, the deck title and page number at the foot."""
+        box(s, 120, 66, 900, 30, label.upper(), 11, T.W300, mono)
+        rule(s, 120, 112, 1680)
+        rule(s, 120, 986, 1680)
+        box(s, 120, 1006, 1000, 30, D["title"], 11, T.T3, mono)
+        tb = box(s, 1500, 1006, 300, 30, digits(f"{n:02d} / {total:02d}", lang), 11, T.T3, mono)
+        tb.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT if rtl else PP_ALIGN.RIGHT
+
+    def head(s, x, y, w, title, answer, tsize=44, asize=18):
+        """Title and its answer line in one box, so a long title pushes the answer down instead of under it."""
+        tb = box(s, x, y, w, 300, title, tsize, T.T1, disp, gap=1.02)
+        text_frame_add(tb, answer, asize, T.W300, sans, tsize * 0.42, bold=True)
+        return tb
+
+    def numbered(s, x, y, w, items, size=22, step=118, sub=None):
+        """A list with mono numbers and a hairline above each row (sub: a second, quieter line per row)."""
+        for i, it in enumerate(items):
+            yy = y + i * step
+            rule(s, x, yy, w)
+            box(
+                s,
+                x if not rtl else x + w - 80,
+                yy + 26,
+                80,
+                40,
+                digits(f"{i + 1:02d}", lang),
+                13,
+                T.W300,
+                mono,
+                mirror=False,
+            )
+            tb = box(
+                s, x + 90 if not rtl else x, yy + 20, w - 90, step - 30, it, size, T.T1, sans, gap=1.2, mirror=False
+            )
+            if sub:
+                text_frame_add(tb, sub[i], size * 0.68, T.T2, sans, 4)
+
+    def scene_panel(name):
+        """The scene drawing with numbered markers on its three labelled parts, cropped for the framed panel."""
+        sc = scenes.scene_words(name, lang)
+        set_canvas("16:9")
+        drawing, anchors = sc["draw"](0.0)
+        zt = scenes.zoomer(sc["zoom"])
+        z = sc["zoom"]
+        g = f'<g transform="translate({960 * (1 - z):.2f},{scenes.ZY * (1 - z):.2f}) scale({z})">{drawing}</g>'
+        marks = ""
+        for i, (_, key, _, _) in enumerate(sc["labels"]):
+            ax, ay = zt(anchors[key])
+            marks += circ(ax, ay, 24, T.W300)
+            marks += text(
+                ax, ay + 9, digits(str(i + 1), lang), 24, T.G950, F.MONO, 'text-anchor="middle" font-weight="700"'
+            )
+        body = background(*zt(sc["centre"]), seed=5) + g + finish() + marks
+        lx, ly, lr = sc["lit"]
+        return svg_doc(std_defs(*zt(sc["centre"]), lit=(lx, ly), lit_r=lr), body, alt=sc["alt"]), sc
+
+    def side_rule(s, y):
+        """A short rule under the words of the title and closing slides (they sit right of the lantern either way)."""
+        r = s.shapes.add_shape(
+            MSO_SHAPE.RECTANGLE, Emu((1260 if rtl else 1120) * EMU), Emu(y * EMU), Emu(560 * EMU), Emu(2 * EMU)
+        )
+        r.fill.solid()
+        r.fill.fore_color.rgb = _rgb(hair)
+        r.line.fill.background()
+
     # 1 title (the words sit beside the lantern in either direction)
     s = slide(cover_art(), N["title"])
-    tb = box(s, 1120, 360, 740, 300, D["title"], 48, T.T1, disp, gap=1.0, mirror=False)
-    text_frame_add(tb, D["subtitle"], 20, T.W300, sans, 48 * 0.35, bold=True)
-    text_frame_add(tb, D["byline"], 15, T.T2, sans, 14)
-    # 2 agenda
+    box(s, 1120, 300, 700, 30, D["kicker"].upper(), 12, T.W300, mono, mirror=False)
+    tb = box(s, 1120, 350, 740, 360, D["title"], 56, T.T1, disp, gap=0.98, mirror=False)
+    text_frame_add(tb, D["subtitle"], 20, T.W300, sans, 26, bold=True)
+    side_rule(s, 760)
+    box(s, 1120, 784, 700, 40, D["byline"], 13, T.T2, mono, mirror=False)
+    # 2 agenda: the question on one side, the parts as a ruled list on the other
     s = slide(ground_art(), N["agenda"])
-    head(s, 120, 110, 1500, D["agenda_title"], D["agenda_answer"])
-    for i, it in enumerate(D["agenda"]):
-        box(s, 122, 340 + i * 120, 90, 90, digits(f"{i + 1:02d}", lang), 30, T.W300, mono)
-        box(s, 240, 340 + i * 120, 1300, 90, it, 30, T.T1, disp)
+    chrome(s, LB["agenda"], 2)
+    head(s, 120, 190, 620, D["agenda_title"], D["agenda_answer"], 52)
+    numbered(s, mx(860, 940), 196, 940, D["agenda"], 30, 168)
     # 3 section break (lantern on the left, words on the right in both directions)
     s = slide(ground_art(lamp=True), N["section"])
-    tb = box(s, 900, 380, 900, 300, D["section"], 80, T.T1, disp, gap=1.0, mirror=False)
-    text_frame_add(tb, D["section_answer"], 24, T.W300, sans, 28, bold=True)
-    # 4-6 illustrated explainers
-    for name in SCENE_SLIDES:
-        sc = scenes.scene_words(name, lang)
-        s = slide(scenes.art(name, 3.0, lang), f"{N['scene']} ({name})")
-        head(s, 72, 60, 1000, " ".join(sc["title"]), sc["answer"], 26, 14)
-    # 7 text
+    box(s, 900, 330, 900, 40, LB["section"].upper(), 14, T.W300, mono, mirror=False)
+    tb = box(s, 900, 380, 900, 300, D["section"], 104, T.T1, disp, gap=0.95, mirror=False)
+    text_frame_add(tb, D["section_answer"], 24, T.T2, sans, 30)
+    # 4-6 illustrated explainers: words and the three labelled parts on one side, the drawing framed on the other
+    for k, name in enumerate(SCENE_SLIDES):
+        svg, sc = scene_panel(name)
+        s = slide(ground_art(), f"{N['scene']} ({name})")
+        chrome(s, f"{LB['scene']} {digits(f'{k + 1:02d}', lang)}", 4 + k)
+        head(s, 120, 170, 600, " ".join(sc["title"]), sc["answer"], 30, 16)
+        numbered(
+            s,
+            mx(120, 600),
+            556,
+            600,
+            [lbl for _, _, lbl, _ in sc["labels"]],
+            18,
+            138,
+            [txt for _, _, _, txt in sc["labels"]],
+        )
+        pic = s.shapes.add_picture(
+            picture(svg, crop=(300, 250, 1620, 1060)),
+            Emu(mx(780, 1020) * EMU),
+            Emu(176 * EMU),
+            Emu(1020 * EMU),
+            Emu(626 * EMU),
+        )
+        pic.line.color.rgb = _rgb(hair)
+        pic.line.width = Emu(2 * EMU)
+    # 7 text: the question on one side, the points as a ruled list on the other
     s = slide(ground_art(), N["text"])
-    head(s, 120, 110, 1500, D["text_title"], D["text_answer"])
-    bullets(s, 122, 330, 1300, 600, D["text_points"], 24)
+    chrome(s, LB["text"], 7)
+    head(s, 120, 190, 620, D["text_title"], D["text_answer"], 52)
+    numbered(s, mx(860, 940), 196, 940, D["text_points"], 24, 190)
     # 8 two columns (the first column sits where the reader starts: left, or right in right-to-left)
     s = slide(ground_art(), N["columns"])
-    head(s, 120, 110, 1500, D["columns_title"], D["columns_answer"])
+    chrome(s, LB["columns"], 8)
+    head(s, 120, 170, 1500, D["columns_title"], D["columns_answer"], 52)
     for k, (heading, pts) in enumerate(D["columns"]):
-        x = 122 + k * 840
-        bar = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Emu(mx(x, 4) * EMU), Emu(330 * EMU), Emu(4 * EMU), Emu(420 * EMU))
-        bar.fill.solid()
-        bar.fill.fore_color.rgb = _rgb(T.W300 if k == 0 else T.L100)
-        bar.line.fill.background()
-        box(s, x + 36, 330, 720, 60, heading, 30, T.T1, disp)
-        bullets(s, x + 36, 410, 720, 400, pts, 22)
-    # 9 chart
+        x = 120 + k * 870
+        col = T.W300 if k == 0 else T.L100
+        rule(s, x, 440, 810, 4, col)
+        box(s, x, 472, 810, 40, D["options"][k].upper(), 12, col, mono)
+        box(s, x, 516, 810, 70, heading, 36, T.T1, disp)
+        for i, pt in enumerate(pts):
+            rule(s, x, 620 + i * 100, 810)
+            box(s, x, 646 + i * 100, 810, 60, pt, 20, T.T2, sans)
+    # 9 chart: the highlighted number large on one side, the native chart on the other
     s = slide(ground_art(), N["chart"])
-    head(s, 120, 110, 1500, D["chart_title"], D["chart_answer"])
+    chrome(s, LB["chart"], 9)
+    head(s, 120, 170, 620, D["chart_title"], D["chart_answer"], 44)
+    box(s, 120, 600, 600, 200, digits("8.2", lang), 110, T.W300, disp)
+    box(s, 120, 850, 600, 40, D["chart_note"], 14, T.T2, mono)
     data = CategoryChartData()
     data.categories = D["chart_categories"]
     data.add_series(D["chart_series"], (3.1, 4.6, 8.2, 4.4))
     gf = s.shapes.add_chart(
-        XL_CHART_TYPE.COLUMN_CLUSTERED, Emu(160 * EMU), Emu(320 * EMU), Emu(1500 * EMU), Emu(640 * EMU), data
+        XL_CHART_TYPE.COLUMN_CLUSTERED, Emu(mx(800, 1000) * EMU), Emu(200 * EMU), Emu(1000 * EMU), Emu(740 * EMU), data
     )
     ch = gf.chart
     ch.has_legend = False
@@ -298,7 +403,7 @@ def build_deck(out, words=None, lang=None):
     ch.font.size, ch.font.name = Pt(14), sans
     ch.font.color.rgb = _rgb(T.T2)
     plot = ch.plots[0]
-    plot.gap_width = 70
+    plot.gap_width = 60
     plot.has_data_labels = True
     plot.data_labels.font.size, plot.data_labels.font.name = Pt(14), mono
     plot.data_labels.font.color.rgb = _rgb(T.T1)
@@ -310,16 +415,17 @@ def build_deck(out, words=None, lang=None):
     pt.format.fill.fore_color.rgb = _rgb(T.W300)
     va = ch.value_axis
     va.has_major_gridlines = True
-    va.major_gridlines.format.line.color.rgb = _rgb(T.IN700 if not T.light else T.L300)
+    va.major_gridlines.format.line.color.rgb = _rgb(hair)
     va.format.line.fill.background()
     va.visible = False
     ch.category_axis.format.line.color.rgb = _rgb(T.L200)
     ch.category_axis.reverse_order = rtl  # the first quarter reads first, from the right in right-to-left
     # 10 closing
     s = slide(cover_art(), N["closing"])
-    tb = box(s, 1120, 380, 740, 300, D["closing"], 56, T.T1, disp, gap=1.0, mirror=False)
-    text_frame_add(tb, D["closing_answer"], 20, T.W300, sans, 56 * 0.35, bold=True)
-    text_frame_add(tb, D["contact"], 15, T.T2, mono, 14)
+    tb = box(s, 1120, 360, 700, 300, D["closing"], 72, T.T1, disp, gap=0.98, mirror=False)
+    text_frame_add(tb, D["closing_answer"], 20, T.W300, sans, 26, bold=True)
+    side_rule(s, 640)
+    box(s, 1120, 664, 700, 40, D["contact"], 14, T.T2, mono, mirror=False)
     for p in ("title", "subject"):
         setattr(prs.core_properties, p, f"Lantern {T.name} template")
     prs.core_properties.author = ""

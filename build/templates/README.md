@@ -31,8 +31,15 @@ It comes in twelve colours, each with a dark and a light version, seven type set
 </p>
 
 <p align="center">
+  <a href="https://amircode2050.github.io/lantern-design-system/video/lantern-teaser.mp4"><img src="docs/images/teaser-poster.jpg" alt="Play the 26-second tour of the Lantern playground" width="100%"></a><br>
+  <i>A 26-second tour: pick a colour, watch the page follow, download a slide template.</i>
+</p>
+
+<p align="center">
   <img src="docs/images/teasers/spectrum.jpg" alt="Twelve lanterns, one in each colour theme" width="100%">
 </p>
+
+Lantern is free and open source. If it saves you a deck or two, a star on GitHub helps other people find it.
 
 ## Contents
 
@@ -455,7 +462,7 @@ python scripts/social.py all square rose --handle "@you"      # every scene, wit
 
 <p align="center"><img src="docs/images/deck.jpg" alt="The ten slides of the template in Lantern Blue" width="100%"></p>
 
-Every colour has a ten-slide template in dark and light, attached to each [release](../../releases/latest): title, agenda, section break, three illustrated explainers, a text slide, two columns, a native chart and a closing slide. The pictures are images; every title, label and number is editable, and the file's own theme colours and fonts are set, so a new shape or chart matches without effort. It opens in PowerPoint, Keynote and Google Slides (File, Import slides).
+Every colour has a ten-slide template in dark and light, attached to each [release](../../releases/latest), in a calm editorial layout: thin rules, small labels and page numbers, and plenty of room. It has a title, agenda, section break, three illustrated explainers (the drawing framed, its three parts numbered and described beside it), a text slide, two columns, a native chart with the key number set large, and a closing slide. The pictures are images; every title, label and number is editable, and the file's own theme colours and fonts are set, so a new shape or chart matches without effort. It opens in PowerPoint, Keynote and Google Slides (File, Import slides).
 
 ```bash
 python scripts/deck.py teal light modern --out teal.pptx
