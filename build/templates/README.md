@@ -296,6 +296,8 @@ plus [ffmpeg](https://ffmpeg.org) if you want GIF or MP4 output, `pip install py
 - "Turn the supply chain scene into an Instagram story, Lantern orange."
 - "Give me a PowerPoint template in Lantern teal, light."
 
+New to Lantern? [From a question to a finished slide in two minutes](docs/tutorial.md) walks through one example end to end.
+
 ## Choosing a look
 
 The master skill asks at most two short questions, each with a picture, and remembers your answers for the rest of the conversation.
